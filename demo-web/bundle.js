@@ -192,6 +192,29 @@
                     },
                     __self: _this
                 })
+            ),
+            React.createElement(
+                'div',
+                { className: 'source-code', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 39
+                    },
+                    __self: _this
+                },
+                React.createElement(
+                    'a',
+                    {
+                        href: 'https://github.com/zewish/redux-remember/tree/master/demo-web/src',
+                        target: '_blank',
+                        rel: 'noopener noreferrer nofollow',
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 40
+                        },
+                        __self: _this
+                    },
+                    '[ See demo source ]'
+                )
             )
         );
     };

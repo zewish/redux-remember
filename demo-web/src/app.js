@@ -35,6 +35,16 @@ const App = ({
                 onChange={ev => setText2(ev.target.value)}
             />
         </div>
+
+        <div className="source-code">
+            <a
+                href="https://github.com/zewish/redux-remember/tree/master/demo-web/src"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+            >
+                [ See demo source ]
+            </a>
+        </div>
     </div>
 );
 
