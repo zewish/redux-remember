@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "main": "lib/index.js",
   "module": "es/index.js",

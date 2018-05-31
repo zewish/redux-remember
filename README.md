@@ -2,7 +2,7 @@
 
 Redux Remember saves and loads your redux state from a key-value store of your choice
 
-__Works out of the box with any of the following:__
+__Works with any of the following:__
 - AsyncStorage (react-native)
 - LocalStorage (web)
 - SessionStorage (web)
