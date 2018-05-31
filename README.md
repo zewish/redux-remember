@@ -12,6 +12,8 @@ __Status:__
 - Considered mostly stable (manually tested for now), used in production environment apps.
 - Still missing proper test coverage and advanced documentation.
 
+[__See demo!__](https://rawgit.com/zewish/redux-remember/master/demo-web/index.html)
+
 Installation
 ------------
 ```bash

@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -12,7 +12,7 @@
     "build:es": "cross-env BABEL_ENV=es babel src --source-maps --out-dir es",
     "build:umd": "cross-env BABEL_ENV=umd rollup -f umd -c ./rollup.config.js",
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
-    "prepublish": "npm run clean && npm run build"
+    "prepare": "npm run clean && npm run build"
   },
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
