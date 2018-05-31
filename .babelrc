@@ -1,0 +1,60 @@
+{
+    "plugins": [
+        ["transform-object-rest-spread", { "useBuiltIns": true }],
+    ],
+    "env": {
+        "lib": {
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "browsers": [
+                            ">1%",
+                            "last 4 versions",
+                            "Firefox ESR",
+                            "not ie < 9"
+                        ]
+                    },
+                    "exclude": [
+                        "transform-regenerator"
+                    ],
+                }]
+            ]
+        },
+        "es": {
+            "presets": [
+                ["env", {
+                    "modules": false,
+                    "targets": {
+                        "browsers": [
+                            ">1%",
+                            "last 4 versions",
+                            "Firefox ESR",
+                            "not ie < 9"
+                        ]
+                    },
+                    "exclude": [
+                        "transform-regenerator"
+                    ],
+                }]
+            ]
+        },
+        "umd": {
+            "presets": [
+                ["env", {
+                    "modules": false,
+                    "targets": {
+                        "browsers": [
+                            ">1%",
+                            "last 4 versions",
+                            "Firefox ESR",
+                            "not ie < 9"
+                        ]
+                    }
+                }]
+            ],
+            "plugins": [
+                "external-helpers"
+            ]
+        }
+    }
+}
