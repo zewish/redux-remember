@@ -39,9 +39,7 @@ export const rehydrate = async (
 
 export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
     const data = {
-        state: typeof preloaded === 'function'
-          ? {}
-          : preloaded
+        state: preloaded
     };
 
     return (state = data.state, action) => {

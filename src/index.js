@@ -41,10 +41,15 @@ const reduxRemember = (
     };
 
     const createStore = (reducer, preloadedState, ...extra) => {
-        const store = reduxCreateStore(
-            reducer(preloadedState),
-            ...extra
-        );
+        const hasPreloadedState = typeof preloadedState !== 'function';
+
+        const rehydrate = hasPreloadedState
+            ? reducer(preloadedState)
+            : reducer();
+
+        const store = hasPreloadedState
+            ? reduxCreateStore(rehydrate, ...extra)
+            : reduxCreateStore(rehydrate, preloadedState, ...extra);
 
         init(
             store,
