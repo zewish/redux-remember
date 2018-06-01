@@ -17,7 +17,7 @@ export const rehydrate = async (
 
         state = persistableKeys
         .reduce((obj, key, i) => {
-            if (items[i] !== undefined) {
+            if (items[i] !== null) {
                 obj[key] = JSON.parse(items[i]);
             }
 
@@ -45,10 +45,13 @@ export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
     return (state = data.state, action) => {
         switch (action.type) {
             case REHYDRATED:
-                data.state = {
-                    ...data.state,
-                    ...(action.payload || {})
-                };
+                data.state = reducers(
+                    {
+                        ...data.state,
+                        ...(action.payload || {})
+                    },
+                    { type: REHYDRATED }
+                );
 
                 data.state[loadedKey] = true;
                 return data.state;
