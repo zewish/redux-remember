@@ -17,8 +17,8 @@ const reduxRemember = (
     let persistableKeys = {};
 
     const combineReducers = (
-        persistable,
-        forgettable,
+        persistable = {},
+        forgettable = {},
         ...extra
     ) => {
         const reducers = reduxCombineReducers(
