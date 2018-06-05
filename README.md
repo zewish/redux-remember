@@ -130,6 +130,40 @@ const store = createStore(
 // Continue using the redux store as usual...
 ```
 
+Usage - inside a reducer
+------------------------
+
+```js
+import { SOME_ACTION } from './actions';
+import { REMEMBER_REHYDRATED } from 'redux-remember';
+
+const defaultState = {
+    changeMe: null,
+    rehydrated: false
+};
+
+export default (state = defaultState, { type, payload }) => {
+    switch (type) {
+        case REMEMBER_REHYDRATED:
+            // state gets rehydrated from storage
+            // state == { changeMe: 123 }
+            return {
+                ...state,
+                rehydrated: true
+            }
+
+        case SOME_ACTION:
+            return {
+                ...state,
+                changeMe: payload
+            }
+
+        default:
+            return state;
+    }
+};
+```
+
 API reference
 -------------
 - reduxRemember(driver, options)

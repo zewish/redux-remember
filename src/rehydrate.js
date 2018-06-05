@@ -1,4 +1,4 @@
-export const REHYDRATED = `@@REMEMBER_REHYDRATED`;
+export const REMEMBER_REHYDRATED = `@@REMEMBER_REHYDRATED`;
 
 export const rehydrate = async (
     store,
@@ -32,7 +32,7 @@ export const rehydrate = async (
     }
 
     store.dispatch({
-        type: REHYDRATED,
+        type: REMEMBER_REHYDRATED,
         payload: state
     });
 };
@@ -44,13 +44,13 @@ export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
 
     return (state = data.state, action) => {
         switch (action.type) {
-            case REHYDRATED:
+            case REMEMBER_REHYDRATED:
                 data.state = reducers(
                     {
                         ...data.state,
                         ...(action.payload || {})
                     },
-                    { type: REHYDRATED }
+                    { type: REMEMBER_REHYDRATED }
                 );
 
                 data.state[loadedKey] = true;
