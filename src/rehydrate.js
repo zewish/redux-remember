@@ -1,4 +1,4 @@
-export const REMEMBER_REHYDRATED = `@@REMEMBER_REHYDRATED`;
+export const REMEMBER_REHYDRATED = '@@REMEMBER_REHYDRATED';
 
 export const rehydrate = async (
     store,
@@ -42,7 +42,7 @@ export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
         state: preloaded
     };
 
-    return (state = data.state, action) => {
+    return (state = data.state, action = {}) => {
         switch (action.type) {
             case REMEMBER_REHYDRATED:
                 data.state = reducers(

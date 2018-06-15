@@ -55,6 +55,15 @@
             "plugins": [
                 "external-helpers"
             ]
+        },
+        "test": {
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "node": "current"
+                    }
+                }]
+            ]
         }
     }
 }

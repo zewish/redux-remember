@@ -2,4 +2,5 @@ node_modules/
 es/
 lib/
 dist/
+coverage/
 .DS_Store
