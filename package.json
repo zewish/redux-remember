@@ -12,7 +12,7 @@
     "build:es": "cross-env BABEL_ENV=es babel src --source-maps --out-dir es",
     "build:umd": "cross-env BABEL_ENV=umd rollup -f umd -c ./rollup.config.js",
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
-    "prepare": "npm run clean && npm run build",
+    "prepare": "npm run clean && npm run build && npm run test",
     "test": "jest src/__tests__/*.test.js"
   },
   "jest": {
