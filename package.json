@@ -13,7 +13,8 @@
     "build:umd": "cross-env BABEL_ENV=umd rollup -f umd -c ./rollup.config.js",
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
     "prepare": "npm run clean && npm run build && npm run test",
-    "test": "jest src/__tests__/*.test.js"
+    "test": "jest src/__tests__/*.test.js",
+    "coveralls": "jest src/__tests__/*.test.js --coverage --coverageReporters=text-lcov | coveralls"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./src/__tests__/setup.js",
@@ -58,6 +59,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "coveralls": "^3.0.1",
     "cross-env": "^5.1.6",
     "jest": "^23.1.0",
     "mocha": "^5.2.0",
