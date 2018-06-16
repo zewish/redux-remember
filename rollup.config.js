@@ -9,7 +9,11 @@ module.exports = {
     output: {
         file: `${__dirname}/dist/redux-remember.js`,
         name: 'ReduxRemember',
-        sourcemap: true
+        sourcemap: true,
+        exports: 'named',
+        globals: {
+            'redux': 'Redux'
+        }
     },
     plugins: [
         resolve({
@@ -23,8 +27,5 @@ module.exports = {
     ],
     external: [
         'redux'
-    ],
-    globals: {
-        'redux': 'Redux'
-    }
+    ]
 };
