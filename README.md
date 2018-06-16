@@ -1,3 +1,8 @@
+[![NPM Version](https://img.shields.io/npm/v/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
+[![Build Status](https://api.travis-ci.org/zewish/redux-remember.svg?branch=master)](https://travis-ci.org/zewish/redux-remember)
+[![Coverage Status](https://coveralls.io/repos/github/zewish/redux-remember/badge.svg?branch=master)](https://coveralls.io/github/zewish/redux-remember?branch=master)
+[![NPM Downloads](https://img.shields.io/npm/dm/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
+
 ![Logo](https://raw.githubusercontent.com/zewish/redux-remember/master/logo.png)
 
 Redux Remember saves and loads your redux state from a key-value store of your choice
@@ -7,10 +12,6 @@ __Works with any of the following:__
 - LocalStorage (web)
 - SessionStorage (web)
 - Your own custom storage driver that implements `setItem(key, value)` and `getItem(key)`
-
-__Status:__
-- Considered mostly stable (manually tested for now), used in production environment apps.
-- Still missing proper test coverage and advanced documentation.
 
 [__See demo!__](https://rawgit.com/zewish/redux-remember/master/demo-web/index.html)
 

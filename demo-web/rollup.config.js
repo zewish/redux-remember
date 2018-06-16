@@ -7,7 +7,15 @@ module.exports = {
     input: './src/index.js',
     output: {
         file: `${__dirname}/bundle.js`,
-        format: 'iife'
+        format: 'iife',
+        exports: 'named',
+        globals: {
+            'react': 'React',
+            'react-dom': 'ReactDOM',
+            'redux': 'Redux',
+            'react-redux': 'ReactRedux',
+            'redux-remember': 'ReduxRemember'
+        }
     },
     plugins: [
         resolve(),
@@ -21,12 +29,5 @@ module.exports = {
         'redux',
         'react-redux',
         'redux-remember'
-    ],
-    globals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'redux': 'Redux',
-        'react-redux': 'ReactRedux',
-        'redux-remember': 'ReduxRemember'
-    }
+    ]
 };
