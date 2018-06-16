@@ -5,7 +5,7 @@ describe('rehydrate.js', () => {
         rehydrate = require('../rehydrate');
     });
 
-    it('export proper items', async () => {
+    it('exports proper items', async () => {
         rehydrate.REMEMBER_REHYDRATED.should.equal(
             '@@REMEMBER_REHYDRATED'
         );

@@ -16,9 +16,7 @@
     "test": "jest src/__tests__/*.test.js"
   },
   "jest": {
-    "setupFiles": [
-      "./src/__tests__/setup.js"
-    ],
+    "setupTestFrameworkScriptFile": "./src/__tests__/setup.js",
     "collectCoverage": true,
     "transform": {
       "^.+\\.js$": "babel-jest"
@@ -63,6 +61,7 @@
     "cross-env": "^5.1.6",
     "jest": "^23.1.0",
     "mocha": "^5.2.0",
+    "redux": "*",
     "rimraf": "^2.6.2",
     "rollup": "^0.59.4",
     "rollup-plugin-babel": "^3.0.4",
