@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -43,8 +43,15 @@
     "redux",
     "remember",
     "storage",
+    "persist",
     "persistance",
-    "rehydration"
+    "rehydrate",
+    "rehydration",
+    "localstorage",
+    "sessionstorage",
+    "asyncstorage",
+    "react",
+    "react-native"
   ],
   "dependencies": {
     "lodash.isequal": "^4.5.0",
