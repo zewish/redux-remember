@@ -8,7 +8,7 @@
 Redux Remember saves and loads your redux state from a key-value store of your choice.
 
 __Key features:__
-- Persists and loads only allowed keys and does not touch anything else.
+- Saves (persists) and loads (rehydrates) only allowed keys and does not touch anything else.
 - Completely unit and battle tested.
 - Works on both web (any redux compatible app) and native (react-native).
 
