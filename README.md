@@ -5,7 +5,12 @@
 
 ![Logo](https://raw.githubusercontent.com/zewish/redux-remember/master/logo.png)
 
-Redux Remember saves and loads your redux state from a key-value store of your choice
+Redux Remember saves and loads your redux state from a key-value store of your choice.
+
+__Key features:__
+- Persists and loads only allowed keys and does not touch anything else.
+- Completely unit and battle tested.
+- Works on both web (any redux compatible app) and native (react-native).
 
 __Works with any of the following:__
 - AsyncStorage (react-native)
@@ -13,7 +18,7 @@ __Works with any of the following:__
 - SessionStorage (web)
 - Your own custom storage driver that implements `setItem(key, value)` and `getItem(key)`
 
-[__See demo!__](https://rawgit.com/zewish/redux-remember/master/demo-web/index.html)
+### [__See demo!__](https://rawgit.com/zewish/redux-remember/master/demo-web/index.html)
 
 Installation
 ------------
@@ -154,6 +159,12 @@ export default (state = defaultState, { type, payload }) => {
             }
 
         case SOME_ACTION:
+            // example: only merge payload from SOME_ACTION event types
+            // after the state rehydration is done
+            if (!state.rehydrated) {
+                return state;
+            }
+
             return {
                 ...state,
                 changeMe: payload
