@@ -114,34 +114,34 @@ describe('index.js', () => {
                 {
                     ...persistable,
                     ...forgettable,
-                    storeLoaded: sinon.match.func
+                    __rehydrated__: sinon.match.func
                 },
                 ...extra
             );
         });
 
-        it('storeLoaded() reducer always just returns state', () => {
+        it('__rehydrated__ reducer always just returns state', () => {
             mockRehydrate.rehydrateReducer = (reducers) => reducers;
 
             const res = exec();
 
-            res.storeLoaded('123').should.equal(
+            res.__rehydrated__('123').should.equal(
                 '123'
             );
 
-            res.storeLoaded('whatever').should.equal(
+            res.__rehydrated__('whatever').should.equal(
                 'whatever'
             );
 
-            res.storeLoaded().should.be.false;
+            res.__rehydrated__().should.be.false;
         });
 
-        it('it allows changing the name of storeLoaded reducer', () => {
+        it('it allows changing the name of rehydratedKey reducer', () => {
             const persistable = { persistMe: 'super' };
             const forgettable = { forgetMe: 'bye' };
 
             params.push({
-                loadedKey: 'LOADED'
+                rehydratedKey: 'LOADED'
             });
 
             exec(
@@ -177,7 +177,7 @@ describe('index.js', () => {
             mockRehydrate.rehydrateReducer.should.be.calledWith({
                 ...persistable,
                 ...forgettable,
-                storeLoaded: sinon.match.func
+                __rehydrated__: sinon.match.func
             });
         });
 

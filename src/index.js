@@ -14,7 +14,7 @@ const reduxRemember = (
     driver,
     {
         prefix = '@@persist-',
-        loadedKey = 'storeLoaded',
+        rehydratedKey = '__rehydrated__',
         serialize,
         unserialize
     } = {}
@@ -34,7 +34,7 @@ const reduxRemember = (
             {
                 ...persistable,
                 ...forgettable,
-                [loadedKey]: (state = false) => state
+                [rehydratedKey]: (state = false) => state
             },
             ...extra
         );
@@ -45,7 +45,7 @@ const reduxRemember = (
 
         return rehydrateReducer(
             reducers,
-            loadedKey
+            rehydratedKey
         );
     };
 

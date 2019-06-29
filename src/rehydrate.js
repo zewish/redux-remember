@@ -37,7 +37,7 @@ export const rehydrate = async (store, persistableKeys = [], {
     });
 };
 
-export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
+export const rehydrateReducer = (reducers, rehydratedKey) => (preloaded = {}) => {
     const data = {
         state: preloaded
     };
@@ -53,7 +53,7 @@ export const rehydrateReducer = (reducers, loadedKey) => (preloaded = {}) => {
                     { type: REMEMBER_REHYDRATED }
                 );
 
-                data.state[loadedKey] = true;
+                data.state[rehydratedKey] = true;
                 return data.state;
 
             default:
