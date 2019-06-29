@@ -1,6 +1,7 @@
 import { rehydrate } from './rehydrate';
 import { persist } from './persist';
 import pick from 'lodash.pick';
+import { REMEMBER_PERSISTED } from './action-types';
 
 const init = async (
     store,
@@ -26,6 +27,11 @@ const init = async (
             oldState,
             { prefix, driver, serialize }
         );
+
+        store.dispatch({
+            type: REMEMBER_PERSISTED,
+            payload: state
+        });
 
         oldState = state;
     });

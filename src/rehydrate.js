@@ -1,4 +1,4 @@
-export const REMEMBER_REHYDRATED = '@@REMEMBER_REHYDRATED';
+import { REMEMBER_REHYDRATED } from './action-types';
 
 export const rehydrate = async (store, persistableKeys = [], {
     prefix,

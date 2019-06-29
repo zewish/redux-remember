@@ -61,9 +61,11 @@ const reducers = {
     myStateIsForgotten
 };
 
+const persistableKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+
 const { createStore, combineReducers } = reduxRemember(
-    window.localStorage, // or window.sessionStorage, or your own custom storage
-    [ 'myStateIsRemembered' ] // 'myStateIsForgotten' will be forgotten, as it's not in this list
+    window.localStorage, // or window.sessionStorage, or your own custom storage driver
+    persistableKeys
 );
 
 const store = createStore(
@@ -102,16 +104,18 @@ const myStateIsForgotten = (state = '', { type, payload }) => {
         default:
             return state;
     }
-}
+};
 
 const reducers = {
     myStateIsRemembered,
     myStateIsForgotten
 };
 
+const persistableKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+
 const { createStore, combineReducers } = reduxRemember(
-    AsyncStorage,  // or your own custom storage
-    [ 'myStateIsRemembered' ] // 'myStateIsForgotten' will be forgotten, as it's not in this list
+    AsyncStorage,  // or your own custom storage driver
+    persistableKeys
 );
 
 const store = createStore(
@@ -144,7 +148,7 @@ export default (state = defaultState, { type, payload }) => {
             return {
                 ...state,
                 rehydrated: true
-            }
+            };
 
         case SOME_ACTION:
             // example: only merge payload from SOME_ACTION event types
@@ -156,7 +160,7 @@ export default (state = defaultState, { type, payload }) => {
             return {
                 ...state,
                 changeMe: payload
-            }
+            };
 
         default:
             return state;

@@ -3,11 +3,7 @@ import {
     combineReducers as reduxCombineReducers
 } from 'redux';
 
-import {
-    rehydrateReducer,
-    REMEMBER_REHYDRATED
-} from './rehydrate';
-
+import { rehydrateReducer } from './rehydrate';
 import init from './init';
 
 const reduxRemember = (
@@ -72,5 +68,5 @@ const reduxRemember = (
     };
 };
 
-export { REMEMBER_REHYDRATED };
+export * from './action-types';
 export default reduxRemember;

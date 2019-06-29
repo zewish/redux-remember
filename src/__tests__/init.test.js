@@ -1,3 +1,5 @@
+import { REMEMBER_PERSISTED } from '../action-types';
+
 describe('init.js', () => {
     let mockState;
     let mockStore;
@@ -12,6 +14,7 @@ describe('init.js', () => {
         mockState = 'dummy';
 
         mockStore = {
+            dispatch: spy(() => {}),
             subscribe: spy((fn) => fn()),
             getState: spy(() => mockState)
         };
@@ -99,8 +102,18 @@ describe('init.js', () => {
         );
     });
 
+    it('calls store.dispatch()', async () => {
+        await init(...args);
+
+        mockStore.dispatch.should.be.calledWith({
+            type: REMEMBER_PERSISTED,
+            payload: mockState
+        });
+    });
+
     it('remembers old state between store.subscribe() calls', async () => {
         mockStore = {
+            dispatch() {},
             subscribe: (fn) => {
                 mockStore.__call_subscribe_func__ = fn;
             },

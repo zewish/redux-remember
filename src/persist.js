@@ -1,7 +1,5 @@
 import isEqual from 'lodash.isequal';
 
-export const REMEMBER_PERSISTED = '@@REMEMBER_PERSISTED';
-
 export const persist = async (state = {}, oldState = {}, {
     prefix,
     driver,

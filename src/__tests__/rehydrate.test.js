@@ -1,3 +1,5 @@
+import { REMEMBER_REHYDRATED } from '../action-types';
+
 describe('rehydrate.js', () => {
     let rehydrate;
 
@@ -6,10 +8,6 @@ describe('rehydrate.js', () => {
     });
 
     it('exports proper items', async () => {
-        rehydrate.REMEMBER_REHYDRATED.should.equal(
-            '@@REMEMBER_REHYDRATED'
-        );
-
         rehydrate.rehydrate.should.be.a(
             'function'
         );
@@ -88,7 +86,7 @@ describe('rehydrate.js', () => {
             await exec();
 
             mockStore.dispatch.should.be.calledWith({
-                type: rehydrate.REMEMBER_REHYDRATED,
+                type: REMEMBER_REHYDRATED,
                 payload: {}
             });
         });
@@ -97,7 +95,7 @@ describe('rehydrate.js', () => {
             await exec();
 
             mockStore.dispatch.should.be.calledWith({
-                type: rehydrate.REMEMBER_REHYDRATED,
+                type: REMEMBER_REHYDRATED,
                 payload: {
                     3: "pref1.3",
                     2: "pref1.2",
@@ -152,7 +150,7 @@ describe('rehydrate.js', () => {
             exec(
                 null,
                 {
-                    type: rehydrate.REMEMBER_REHYDRATED,
+                    type: REMEMBER_REHYDRATED,
                     payload
                 }
             )
@@ -167,7 +165,7 @@ describe('rehydrate.js', () => {
         it('does not fail if there is missing payload', () => {
             exec(
                 null,
-                { type: rehydrate.REMEMBER_REHYDRATED }
+                { type: REMEMBER_REHYDRATED }
             )
             .should.eql({
                 ...preloaded,
