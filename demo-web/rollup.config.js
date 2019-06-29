@@ -20,6 +20,7 @@ module.exports = {
     plugins: [
         resolve(),
         babel({
+            runtimeHelpers: true,
             exclude: 'node_modules/**'
         })
     ],
