@@ -63,8 +63,15 @@ describe('index.js', () => {
             );
         });
 
+        it('throws when persistableKeys is not an array', () => {
+            expect(() => reduxRemember('driver1')).to.throw(
+                Error,
+                'redux-remember error: persistableKeys needs to be an array'
+            );
+        });
+
         it('exports needed functions', () => {
-            const res = reduxRemember('DUMMY_DRIVER');
+            const res = reduxRemember('DUMMY_DRIVER', []);
 
             res.combineReducers.should.be.a(
                 'function'
@@ -82,10 +89,11 @@ describe('index.js', () => {
         let exec;
 
         beforeEach(() => {
-            mockDriver = 'MOCK_DRIVER'
+            mockDriver = 'MOCK_DRIVER';
 
             params = [
-                mockDriver
+                mockDriver,
+                []
             ];
 
             exec = (...args) => reduxRemember(...params)
@@ -95,8 +103,10 @@ describe('index.js', () => {
         });
 
         it('calls redux.combineReducers()', () => {
-            const persistable = { persistMe: 'yay' };
-            const forgettable = { forgetMe: 'nay' };
+            const reducers = {
+                persistMe: 'yay',
+                forgetMe: 'nay'
+            };
 
             const extra = [
                 'whatever1',
@@ -105,15 +115,13 @@ describe('index.js', () => {
             ];
 
             exec(
-                persistable,
-                forgettable,
+                reducers,
                 ...extra
             );
 
             mockRedux.combineReducers.should.be.calledWith(
                 {
-                    ...persistable,
-                    ...forgettable,
+                    ...reducers,
                     __rehydrated__: sinon.match.func
                 },
                 ...extra
@@ -137,46 +145,36 @@ describe('index.js', () => {
         });
 
         it('it allows changing the name of rehydratedKey reducer', () => {
-            const persistable = { persistMe: 'super' };
-            const forgettable = { forgetMe: 'bye' };
+            const reducers = {
+                persistMe: 'yay',
+                forgetMe: 'nay'
+            };
 
             params.push({
                 rehydratedKey: 'LOADED'
             });
 
-            exec(
-                persistable,
-                forgettable
-            );
+            exec(reducers);
 
             mockRedux.combineReducers.should.be.calledWith(
                 {
-                    ...persistable,
-                    ...forgettable,
+                    ...reducers,
                     LOADED: sinon.match.func
                 }
             );
         });
 
         it('calls rehydrateReducer()', () => {
-            const persistable = {
+            const reducers = {
                 one: 'super',
-                two: 'yay'
+                two: 'yay',
+                three: 'bye'
             };
 
-            const forgettable = {
-                byeOne: 'bye',
-                byeTwo: 'cya'
-            };
-
-            exec(
-                persistable,
-                forgettable
-            );
+            exec(reducers);
 
             mockRehydrate.rehydrateReducer.should.be.calledWith({
-                ...persistable,
-                ...forgettable,
+                ...reducers,
                 __rehydrated__: sinon.match.func
             });
         });
@@ -188,14 +186,17 @@ describe('index.js', () => {
 
     describe('reduxRemember().createStore()', () => {
         let mockDriver;
+        let mockPersistableKeys;
         let params;
         let exec;
 
         beforeEach(() => {
-            mockDriver = 'MOCK_DRIVER_1'
+            mockDriver = 'MOCK_DRIVER_1';
+            mockPersistableKeys = [];
 
             params = [
-                mockDriver
+                mockDriver,
+                mockPersistableKeys
             ];
 
             exec = (...args) => reduxRemember(...params)
@@ -265,23 +266,24 @@ describe('index.js', () => {
         it('calls init() and returns store', async () => {
             const store = 'DUMMY_STORE';
 
-            const persistable = {
+            const reducers = {
                 one: 'one',
-                two: 'two'
-            };
-
-            const forgettable = {
-                yay: 'cool'
+                two: 'two',
+                three: 'three'
             };
 
             mockRedux.createStore = () => store;
             mockRehydrate.rehydrateReducer = () => () => 'whatever';
 
-            params.push({
-                prefix: '123',
-                serialize() {},
-                unserialize() {}
-            });
+            params = [
+                mockDriver,
+                [ 'one', 'two' ],
+                {
+                    prefix: '123',
+                    serialize() {},
+                    unserialize() {}
+                }
+            ];
 
             const {
                 combineReducers,
@@ -289,17 +291,17 @@ describe('index.js', () => {
             } = reduxRemember(...params);
 
             const res = createStore(
-                combineReducers(persistable, forgettable)
+                combineReducers(reducers)
             );
 
             mockInit.should.be.calledWith(
                 store,
-                Object.keys(persistable),
+                params[1],
                 {
                     driver: params[0],
-                    prefix: params[1].prefix,
-                    serialize: params[1].serialize,
-                    unserialize: params[1].unserialize
+                    prefix: params[2].prefix,
+                    serialize: params[2].serialize,
+                    unserialize: params[2].unserialize
                 }
             );
 

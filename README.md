@@ -36,7 +36,7 @@ Usage - web
 import { applyMiddleware } from 'redux';
 import reduxRemember from 'redux-remember';
 
-const remembered = (state = '', { type, payload }) => {
+const myStateIsRemembered = (state = '', { type, payload }) => {
     switch (type) {
         case 'SET_TEXT1':
             return payload;
@@ -46,7 +46,7 @@ const remembered = (state = '', { type, payload }) => {
     }
 };
 
-const forgotten = (state = '', { type, payload }) => {
+const myStateIsForgotten = (state = '', { type, payload }) => {
     switch (type) {
         case 'SET_TEXT2':
             return payload;
@@ -57,23 +57,17 @@ const forgotten = (state = '', { type, payload }) => {
 }
 
 const reducers = {
-    persistable: {
-        myStateIsRemembered: remembered
-    },
-    forgettable: {
-        myStateIsForgotten: forgotten
-    }
+    myStateIsRemembered,
+    myStateIsForgotten
 };
 
 const { createStore, combineReducers } = reduxRemember(
-    window.localStorage // or window.sessionStorage, or your own custom storage
+    window.localStorage, // or window.sessionStorage, or your own custom storage
+    [ 'myStateIsRemembered' ] // 'myStateIsForgotten' will be forgotten, as it's not in this list
 );
 
 const store = createStore(
-    combineReducers(
-        reducers.persistable,
-        reducers.forgettable
-    ),
+    combineReducers(reducers),
     applyMiddleware(
         // ...
     )
@@ -90,7 +84,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { applyMiddleware } from 'redux';
 import reduxRemember from './redux-remember';
 
-const remembered = (state = '', { type, payload }) => {
+const myStateIsRemembered = (state = '', { type, payload }) => {
     switch (type) {
         case 'SET_TEXT1':
             return payload;
@@ -100,7 +94,7 @@ const remembered = (state = '', { type, payload }) => {
     }
 };
 
-const forgotten = (state = '', { type, payload }) => {
+const myStateIsForgotten = (state = '', { type, payload }) => {
     switch (type) {
         case 'SET_TEXT2':
             return payload;
@@ -111,23 +105,17 @@ const forgotten = (state = '', { type, payload }) => {
 }
 
 const reducers = {
-    persistable: {
-        myStateIsRemembered: remembered
-    },
-    forgettable: {
-        myStateIsForgotten: forgotten
-    }
+    myStateIsRemembered,
+    myStateIsForgotten
 };
 
 const { createStore, combineReducers } = reduxRemember(
-    AsyncStorage  // or your own custom storage
+    AsyncStorage,  // or your own custom storage
+    [ 'myStateIsRemembered' ] // 'myStateIsForgotten' will be forgotten, as it's not in this list
 );
 
 const store = createStore(
-    combineReducers(
-        reducers.persistable,
-        reducers.forgettable
-    ),
+    combineReducers(reducers),
     applyMiddleware(
         // ...
     )
@@ -178,16 +166,15 @@ export default (state = defaultState, { type, payload }) => {
 
 API reference
 -------------
-- reduxRemember(driver, options)
+- reduxRemember(driver, persistableKeys, options)
     - Arguments:
         1. driver - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
-        2. options - plain object of extra options:
-            - prefix: storage key prefix *(default: '@@persist-')*;
+        2. persistableKeys - an array of persistable keys - if an empty array is provided nothing will get persisted;
+        3. options - plain object of extra options:
+            - prefix: storage key prefix *(default: '@@remember-')*;
             - rehydratedKey: store rehydrated reducer key *(default: '__rehydrated__')*;
-        3. serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
-        4. unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
+            - serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
+            - unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
     - Returns - plain object with 2 patched redux functions:
-        1. createStore() - uses exactly the same API as the default redux function;
-        2. combineReducers(persistableReducers, nonPersistableReducers) - has a slight API change from the default redux function, and instead of 1 argument takes 2 arguments:
-            - persistableReducers: a plain object - list of reducers which are allowed to be saved and loaded from the storage;
-            - nonPersistableReducers: a plain object - list of reducers which aren't allowed to be saved and loaded from the storage;
+        1. createStore() - uses exactly the same API as the default `react-redux` function;
+        2. combineReducers(reducers) - uses exactly the same API as the default `react-redux` function;

@@ -12,8 +12,9 @@ import init from './init';
 
 const reduxRemember = (
     driver,
+    persistableKeys,
     {
-        prefix = '@@persist-',
+        prefix = '@@remember-',
         rehydratedKey = '__rehydrated__',
         serialize,
         unserialize
@@ -23,28 +24,24 @@ const reduxRemember = (
         throw Error('redux-remember error: driver required');
     }
 
-    let persistableKeys = {};
+    if (!Array.isArray(persistableKeys)) {
+        throw Error('redux-remember error: persistableKeys needs to be an array');
+    }
 
     const combineReducers = (
-        persistable = {},
-        forgettable = {},
+        reducers = {},
         ...extra
     ) => {
-        const reducers = reduxCombineReducers(
+        const rootReducer = reduxCombineReducers(
             {
-                ...persistable,
-                ...forgettable,
+                ...reducers,
                 [rehydratedKey]: (state = false) => state
             },
             ...extra
         );
 
-        persistableKeys = Object.keys(
-            persistable
-        );
-
         return rehydrateReducer(
-            reducers,
+            rootReducer,
             rehydratedKey
         );
     };
