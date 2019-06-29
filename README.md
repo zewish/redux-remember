@@ -86,7 +86,7 @@ Usage - react native
 --------------------
 
 ```js
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { applyMiddleware } from 'redux';
 import reduxRemember from './redux-remember';
 
