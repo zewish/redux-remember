@@ -2,11 +2,15 @@ import { rehydrate } from './rehydrate';
 import { persist } from './persist';
 import pick from 'lodash.pick';
 
-const init = async (store, persistableKeys, { prefix, driver }) => {
+const init = async (
+    store,
+    persistableKeys,
+    { prefix, driver, serialize, unserialize }
+) => {
     await rehydrate(
         store,
         persistableKeys,
-        { prefix, driver }
+        { prefix, driver, unserialize }
     );
 
     let oldState = {};
@@ -20,7 +24,7 @@ const init = async (store, persistableKeys, { prefix, driver }) => {
         await persist(
             state,
             oldState,
-            { prefix, driver }
+            { prefix, driver, serialize }
         );
 
         oldState = state;

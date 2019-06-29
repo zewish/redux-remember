@@ -122,7 +122,7 @@ describe('index.js', () => {
 
         it('storeLoaded() reducer always just returns state', () => {
             mockRehydrate.rehydrateReducer = (reducers) => reducers;
-            
+
             const res = exec();
 
             res.storeLoaded('123').should.equal(
@@ -278,7 +278,9 @@ describe('index.js', () => {
             mockRehydrate.rehydrateReducer = () => () => 'whatever';
 
             params.push({
-                prefix: '123'
+                prefix: '123',
+                serialize() {},
+                unserialize() {}
             });
 
             const {
@@ -295,7 +297,9 @@ describe('index.js', () => {
                 Object.keys(persistable),
                 {
                     driver: params[0],
-                    prefix: params[1].prefix
+                    prefix: params[1].prefix,
+                    serialize: params[1].serialize,
+                    unserialize: params[1].unserialize
                 }
             );
 

@@ -1,10 +1,10 @@
 export const REMEMBER_REHYDRATED = '@@REMEMBER_REHYDRATED';
 
-export const rehydrate = async (
-    store,
-    persistableKeys = [],
-    { prefix, driver }
-) => {
+export const rehydrate = async (store, persistableKeys = [], {
+    prefix,
+    driver,
+    unserialize = (str) => JSON.parse(str)
+}) => {
     let state = {};
 
     try {
@@ -18,7 +18,7 @@ export const rehydrate = async (
         state = persistableKeys
         .reduce((obj, key, i) => {
             if (items[i] !== null) {
-                obj[key] = JSON.parse(items[i]);
+                obj[key] = unserialize(items[i]);
             }
 
             return obj;

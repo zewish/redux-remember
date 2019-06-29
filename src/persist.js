@@ -1,10 +1,10 @@
 import isEqual from 'lodash.isequal';
 
-export const persist = async (
-    state = {},
-    oldState = {},
-    { prefix, driver }
-) => {
+export const persist = async (state = {}, oldState = {}, {
+    prefix,
+    driver,
+    serialize = (obj) => JSON.stringify(obj)
+}) => {
     try {
         await Promise.all(
             Object.keys(state)
@@ -15,7 +15,7 @@ export const persist = async (
 
                 return driver.setItem(
                     `${prefix}${key}`,
-                    JSON.stringify(state[key])
+                    serialize(state[key])
                 );
             })
         );

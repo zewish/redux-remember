@@ -184,6 +184,8 @@ API reference
         2. options - plain object of extra options:
             - prefix: storage key prefix *(default: '@@persist-')*;
             - loadedKey: store loaded reducer key *(default: 'storeLoaded')*;
+        3. serialize - a plain function that takes unserialized store state and returns serialized state to be persisted (defaults to `JSON.stringify()`);
+        4. unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store (defaults to `JSON.parse()`);
     - Returns - plain object with 2 patched redux functions:
         1. createStore() - uses exactly the same API as the default redux function;
         2. combineReducers(persistableReducers, nonPersistableReducers) - has a slight API change from the default redux function, and instead of 1 argument takes 2 arguments:

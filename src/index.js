@@ -12,7 +12,12 @@ import init from './init';
 
 const reduxRemember = (
     driver,
-    { prefix = '@@persist-', loadedKey = 'storeLoaded' } = {}
+    {
+        prefix = '@@persist-',
+        loadedKey = 'storeLoaded',
+        serialize,
+        unserialize
+    } = {}
 ) => {
     if (!driver) {
         throw Error('redux-remember error: driver required');
@@ -58,7 +63,7 @@ const reduxRemember = (
         init(
             store,
             persistableKeys,
-            { driver, prefix }
+            { driver, prefix, serialize, unserialize }
         );
 
         return store;

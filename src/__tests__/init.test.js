@@ -48,7 +48,9 @@ describe('init.js', () => {
             [ 1, 2, 3 ],
             {
                 prefix: 'yay',
-                driver: 'some-driver'
+                driver: 'some-driver',
+                serialize() {},
+                unserialize() {}
             }
         ];
     });
@@ -61,8 +63,10 @@ describe('init.js', () => {
     it('calls rehydrate()', async () => {
         await init(...args);
 
+        const { serialize, ...rehydrateOpts } = args[2];
+
         mockRehydrate.rehydrate.should.be.calledWith(
-            ...args
+            args[0], args[1], rehydrateOpts
         );
     });
 
@@ -86,10 +90,12 @@ describe('init.js', () => {
     it('calls persist()', async () => {
         await init(...args);
 
+        const { unserialize, ...persistOpts } = args[2];
+
         mockPersist.persist.should.be.calledWith(
             mockState,
             {},
-            args[2]
+            persistOpts
         );
     });
 
@@ -101,7 +107,7 @@ describe('init.js', () => {
             getState: () => 'state1'
         };
 
-        const opts = { prefix: '1', driver: '2' };
+        const opts = { prefix: '1', driver: '2', serialize() {} };
 
         await init(
             mockStore,
