@@ -1,11 +1,13 @@
 {
     "plugins": [
-        ["transform-object-rest-spread", { "useBuiltIns": true }],
+        ["@babel/plugin-proposal-object-rest-spread", {
+            "useBuiltIns": true
+        }],
     ],
     "env": {
         "lib": {
             "presets": [
-                ["env", {
+                ["@babel/preset-env", {
                     "targets": {
                         "browsers": [
                             ">1%",
@@ -14,15 +16,13 @@
                             "not ie < 9"
                         ]
                     },
-                    "exclude": [
-                        "transform-regenerator"
-                    ],
+                    "exclude": ["@babel/plugin-transform-regenerator"],
                 }]
             ]
         },
         "es": {
             "presets": [
-                ["env", {
+                ["@babel/preset-env", {
                     "modules": false,
                     "targets": {
                         "browsers": [
@@ -32,15 +32,13 @@
                             "not ie < 9"
                         ]
                     },
-                    "exclude": [
-                        "transform-regenerator"
-                    ],
+                    "exclude": ["@babel/plugin-transform-regenerator"],
                 }]
             ]
         },
         "umd": {
             "presets": [
-                ["env", {
+                ["@babel/preset-env", {
                     "modules": false,
                     "targets": {
                         "browsers": [
@@ -51,14 +49,11 @@
                         ]
                     }
                 }]
-            ],
-            "plugins": [
-                "external-helpers"
             ]
         },
         "test": {
             "presets": [
-                ["env", {
+                ["@babel/preset-env", {
                     "targets": {
                         "node": "current"
                     }
