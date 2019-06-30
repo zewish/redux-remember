@@ -8,7 +8,6 @@ const store = createStore(
     rememberReducer(
         combineReducers(reducers)
     ),
-    { someData: 'example' },
     compose(
         applyMiddleware(
             // ...
