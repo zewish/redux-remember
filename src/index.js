@@ -3,7 +3,7 @@ import init from './init';
 
 const rememberEnhancer = (
     driver,
-    persistableKeys,
+    rememberedKeys,
     {
         prefix = '@@remember-',
         persistThrottle = 100,
@@ -15,8 +15,8 @@ const rememberEnhancer = (
         throw Error('redux-remember error: driver required');
     }
 
-    if (!Array.isArray(persistableKeys)) {
-        throw Error('redux-remember error: persistableKeys needs to be an array');
+    if (!Array.isArray(rememberedKeys)) {
+        throw Error('redux-remember error: rememberedKeys needs to be an array');
     }
 
     return (createStore) => (rootReducer, initialState, enhancer) => {
@@ -28,7 +28,7 @@ const rememberEnhancer = (
 
         init(
             store,
-            persistableKeys,
+            rememberedKeys,
             { driver, prefix, serialize, unserialize, persistThrottle }
         );
 

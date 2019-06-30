@@ -4,7 +4,7 @@ import { REMEMBER_REHYDRATED } from './action-types';
 const REDUX_INIT = '@@INIT';
 
 export const loadAll = async ({
-    persistableKeys,
+    rememberedKeys,
     driver,
     prefix,
     unserialize
@@ -19,24 +19,24 @@ export const loadAll = async ({
 
     return pick(
         unserialize(data),
-        persistableKeys
+        rememberedKeys
     );
 };
 
 export const loadAllKeyed = async ({
-    persistableKeys,
+    rememberedKeys,
     driver,
     prefix,
     unserialize
 }) => {
     const items = await Promise.all(
-        persistableKeys
+        rememberedKeys
         .map(key => driver.getItem(
             `${prefix}${key}`
         ))
     );
 
-    return persistableKeys
+    return rememberedKeys
     .reduce((obj, key, i) => {
         if (items[i] !== null && items[i] !== undefined) {
             obj[key] = unserialize(items[i]);
@@ -46,7 +46,7 @@ export const loadAllKeyed = async ({
     }, {});
 };
 
-export const rehydrate = async (store, persistableKeys = [], {
+export const rehydrate = async (store, rememberedKeys = [], {
     prefix,
     driver,
     persistWholeStore,
@@ -60,7 +60,7 @@ export const rehydrate = async (store, persistableKeys = [], {
             : loadAllKeyed;
 
         state = await load({
-            persistableKeys,
+            rememberedKeys,
             driver,
             prefix,
             unserialize

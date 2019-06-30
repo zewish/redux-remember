@@ -61,7 +61,7 @@ const reducers = {
     myStateIsForgotten
 };
 
-const rememberKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const store = createStore(
     rememberReducer(
@@ -73,7 +73,7 @@ const store = createStore(
         ),
         rememberEnhancer(
             window.localStorage, // or window.sessionStorage, or your own custom storage driver
-            rememberKeys
+            rememberedKeys
         )
     )
 );
@@ -114,7 +114,7 @@ const reducers = {
     myStateIsForgotten
 };
 
-const rememberKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const store = createStore(
     rememberReducer(
@@ -126,7 +126,7 @@ const store = createStore(
         ),
         rememberEnhancer(
             AsyncStorage, // or your own custom storage driver
-            rememberKeys
+            rememberedKeys
         )
     )
 );
@@ -184,17 +184,17 @@ export default (state = defaultState, { type, payload }) => {
 
 API reference
 -------------
-- rehydrateReducer(rootReducer)
+- **rehydrateReducer(rootReducer)**
     - Arguments:
-        1. rootReducer - takes the result of `combineReducers()` function;
+        1. rootReducer *(required)* - takes the result of `combineReducers()` function;
     - Returns - a new root reducer to use as first argument for the `createStore()` function;
 
 
-- rememberEnhancer(driver, persistableKeys, options)
+- **rememberEnhancer(driver, rememberedKeys, options)**
     - Arguments:
-        1. driver (required) - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
-        2. persistableKeys (required) - an array of persistable keys - if an empty array is provided nothing will get persisted;
-        3. options (optional) - plain object of extra options:
+        1. **driver** *(required)* - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
+        2. **rememberedKeys** *(required)* - an array of persistable keys - if an empty array is provided nothing will get persisted;
+        3. **options** *(optional)* - plain object of extra options:
             - prefix: storage key prefix *(default: '@@remember-')*;
             - serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
             - unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;

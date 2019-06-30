@@ -54,10 +54,10 @@ describe('index.js', () => {
             );
         });
 
-        it('throws when persistableKeys is not an array', () => {
+        it('throws when rememberedKeys is not an array', () => {
             expect(() => index.rememberEnhancer('driver1')).to.throw(
                 Error,
-                'redux-remember error: persistableKeys needs to be an array'
+                'redux-remember error: rememberedKeys needs to be an array'
             );
         });
 
@@ -83,7 +83,7 @@ describe('index.js', () => {
         it('calls init()', () => {
             const store = 'the store!!!';
             const driver = 'driver3';
-            const persistableKeys = [ 'zz', 'bb', 'kk' ];
+            const rememberedKeys = [ 'zz', 'bb', 'kk' ];
 
             const rootReducer = 'the root of the reducers';
             const initialState = 'yup, initial state';
@@ -96,13 +96,13 @@ describe('index.js', () => {
                 unserialize: 'i am passed'
             };
 
-            index.rememberEnhancer(driver, persistableKeys, opts)(() => store)(
+            index.rememberEnhancer(driver, rememberedKeys, opts)(() => store)(
                 rootReducer, initialState, enhancer
             );
 
             mockInit.should.be.calledWith(
                 store,
-                persistableKeys,
+                rememberedKeys,
                 { driver, ...opts }
             )
         });

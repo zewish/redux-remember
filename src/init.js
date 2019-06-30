@@ -7,7 +7,7 @@ import { REMEMBER_PERSISTED } from './action-types';
 
 const init = async (
     store,
-    persistableKeys,
+    rememberedKeys,
     {
         prefix,
         driver,
@@ -19,7 +19,7 @@ const init = async (
 ) => {
     await rehydrate(
         store,
-        persistableKeys,
+        rememberedKeys,
         { prefix, driver, unserialize, persistWholeStore }
     );
 
@@ -28,7 +28,7 @@ const init = async (
     store.subscribe(throttle(async () => {
         const state = pick(
             store.getState(),
-            persistableKeys
+            rememberedKeys
         );
 
         await persist(

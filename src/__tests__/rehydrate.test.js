@@ -12,7 +12,7 @@ describe('rehydrate.js', () => {
         let mockDriver;
 
         const exec = (opts = {}) => mod.loadAll({
-            persistableKeys: [],
+            rememberedKeys: [],
             prefix: mockPrefix,
             driver: mockDriver,
             unserialize: (o) => o,
@@ -61,7 +61,7 @@ describe('rehydrate.js', () => {
             };
 
             const res = await exec({
-                persistableKeys: [ 'keyA', 'keyB' ],
+                rememberedKeys: [ 'keyA', 'keyB' ],
                 unserialize: () => data
             });
 
@@ -79,7 +79,7 @@ describe('rehydrate.js', () => {
             };
 
             const res = await exec({
-                persistableKeys: [ 'keyZ', 'keyY' ],
+                rememberedKeys: [ 'keyZ', 'keyY' ],
                 driver: {
                     getItem: () => Promise.resolve(data)
                 },
@@ -98,7 +98,7 @@ describe('rehydrate.js', () => {
         let mockDriver;
 
         const exec = (opts = {}) => mod.loadAllKeyed({
-            persistableKeys: [],
+            rememberedKeys: [],
             prefix: mockPrefix,
             driver: mockDriver,
             unserialize: (o) => o,
@@ -115,7 +115,7 @@ describe('rehydrate.js', () => {
 
         it('should call driver.getItem()', async () => {
             await exec({
-                persistableKeys: [ 'say', 'what' ]
+                rememberedKeys: [ 'say', 'what' ]
             });
 
             mockDriver.getItem.firstCall.should.be.calledWith(
@@ -129,7 +129,7 @@ describe('rehydrate.js', () => {
 
         it('returns unserialized state', async () => {
             const res = await exec({
-                persistableKeys: [ 'yay', 'k' ],
+                rememberedKeys: [ 'yay', 'k' ],
                 unserialize: (
                     jest.fn()
                     .mockReturnValueOnce('val1')
@@ -145,7 +145,7 @@ describe('rehydrate.js', () => {
 
         it('returns state filtering null and undefined', async () => {
             const res = await exec({
-                persistableKeys: [ 'so', 'iAmNull', 'great', 'iAmUndefined' ],
+                rememberedKeys: [ 'so', 'iAmNull', 'great', 'iAmUndefined' ],
                 driver: {
                     getItem: (
                         jest.fn()
@@ -163,13 +163,13 @@ describe('rehydrate.js', () => {
 
     describe('rehydrate()', () => {
         let mockStore;
-        let persistableKeys;
+        let rememberedKeys;
         let mockPrefix;
         let mockDriver;
 
         const exec = (opts = {}) => mod.rehydrate(
             mockStore,
-            persistableKeys,
+            rememberedKeys,
             {
                 prefix: mockPrefix,
                 driver: mockDriver,
@@ -178,7 +178,7 @@ describe('rehydrate.js', () => {
         );
 
         beforeEach(() => {
-            persistableKeys = [ 3, 2, 1 ];
+            rememberedKeys = [ 3, 2, 1 ];
 
             mockStore = {
                 dispatch: spy(() => {})
@@ -249,7 +249,7 @@ describe('rehydrate.js', () => {
         });
 
         it('works if no keys were given', async () => {
-            persistableKeys = undefined;
+            rememberedKeys = undefined;
             await exec();
         });
     });
