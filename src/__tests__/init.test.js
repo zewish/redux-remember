@@ -6,6 +6,7 @@ describe('init.js', () => {
     let mockRehydrate;
     let mockPersist;
     let mockPick;
+    let mockThrottle;
 
     let init;
     let args;
@@ -29,6 +30,8 @@ describe('init.js', () => {
 
         mockPick = spy((state) => state);
 
+        mockThrottle = spy((fn) => fn);
+
         jest.mock(
             '../rehydrate',
             () => mockRehydrate
@@ -42,6 +45,11 @@ describe('init.js', () => {
         jest.mock(
             'lodash.pick',
             () => mockPick
+        );
+
+        jest.mock(
+            'lodash.throttle',
+            () => mockThrottle
         );
 
         init = require('../init').default;
@@ -91,6 +99,12 @@ describe('init.js', () => {
         );
     });
 
+    it('calls lodash.throttle()', async () => {
+        await init(...args);
+
+        mockPick.should.have.callCount(1);
+    });
+
     it('calls persist()', async () => {
         await init(...args);
 
@@ -110,6 +124,14 @@ describe('init.js', () => {
             type: REMEMBER_PERSISTED,
             payload: mockState
         });
+    });
+
+    it('does not call store.dispatch()', async () => {
+        jest.resetModules();
+        jest.mock('lodash.isequal', () => () => true);
+
+        await require('../init').default(...args);
+        mockStore.dispatch.should.have.callCount(0);
     });
 
     it('remembers old state between store.subscribe() calls', async () => {

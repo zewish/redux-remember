@@ -17,7 +17,9 @@
     "coveralls": "jest src/__tests__/*.test.js --coverage --coverageReporters=text-lcov | coveralls"
   },
   "jest": {
-    "setupFilesAfterEnv": ["./src/__tests__/setup.js"],
+    "setupFilesAfterEnv": [
+      "./src/__tests__/setup.js"
+    ],
     "collectCoverage": true,
     "transform": {
       "^.+\\.js$": "babel-jest"
@@ -55,7 +57,8 @@
   ],
   "dependencies": {
     "lodash.isequal": "^4.5.0",
-    "lodash.pick": "^4.4.0"
+    "lodash.pick": "^4.4.0",
+    "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

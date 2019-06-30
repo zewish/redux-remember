@@ -176,9 +176,9 @@ API reference
         2. persistableKeys - an array of persistable keys - if an empty array is provided nothing will get persisted;
         3. options - plain object of extra options:
             - prefix: storage key prefix *(default: '@@remember-')*;
-            - rehydratedKey: store rehydrated reducer key *(default: '__rehydrated__')*;
             - serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
             - unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
+            - persistThrottle - how much time should the persistence be throttled in milliseconds *(default: 100)*
             - persistWholeStore - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small - *(default: `false`)*;
     - Returns - plain object with 2 patched redux functions:
         1. createStore() - uses exactly the same API as the default `react-redux` function;

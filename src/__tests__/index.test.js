@@ -120,47 +120,8 @@ describe('index.js', () => {
             );
 
             mockRedux.combineReducers.should.be.calledWith(
-                {
-                    ...reducers,
-                    __rehydrated__: sinon.match.func
-                },
+                reducers,
                 ...extra
-            );
-        });
-
-        it('__rehydrated__ reducer always just returns state', () => {
-            mockRehydrate.rehydrateReducer = (reducers) => reducers;
-
-            const res = exec();
-
-            res.__rehydrated__('123').should.equal(
-                '123'
-            );
-
-            res.__rehydrated__('whatever').should.equal(
-                'whatever'
-            );
-
-            res.__rehydrated__().should.be.false;
-        });
-
-        it('it allows changing the name of rehydratedKey reducer', () => {
-            const reducers = {
-                persistMe: 'yay',
-                forgetMe: 'nay'
-            };
-
-            params.push({
-                rehydratedKey: 'LOADED'
-            });
-
-            exec(reducers);
-
-            mockRedux.combineReducers.should.be.calledWith(
-                {
-                    ...reducers,
-                    LOADED: sinon.match.func
-                }
             );
         });
 
@@ -173,10 +134,9 @@ describe('index.js', () => {
 
             exec(reducers);
 
-            mockRehydrate.rehydrateReducer.should.be.calledWith({
-                ...reducers,
-                __rehydrated__: sinon.match.func
-            });
+            mockRehydrate.rehydrateReducer.should.be.calledWith(
+                reducers
+            );
         });
 
         it('returns rehydrate reducer', () => {
@@ -281,7 +241,8 @@ describe('index.js', () => {
                 {
                     prefix: '123',
                     serialize() {},
-                    unserialize() {}
+                    unserialize() {},
+                    persistThrottle: 4321
                 }
             ];
 
@@ -301,7 +262,8 @@ describe('index.js', () => {
                     driver: params[0],
                     prefix: params[2].prefix,
                     serialize: params[2].serialize,
-                    unserialize: params[2].unserialize
+                    unserialize: params[2].unserialize,
+                    persistThrottle: params[2].persistThrottle
                 }
             );
 

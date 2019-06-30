@@ -11,7 +11,7 @@ const reduxRemember = (
     persistableKeys,
     {
         prefix = '@@remember-',
-        rehydratedKey = '__rehydrated__',
+        persistThrottle = 100,
         serialize,
         unserialize
     } = {}
@@ -29,16 +29,12 @@ const reduxRemember = (
         ...extra
     ) => {
         const rootReducer = reduxCombineReducers(
-            {
-                ...reducers,
-                [rehydratedKey]: (state = false) => state
-            },
+            reducers,
             ...extra
         );
 
         return rehydrateReducer(
-            rootReducer,
-            rehydratedKey
+            rootReducer
         );
     };
 
@@ -56,7 +52,7 @@ const reduxRemember = (
         init(
             store,
             persistableKeys,
-            { driver, prefix, serialize, unserialize }
+            { driver, prefix, serialize, unserialize, persistThrottle }
         );
 
         return store;

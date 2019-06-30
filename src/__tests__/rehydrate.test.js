@@ -256,17 +256,14 @@ describe('rehydrate.js', () => {
 
     describe('rehydrateReducer()', () => {
         let mockReducer;
-        let loadedKey;
         let preloaded;
 
         const exec = (state, action) => mod.rehydrateReducer(
-            mockReducer, loadedKey
+            mockReducer
         )(preloaded)(state, action);
 
         beforeEach(() => {
             mockReducer = spy((state, action) => state);
-
-            loadedKey = 'rehydrated';
 
             preloaded = {
                 wow: 'so cool!',
@@ -301,8 +298,7 @@ describe('rehydrate.js', () => {
             .should.eql({
                 wow: 'beep',
                 yay: 'it works',
-                nah: 'lol',
-                [loadedKey]: true
+                nah: 'lol'
             });
         });
 
@@ -311,10 +307,7 @@ describe('rehydrate.js', () => {
                 null,
                 { type: REMEMBER_REHYDRATED }
             )
-            .should.eql({
-                ...preloaded,
-                [loadedKey]: true
-            });
+            .should.eql(preloaded);
         });
     });
 });

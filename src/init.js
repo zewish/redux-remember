@@ -1,12 +1,21 @@
 import { rehydrate } from './rehydrate';
 import { persist } from './persist';
+import throttle from 'lodash.throttle';
 import pick from 'lodash.pick';
+import isEqual from 'lodash.isequal';
 import { REMEMBER_PERSISTED } from './action-types';
 
 const init = async (
     store,
     persistableKeys,
-    { prefix, driver, serialize, unserialize, persistWholeStore = false }
+    {
+        prefix,
+        driver,
+        serialize,
+        unserialize,
+        persistThrottle = 100,
+        persistWholeStore = false
+    }
 ) => {
     await rehydrate(
         store,
@@ -16,7 +25,7 @@ const init = async (
 
     let oldState = {};
 
-    store.subscribe(async () => {
+    store.subscribe(throttle(async () => {
         const state = pick(
             store.getState(),
             persistableKeys
@@ -28,13 +37,15 @@ const init = async (
             { prefix, driver, serialize, persistWholeStore }
         );
 
-        store.dispatch({
-            type: REMEMBER_PERSISTED,
-            payload: state
-        });
+        if (!isEqual(state, oldState)) {
+            store.dispatch({
+                type: REMEMBER_PERSISTED,
+                payload: state
+            });
+        }
 
         oldState = state;
-    });
+    }, persistThrottle));
 };
 
 export default init;
