@@ -179,6 +179,7 @@ API reference
             - rehydratedKey: store rehydrated reducer key *(default: '__rehydrated__')*;
             - serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
             - unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
+            - persistWholeStore - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small - *(default: `false`)*;
     - Returns - plain object with 2 patched redux functions:
         1. createStore() - uses exactly the same API as the default `react-redux` function;
         2. combineReducers(reducers) - uses exactly the same API as the default `react-redux` function;

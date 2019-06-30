@@ -68,7 +68,6 @@
     "coveralls": "^3.0.4",
     "cross-env": "^5.2.0",
     "jest": "^24.8.0",
-    "mocha": "^6.1.4",
     "redux": "*",
     "rimraf": "^2.6.3",
     "rollup": "^1.16.3",

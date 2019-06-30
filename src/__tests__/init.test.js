@@ -53,7 +53,8 @@ describe('init.js', () => {
                 prefix: 'yay',
                 driver: 'some-driver',
                 serialize() {},
-                unserialize() {}
+                unserialize() {},
+                persistWholeStore: true
             }
         ];
     });
@@ -120,7 +121,11 @@ describe('init.js', () => {
             getState: () => 'state1'
         };
 
-        const opts = { prefix: '1', driver: '2', serialize() {} };
+        const opts = {
+            prefix: '1',
+            driver: '2',
+            serialize() {}
+        };
 
         await init(
             mockStore,
@@ -133,7 +138,7 @@ describe('init.js', () => {
         mockPersist.persist.firstCall.should.be.calledWith(
             'state1',
             {},
-            opts
+            { ...opts, persistWholeStore: false }
         );
 
         mockStore.getState = () => 'state2';
@@ -142,7 +147,7 @@ describe('init.js', () => {
         mockPersist.persist.secondCall.should.be.calledWith(
             'state2',
             'state1',
-            opts
+            { ...opts, persistWholeStore: false }
         );
     });
 });

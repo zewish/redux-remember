@@ -6,12 +6,12 @@ import { REMEMBER_PERSISTED } from './action-types';
 const init = async (
     store,
     persistableKeys,
-    { prefix, driver, serialize, unserialize }
+    { prefix, driver, serialize, unserialize, persistWholeStore = false }
 ) => {
     await rehydrate(
         store,
         persistableKeys,
-        { prefix, driver, unserialize }
+        { prefix, driver, unserialize, persistWholeStore }
     );
 
     let oldState = {};
@@ -25,7 +25,7 @@ const init = async (
         await persist(
             state,
             oldState,
-            { prefix, driver, serialize }
+            { prefix, driver, serialize, persistWholeStore }
         );
 
         store.dispatch({
