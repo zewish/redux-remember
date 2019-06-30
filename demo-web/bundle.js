@@ -59,9 +59,10 @@
       }
     };
 
+    var rememberedKeys = ['textToBePersisted'];
     var store = redux.createStore(reduxRemember.rememberReducer(redux.combineReducers(reducers)), {
       someData: 'asdf'
-    }, redux.compose(applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, persistableKeys)));
+    }, redux.compose(redux.applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys)));
 
     var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/app.js";
 

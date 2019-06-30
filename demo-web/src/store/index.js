@@ -1,4 +1,4 @@
-import { createStore, combineReducers, compose } from 'redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
@@ -15,7 +15,7 @@ const store = createStore(
         ),
         rememberEnhancer(
             window.localStorage,
-            persistableKeys
+            rememberedKeys
         )
     )
 );
