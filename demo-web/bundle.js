@@ -1,4 +1,4 @@
-(function (React, reactDom, reactRedux, redux) {
+(function (React, reactDom, reactRedux, redux, reduxRemember) {
     'use strict';
 
     React = React && React.hasOwnProperty('default') ? React['default'] : React;
@@ -59,14 +59,9 @@
       }
     };
 
-    var rememberReducer = ReduxRemember.rememberReducer;
-    var rememberEnhancer = ReduxRemember.rememberEnhancer;
-    var persistableKeys = ['textToBePersisted']; // DEV TOOLS
-
-    var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
-    var store = redux.createStore(rememberReducer(redux.combineReducers(reducers)), {
+    var store = redux.createStore(reduxRemember.rememberReducer(redux.combineReducers(reducers)), {
       someData: 'asdf'
-    }, redux.compose(rememberEnhancer(window.localStorage, persistableKeys), window.__REDUX_DEVTOOLS_EXTENSION__()));
+    }, redux.compose(applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, persistableKeys)));
 
     var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/app.js";
 
@@ -206,4 +201,4 @@
       __self: undefined
     })), document.getElementById('root'));
 
-}(React, ReactDOM, ReactRedux, Redux));
+}(React, ReactDOM, ReactRedux, Redux, ReduxRemember));

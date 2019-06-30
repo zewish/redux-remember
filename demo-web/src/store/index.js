@@ -1,14 +1,8 @@
 import { createStore, combineReducers, compose } from 'redux';
 import reducers from './reducers';
-// import reduxRemember from './redux-remember';
+import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
-const rememberReducer = ReduxRemember.rememberReducer;
-const rememberEnhancer =  ReduxRemember.rememberEnhancer;
-
-const persistableKeys = [ 'textToBePersisted' ];
-
-// DEV TOOLS
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const rememberedKeys = [ 'textToBePersisted' ];
 
 const store = createStore(
     rememberReducer(
@@ -16,11 +10,13 @@ const store = createStore(
     ),
     { someData: 'asdf' },
     compose(
+        applyMiddleware(
+            // ...
+        ),
         rememberEnhancer(
             window.localStorage,
             persistableKeys
-        ),
-        window.__REDUX_DEVTOOLS_EXTENSION__()
+        )
     )
 );
 
