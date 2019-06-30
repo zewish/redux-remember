@@ -3,7 +3,7 @@ import {
     SET_TEXT2,
 } from './actions';
 
-const text = (state = '', { type, payload }) => {
+const textToBePersisted = (state = '', { type, payload }) => {
     switch (type) {
         case SET_TEXT1:
             return payload;
@@ -24,10 +24,7 @@ const textToBeForgotten = (state = '', { type, payload }) => {
 };
 
 export default {
-    persistable: {
-        text
-    },
-    forgettable: {
-        textToBeForgotten
-    }
+    textToBePersisted,
+    textToBeForgotten,
+    someData: (state = 'bla') => state
 };

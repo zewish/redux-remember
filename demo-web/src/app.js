@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setText1, setText2 } from './store/actions';
 
 const App = ({
-    text = '',
+    textToBePersisted = '',
     textToBeForgotten = '',
     setText1,
     setText2
@@ -19,7 +19,7 @@ const App = ({
         <div>
             <input
                 type="text"
-                value={text}
+                value={textToBePersisted}
                 onChange={ev => setText1(ev.target.value)}
             />
         </div>
@@ -49,7 +49,9 @@ const App = ({
 );
 
 export default connect(
-    ({ text, textToBeForgotten }) => ({ text, textToBeForgotten }),
+    ({ textToBePersisted, textToBeForgotten }) => ({
+        textToBePersisted, textToBeForgotten
+    }),
     dispatch => ({
         setText1: text => dispatch(
             setText1(text)

@@ -256,29 +256,26 @@ describe('rehydrate.js', () => {
 
     describe('rehydrateReducer()', () => {
         let mockReducer;
-        let preloaded;
 
         const exec = (state, action) => mod.rehydrateReducer(
             mockReducer
-        )(preloaded)(state, action);
+        )(state, action);
 
         beforeEach(() => {
             mockReducer = spy((state, action) => state);
-
-            preloaded = {
-                wow: 'so cool!',
-                yay: 'it works'
-            };
         });
 
-        it('works with no preloaded state', () => {
-            preloaded = undefined;
-            exec().should.eql({});
+        it('does not break when state and action are empty', () => {
+            exec(undefined, undefined).should.eql(
+                {}
+            );
         });
 
         it('returns preloaded state', () => {
-            exec().should.eql(
-                preloaded
+            const state = { 'cool': 'state' };
+
+            exec(state, { type: '@@INIT' }).should.eql(
+                state
             );
         });
 
@@ -286,7 +283,7 @@ describe('rehydrate.js', () => {
             const payload = {
                 wow: 'beep',
                 nah: 'lol'
-            }
+            };
 
             exec(
                 null,
@@ -295,11 +292,7 @@ describe('rehydrate.js', () => {
                     payload
                 }
             )
-            .should.eql({
-                wow: 'beep',
-                yay: 'it works',
-                nah: 'lol'
-            });
+            .should.eql(payload);
         });
 
         it('does not fail if there is missing payload', () => {
@@ -307,7 +300,7 @@ describe('rehydrate.js', () => {
                 null,
                 { type: REMEMBER_REHYDRATED }
             )
-            .should.eql(preloaded);
+            .should.eql({});
         });
     });
 });

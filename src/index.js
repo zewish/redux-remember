@@ -1,12 +1,7 @@
-import {
-    createStore as reduxCreateStore,
-    combineReducers as reduxCombineReducers
-} from 'redux';
-
 import { rehydrateReducer } from './rehydrate';
 import init from './init';
 
-const reduxRemember = (
+const rememberEnhancer = (
     driver,
     persistableKeys,
     {
@@ -24,30 +19,12 @@ const reduxRemember = (
         throw Error('redux-remember error: persistableKeys needs to be an array');
     }
 
-    const combineReducers = (
-        reducers = {},
-        ...extra
-    ) => {
-        const rootReducer = reduxCombineReducers(
-            reducers,
-            ...extra
+    return (createStore) => (rootReducer, initialState, enhancer) => {
+        const store = createStore(
+            rootReducer,
+            initialState,
+            enhancer
         );
-
-        return rehydrateReducer(
-            rootReducer
-        );
-    };
-
-    const createStore = (reducer, preloadedStateOrEnhancer, ...extra) => {
-        const hasPreloadedState = typeof preloadedStateOrEnhancer !== 'function';
-
-        const rehydrate = hasPreloadedState
-            ? reducer(preloadedStateOrEnhancer)
-            : reducer();
-
-        const store = hasPreloadedState
-            ? reduxCreateStore(rehydrate, ...extra)
-            : reduxCreateStore(rehydrate, preloadedStateOrEnhancer, ...extra);
 
         init(
             store,
@@ -57,12 +34,11 @@ const reduxRemember = (
 
         return store;
     };
-
-    return {
-        combineReducers,
-        createStore
-    };
 };
 
 export * from './action-types';
-export default reduxRemember;
+
+export {
+    rehydrateReducer as rememberReducer,
+    rememberEnhancer
+};

@@ -1,8 +1,7 @@
-(function (React, reactDom, reactRedux, reduxRemember) {
+(function (React, reactDom, reactRedux, redux) {
     'use strict';
 
     React = React && React.hasOwnProperty('default') ? React['default'] : React;
-    reduxRemember = reduxRemember && reduxRemember.hasOwnProperty('default') ? reduxRemember['default'] : reduxRemember;
 
     var SET_TEXT1 = 'SET_TEXT1';
     var SET_TEXT2 = 'SET_TEXT2';
@@ -19,7 +18,7 @@
       };
     };
 
-    var text = function text() {
+    var textToBePersisted = function textToBePersisted() {
       var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
       var _ref = arguments.length > 1 ? arguments[1] : undefined,
@@ -52,25 +51,28 @@
     };
 
     var reducers = {
-      persistable: {
-        text: text
-      },
-      forgettable: {
-        textToBeForgotten: textToBeForgotten
+      textToBePersisted: textToBePersisted,
+      textToBeForgotten: textToBeForgotten,
+      someData: function someData() {
+        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'bla';
+        return state;
       }
     };
 
-    var _reduxRemember = reduxRemember(window.localStorage),
-        createStore = _reduxRemember.createStore,
-        combineReducers = _reduxRemember.combineReducers;
+    var rememberReducer = ReduxRemember.rememberReducer;
+    var rememberEnhancer = ReduxRemember.rememberEnhancer;
+    var persistableKeys = ['textToBePersisted']; // DEV TOOLS
 
-    var store = createStore(combineReducers(reducers.persistable, reducers.forgettable));
+    var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux.compose;
+    var store = redux.createStore(rememberReducer(redux.combineReducers(reducers)), {
+      someData: 'asdf'
+    }, redux.compose(rememberEnhancer(window.localStorage, persistableKeys), window.__REDUX_DEVTOOLS_EXTENSION__()));
 
     var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/app.js";
 
     var App = function App(_ref) {
-      var _ref$text = _ref.text,
-          text = _ref$text === void 0 ? '' : _ref$text,
+      var _ref$textToBePersiste = _ref.textToBePersisted,
+          textToBePersisted = _ref$textToBePersiste === void 0 ? '' : _ref$textToBePersiste,
           _ref$textToBeForgotte = _ref.textToBeForgotten,
           textToBeForgotten = _ref$textToBeForgotte === void 0 ? '' : _ref$textToBeForgotte,
           setText1 = _ref.setText1,
@@ -113,7 +115,7 @@
         __self: this
       }, React.createElement("input", {
         type: "text",
-        value: text,
+        value: textToBePersisted,
         onChange: function onChange(ev) {
           return setText1(ev.target.value);
         },
@@ -171,10 +173,10 @@
     };
 
     var App$1 = reactRedux.connect(function (_ref2) {
-      var text = _ref2.text,
+      var textToBePersisted = _ref2.textToBePersisted,
           textToBeForgotten = _ref2.textToBeForgotten;
       return {
-        text: text,
+        textToBePersisted: textToBePersisted,
         textToBeForgotten: textToBeForgotten
       };
     }, function (dispatch) {
@@ -204,4 +206,4 @@
       __self: undefined
     })), document.getElementById('root'));
 
-}(React, ReactDOM, ReactRedux, ReduxRemember));
+}(React, ReactDOM, ReactRedux, Redux));

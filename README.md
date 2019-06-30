@@ -33,8 +33,8 @@ Usage - web
 -----------
 
 ```js
-import { applyMiddleware } from 'redux';
-import reduxRemember from 'redux-remember';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
 const myStateIsRemembered = (state = '', { type, payload }) => {
     switch (type) {
@@ -61,17 +61,20 @@ const reducers = {
     myStateIsForgotten
 };
 
-const persistableKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
-
-const { createStore, combineReducers } = reduxRemember(
-    window.localStorage, // or window.sessionStorage, or your own custom storage driver
-    persistableKeys
-);
+const rememberKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const store = createStore(
-    combineReducers(reducers),
-    applyMiddleware(
-        // ...
+    rememberReducer(
+        combineReducers(reducers)
+    ),
+    compose(
+        applyMiddleware(
+            // ...
+        ),
+        rememberEnhancer(
+            window.localStorage, // or window.sessionStorage, or your own custom storage driver
+            rememberKeys
+        )
     )
 );
 
@@ -83,8 +86,8 @@ Usage - react native
 
 ```js
 import AsyncStorage from '@react-native-community/async-storage';
-import { applyMiddleware } from 'redux';
-import reduxRemember from './redux-remember';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
 const myStateIsRemembered = (state = '', { type, payload }) => {
     switch (type) {
@@ -111,17 +114,20 @@ const reducers = {
     myStateIsForgotten
 };
 
-const persistableKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
-
-const { createStore, combineReducers } = reduxRemember(
-    AsyncStorage,  // or your own custom storage driver
-    persistableKeys
-);
+const rememberKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const store = createStore(
-    combineReducers(reducers),
-    applyMiddleware(
-        // ...
+    rememberReducer(
+        combineReducers(reducers)
+    ),
+    compose(
+        applyMiddleware(
+            // ...
+        ),
+        rememberEnhancer(
+            AsyncStorage, // or your own custom storage driver
+            rememberKeys
+        )
     )
 );
 
@@ -133,11 +139,12 @@ Usage - inside a reducer
 
 ```js
 import { SOME_ACTION } from './actions';
-import { REMEMBER_REHYDRATED } from 'redux-remember';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
 const defaultState = {
     changeMe: null,
-    rehydrated: false
+    rehydrated: false,
+    persisted: false
 };
 
 export default (state = defaultState, { type, payload }) => {
@@ -148,6 +155,13 @@ export default (state = defaultState, { type, payload }) => {
             return {
                 ...state,
                 rehydrated: true
+            };
+
+        case REMEMBER_PERSISTED:
+            return {
+                ...state,
+                rehydrated: false,
+                persisted: true
             };
 
         case SOME_ACTION:
@@ -170,16 +184,20 @@ export default (state = defaultState, { type, payload }) => {
 
 API reference
 -------------
-- reduxRemember(driver, persistableKeys, options)
+- rehydrateReducer(rootReducer)
     - Arguments:
-        1. driver - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
-        2. persistableKeys - an array of persistable keys - if an empty array is provided nothing will get persisted;
-        3. options - plain object of extra options:
+        1. rootReducer - takes the result of `combineReducers()` function;
+    - Returns - a new root reducer to use as first argument for the `createStore()` function;
+
+
+- rememberEnhancer(driver, persistableKeys, options)
+    - Arguments:
+        1. driver (required) - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
+        2. persistableKeys (required) - an array of persistable keys - if an empty array is provided nothing will get persisted;
+        3. options (optional) - plain object of extra options:
             - prefix: storage key prefix *(default: '@@remember-')*;
             - serialize - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
             - unserialize - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
             - persistThrottle - how much time should the persistence be throttled in milliseconds *(default: 100)*
             - persistWholeStore - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small - *(default: `false`)*;
-    - Returns - plain object with 2 patched redux functions:
-        1. createStore() - uses exactly the same API as the default `react-redux` function;
-        2. combineReducers(reducers) - uses exactly the same API as the default `react-redux` function;
+    - Returns - an enhancer to be used with Redux
