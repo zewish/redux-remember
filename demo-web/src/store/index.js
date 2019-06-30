@@ -8,7 +8,7 @@ const store = createStore(
     rememberReducer(
         combineReducers(reducers)
     ),
-    { someData: 'asdf' },
+    { someData: 'example' },
     compose(
         applyMiddleware(
             // ...
