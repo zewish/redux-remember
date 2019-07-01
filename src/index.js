@@ -6,10 +6,10 @@ const rememberEnhancer = (
     rememberedKeys,
     {
         prefix = '@@remember-',
-        persistThrottle = 100,
-        persistWholeStore = false,
         serialize,
-        unserialize
+        unserialize,
+        persistThrottle,
+        persistWholeStore
     } = {}
 ) => {
     if (!driver) {

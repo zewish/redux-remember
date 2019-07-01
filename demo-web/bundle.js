@@ -60,7 +60,9 @@
     };
 
     var rememberedKeys = ['textToBePersisted'];
-    var store = redux.createStore(reduxRemember.rememberReducer(redux.combineReducers(reducers)), redux.compose(redux.applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys)));
+    var store = redux.createStore(reduxRemember.rememberReducer(redux.combineReducers(reducers)), redux.compose(redux.applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys, {
+      persistWholeStore: true
+    })));
 
     var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/app.js";
 

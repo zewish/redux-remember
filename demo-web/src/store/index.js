@@ -14,7 +14,8 @@ const store = createStore(
         ),
         rememberEnhancer(
             window.localStorage,
-            rememberedKeys
+            rememberedKeys,
+            { persistWholeStore: true }
         )
     )
 );
