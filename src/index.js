@@ -7,6 +7,7 @@ const rememberEnhancer = (
     {
         prefix = '@@remember-',
         persistThrottle = 100,
+        persistWholeStore = false,
         serialize,
         unserialize
     } = {}
@@ -29,7 +30,7 @@ const rememberEnhancer = (
         init(
             store,
             rememberedKeys,
-            { driver, prefix, serialize, unserialize, persistThrottle }
+            { driver, prefix, serialize, unserialize, persistThrottle, persistWholeStore }
         );
 
         return store;

@@ -93,6 +93,7 @@ describe('index.js', () => {
                 prefix: '@@yay!',
                 persistThrottle: 432,
                 serialize: 'so cool',
+                persistWholeStore: true,
                 unserialize: 'i am passed'
             };
 
