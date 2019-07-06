@@ -1,5 +1,37 @@
-import { rehydrateReducer } from './rehydrate';
 import init from './init';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types';
+
+const REDUX_INIT = '@@INIT';
+
+const rememberReducer = (reducers) => {
+    const data = {
+        state: {}
+    };
+
+    return (state = data.state, action = {}) => {
+        switch (action.type) {
+            case REDUX_INIT:
+                data.state = { ...state };
+
+            case REMEMBER_REHYDRATED:
+                data.state = reducers(
+                    {
+                        ...data.state,
+                        ...(action.payload || {})
+                    },
+                    { type: REMEMBER_REHYDRATED }
+                );
+
+                return data.state;
+
+            default:
+                return reducers(
+                    state,
+                    action
+                );
+        }
+    }
+};
 
 const rememberEnhancer = (
     driver,
@@ -37,9 +69,9 @@ const rememberEnhancer = (
     };
 };
 
-export * from './action-types';
-
 export {
-    rehydrateReducer as rememberReducer,
-    rememberEnhancer
+    rememberReducer,
+    rememberEnhancer,
+    REMEMBER_REHYDRATED,
+    REMEMBER_PERSISTED
 };

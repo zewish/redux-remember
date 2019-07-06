@@ -17,8 +17,11 @@ module.exports = {
     },
     plugins: [
         resolve({
-            jsnext: true,
-            main: true
+            mainFields: [
+                'module',
+                'jsnext:main',
+                'main'
+            ]
         }),
         commonjs(),
         babel({

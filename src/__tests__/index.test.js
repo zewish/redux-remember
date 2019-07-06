@@ -46,6 +46,56 @@ describe('index.js', () => {
         );
     });
 
+    describe('rememberReducer()', () => {
+        let mockReducer;
+
+        const exec = (state, action) => index.rememberReducer(
+            mockReducer
+        )(state, action);
+
+        beforeEach(() => {
+            mockReducer = spy((state, action) => state);
+        });
+
+        it('does not break when state and action are empty', () => {
+            exec(undefined, undefined).should.eql(
+                {}
+            );
+        });
+
+        it('returns preloaded state', () => {
+            const state = { 'cool': 'state' };
+
+            exec(state, { type: '@@INIT' }).should.eql(
+                state
+            );
+        });
+
+        it('returns rehydrated state', () => {
+            const payload = {
+                wow: 'beep',
+                nah: 'lol'
+            };
+
+            exec(
+                null,
+                {
+                    type: actionTypes.REMEMBER_REHYDRATED,
+                    payload
+                }
+            )
+            .should.eql(payload);
+        });
+
+        it('does not fail if there is missing payload', () => {
+            exec(
+                null,
+                { type: actionTypes.REMEMBER_REHYDRATED }
+            )
+            .should.eql({});
+        });
+    });
+
     describe('rememberEnhancer()', () => {
         it('throws when no driver', () => {
             expect(() => index.rememberEnhancer()).to.throw(

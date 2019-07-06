@@ -1,8 +1,6 @@
 import pick from 'lodash.pick';
 import { REMEMBER_REHYDRATED } from './action-types';
 
-const REDUX_INIT = '@@INIT';
-
 export const loadAll = async ({
     rememberedKeys,
     driver,
@@ -77,35 +75,4 @@ export const rehydrate = async (store, rememberedKeys = [], {
         type: REMEMBER_REHYDRATED,
         payload: state
     });
-};
-
-export const rehydrateReducer = (reducers) => {
-    const data = {
-        state: {}
-    };
-
-    return (state = data.state, action = {}) => {
-        switch (action.type) {
-            case REDUX_INIT: {
-                data.state = { ...state };
-            }
-
-            case REMEMBER_REHYDRATED:
-                data.state = reducers(
-                    {
-                        ...data.state,
-                        ...(action.payload || {})
-                    },
-                    { type: REMEMBER_REHYDRATED }
-                );
-
-                return data.state;
-
-            default:
-                return reducers(
-                    state,
-                    action
-                );
-        }
-    }
 };
