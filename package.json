@@ -1,11 +1,12 @@
 {
   "name": "redux-remember",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "main": "lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "browser": "dist/redux-remember.js",
+  "typings": "src/index.d.ts",
   "scripts": {
     "clean": "rimraf es lib dist 2> /dev/null",
     "build:lib": "cross-env BABEL_ENV=lib babel src --source-maps --out-dir lib",

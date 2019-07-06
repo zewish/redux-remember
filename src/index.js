@@ -9,10 +9,14 @@ const rememberReducer = (reducers) => {
     };
 
     return (state = data.state, action = {}) => {
-        switch (action.type) {
-            case REDUX_INIT:
-                data.state = { ...state };
+        if (action.type && (
+            action.type === '@@INIT'
+            || action.type.startsWith('@@redux/INIT')
+        )) {
+            data.state = { ...state };
+        }
 
+        switch (action.type) {
             case REMEMBER_REHYDRATED:
                 data.state = reducers(
                     {

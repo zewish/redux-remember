@@ -69,6 +69,10 @@ describe('index.js', () => {
             exec(state, { type: '@@INIT' }).should.eql(
                 state
             );
+
+            exec(state, { type: '@@redux/INIT.12345' }).should.eql(
+                state
+            );
         });
 
         it('returns rehydrated state', () => {
