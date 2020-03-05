@@ -198,6 +198,6 @@ API reference
             - **prefix**: storage key prefix *(default: '@@remember-')*;
             - **serialize** - a plain function that takes unserialized store state and returns serialized state to be persisted *(default: `JSON.stringify()`)*;
             - **unserialize** - a plain function that takes serialized persisted state and returns unserialized to be set in the store *(default: `JSON.parse()`)*;
-            - **persistThrottle** - how much time should the persistence be throttled in milliseconds *(default: 100)*
+            - **persistThrottle** - how much time should the persistence be throttled in milliseconds *(default: `100`)*
             - **persistWholeStore** - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small - *(default: `false`)*;
     - Returns - an enhancer to be used with Redux
