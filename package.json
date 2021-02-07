@@ -15,16 +15,13 @@
     "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts' src --source-maps --out-dir es",
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
     "prepare": "npm run clean && npm run build && npm run test",
-    "OLD_test": "jest src/__tests__/*.test.js",
-    "OLD_coveralls": "jest src/__tests__/*.test.js --coverage --coverageReporters=text-lcov | coveralls"
+    "test": "jest src/__tests__/*.test.ts",
+    "OLD_coveralls": "jest src/__tests__/*.test.ts --coverage --coverageReporters=text-lcov | coveralls"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "./src/__tests__/setup.js"
-    ],
     "collectCoverage": true,
     "transform": {
-      "^.+\\.js$": "babel-jest"
+      "^.+\\.ts$": "babel-jest"
     }
   },
   "author": "Iskren Slavov <iskren.s@gmail.com>",
@@ -70,19 +67,18 @@
     "@babel/preset-typescript": "^7.12.13",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.1.1",
+    "@types/jest": "^26.0.20",
     "@types/lodash.isequal": "^4.5.5",
     "@types/lodash.pick": "^4.4.6",
     "@types/lodash.throttle": "^4.1.6",
     "@wessberg/rollup-plugin-ts": "^1.3.8",
-    "chai": "^4.3.0",
+    "babel-jest": "^26.6.3",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.3",
     "jest": "^26.6.3",
     "redux": "*",
     "rimraf": "^3.0.2",
     "rollup": "^2.38.5",
-    "sinon": "^9.2.4",
-    "sinon-chai": "^3.5.0",
     "typescript": "^4.1.3"
   },
   "peerDependencies": {

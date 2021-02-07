@@ -52,6 +52,16 @@
           "exclude": ["@babel/plugin-transform-regenerator"]
         }]
       ]
+    },
+    "test": {
+      "presets": [
+        "@babel/preset-typescript",
+        ["@babel/preset-env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ]
     }
   }
 }
