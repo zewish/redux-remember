@@ -4,7 +4,7 @@
     "target": "ES5",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "typeRoots": [

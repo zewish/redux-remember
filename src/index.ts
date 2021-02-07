@@ -49,12 +49,12 @@ const rememberEnhancer = (
   driver: Driver,
   rememberedKeys: string[],
   {
-    prefix = '@@remember-',
-    serialize,
-    unserialize,
-    persistThrottle,
-    persistWholeStore
-  }: Options = {}
+    prefix = '@persist-',
+    serialize = (obj: any) => JSON.stringify(obj),
+    unserialize = (str: any) => JSON.parse(str),
+    persistThrottle = 100,
+    persistWholeStore = false
+  }: Partial<Options> = {}
 ): StoreEnhancer => {
   if (!driver) {
     throw Error('redux-remember error: driver required');

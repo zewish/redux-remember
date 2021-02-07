@@ -1,61 +1,38 @@
-// const babel = require('rollup-plugin-babel');
 import ts from '@wessberg/rollup-plugin-ts';
-// import resolve from '@rollup/plugin-node-resolve';
-// import commonjs from '@rollup/plugin-commonjs';
-
-// process.env.NODE_ENV = 'development';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
   input: './src/index.ts',
   output: {
     name: 'ReduxRemember',
     exports: 'named',
-    // sourcemap: true,
-
-    format: 'cjs',
-    strict: false,
+    sourcemap: true,
     interop: false,
+    strict: false
   },
-  external: [
-    'redux'
-  ],
-    // globals: {
-    //   'redux': 'Redux'
-    // },
+  external: ['redux'],
   plugins: [
+    resolve({
+      mainFields: [
+        'module',
+        'jsnext:main',
+        'main'
+      ]
+    }),
+    commonjs(),
     ts({
-      tsconfig: `${__dirname}/tsconfig.json`
+      transpiler: 'babel',
+      babelConfig: `${__dirname}/.babelrc`,
+      hook: {
+        outputPath(path, kind) {
+          if (kind === 'declaration') {
+            return `${__dirname}/index.d.ts`;
+          }
+
+          return path;
+        }
+      }
     })
-
-    // ts({
-    //   transpiler: 'babel'
-    // }),
-
-    // resolve({
-    //   mainFields: [
-    //     'module',
-    //     'jsnext:main',
-    //     'main'
-    //   ]
-    // }),
-
-    // commonjs()
-
-    // babel({
-    //   exclude: 'node_modules/**'
-    // })
   ]
-  // plugins: [
-  //   ts({
-  //     hook: {
-  //       outputPath(path, kind) {
-  //         if (kind === 'declaration') {
-  //           return `${__dirname}/oget.d.ts`;
-  //         }
-
-  //         return path;
-  //       }
-  //     }
-  //   })
-  // ]
 };

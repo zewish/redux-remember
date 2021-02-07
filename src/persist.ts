@@ -43,7 +43,7 @@ export const persist = async (
     prefix,
     driver,
     persistWholeStore,
-    serialize = (obj: any) => JSON.stringify(obj)
+    serialize
   }: Pick<
     ExtendedOptions,
     'prefix' | 'driver' | 'persistWholeStore' | 'serialize'

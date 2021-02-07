@@ -47,7 +47,7 @@ export const loadAllKeyed = async ({
     ))
   );
 
-  return rememberedKeys.reduce((obj, key, i) => {
+  return rememberedKeys.reduce((obj: { [key: string]: any }, key, i) => {
     if (items[i] !== null && items[i] !== undefined) {
       obj[key] = unserialize(items[i]);
     }
@@ -63,7 +63,7 @@ export const rehydrate = async (
     prefix,
     driver,
     persistWholeStore,
-    unserialize = (str: any) => JSON.parse(str)
+    unserialize
   }: RehydrateOptions
 ) => {
   let state = {};

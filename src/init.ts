@@ -15,8 +15,8 @@ const init = async (
     driver,
     serialize,
     unserialize,
-    persistThrottle = 100,
-    persistWholeStore = false
+    persistThrottle,
+    persistWholeStore
   }: ExtendedOptions
 ) => {
   await rehydrate(

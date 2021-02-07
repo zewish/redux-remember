@@ -7,11 +7,11 @@ export type Driver = {
 };
 
 export type Options = {
-  prefix?: string,
-  serialize?: SerializeFunction,
-  unserialize?: UnserializeFunction,
-  persistThrottle?: number,
-  persistWholeStore?: boolean
+  prefix: string,
+  serialize: SerializeFunction,
+  unserialize: UnserializeFunction,
+  persistThrottle: number,
+  persistWholeStore: boolean
 };
 
 export type ExtendedOptions = Options & {
