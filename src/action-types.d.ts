@@ -1,2 +1,0 @@
-export declare const REMEMBER_REHYDRATED = "@@REMEMBER_REHYDRATED";
-export declare const REMEMBER_PERSISTED = "@@REMEMBER_PERSISTED";
