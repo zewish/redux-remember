@@ -1,64 +1,64 @@
 {
-    "plugins": [
-        ["@babel/plugin-proposal-object-rest-spread", {
-            "useBuiltIns": true
-        }],
-    ],
-    "env": {
-        "lib": {
-            "presets": [
-                ["@babel/preset-env", {
-                    "targets": {
-                        "browsers": [
-                            ">1%",
-                            "last 4 versions",
-                            "Firefox ESR",
-                            "not ie < 9"
-                        ]
-                    },
-                    "exclude": ["@babel/plugin-transform-regenerator"],
-                }]
+  "plugins": [
+    ["@babel/plugin-proposal-object-rest-spread", {
+      "useBuiltIns": true
+    }]
+  ],
+  "env": {
+    "lib": {
+      "presets": [
+        ["@babel/preset-env", {
+          "targets": {
+            "browsers": [
+              ">1%",
+              "last 4 versions",
+              "Firefox ESR",
+              "not ie < 9"
             ]
-        },
-        "es": {
-            "presets": [
-                ["@babel/preset-env", {
-                    "modules": false,
-                    "targets": {
-                        "browsers": [
-                            ">1%",
-                            "last 4 versions",
-                            "Firefox ESR",
-                            "not ie < 9"
-                        ]
-                    },
-                    "exclude": ["@babel/plugin-transform-regenerator"],
-                }]
+          },
+          "exclude": ["@babel/plugin-transform-regenerator"]
+        }]
+      ]
+    },
+    "es": {
+      "presets": [
+        ["@babel/preset-env", {
+          "modules": false,
+          "targets": {
+            "browsers": [
+              ">1%",
+              "last 4 versions",
+              "Firefox ESR",
+              "not ie < 9"
             ]
-        },
-        "umd": {
-            "presets": [
-                ["@babel/preset-env", {
-                    "modules": false,
-                    "targets": {
-                        "browsers": [
-                            ">1%",
-                            "last 4 versions",
-                            "Firefox ESR",
-                            "not ie < 9"
-                        ]
-                    }
-                }]
+          },
+          "exclude": ["@babel/plugin-transform-regenerator"]
+        }]
+      ]
+    },
+    "umd": {
+      "presets": [
+        ["@babel/preset-env", {
+          "modules": false,
+          "targets": {
+            "browsers": [
+              ">1%",
+              "last 4 versions",
+              "Firefox ESR",
+              "not ie < 9"
             ]
-        },
-        "test": {
-            "presets": [
-                ["@babel/preset-env", {
-                    "targets": {
-                        "node": "current"
-                    }
-                }]
-            ]
-        }
+          }
+        }]
+      ]
+    },
+    "test": {
+      "presets": [
+        ["@babel/preset-env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ]
     }
+  }
 }
