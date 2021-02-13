@@ -4,10 +4,8 @@ import { Driver, Options } from './types';
 import {
   Action,
   AnyAction,
-  Middleware,
   PreloadedState,
   Reducer,
-  Store,
   StoreCreator,
   StoreEnhancer
 } from 'redux';
