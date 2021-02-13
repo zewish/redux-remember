@@ -1,5 +1,5 @@
 name: build
-on: [push]
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,3 +11,6 @@ jobs:
         check-latest: true
     - run: npm install
     - run: npm run prepare
+    - uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
