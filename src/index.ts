@@ -51,8 +51,8 @@ const rememberEnhancer = <S, A extends Action, Ext>(
   rememberedKeys: string[],
   {
     prefix = '@persist-',
-    serialize = (obj: any) => JSON.stringify(obj),
-    unserialize = (str: any) => JSON.parse(str),
+    serialize = JSON.stringify,
+    unserialize = JSON.parse,
     persistThrottle = 100,
     persistWholeStore = false
   }: Partial<Options> = {}

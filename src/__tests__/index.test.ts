@@ -153,8 +153,8 @@ describe('index.js', () => {
       const opts: Options = {
         prefix: '@@yay!',
         persistThrottle: 432,
-        serialize: (o) => o,
         persistWholeStore: true,
+        serialize: (o) => o,
         unserialize: (o) => o
       };
 
