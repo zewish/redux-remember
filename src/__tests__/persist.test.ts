@@ -1,9 +1,10 @@
+import * as persistModule from '../persist';
 import { Driver } from '../types';
 
 describe('persist.js', () => {
   let mockDriver: Driver;
   let mockIsEqual: (a: any, b: any) => boolean;
-  let mod: any;
+  let mod: typeof persistModule;
 
   beforeEach(() => {
     mockDriver = {
@@ -38,6 +39,7 @@ describe('persist.js', () => {
           key2: 'val22'
         },
         {
+          prefix: '',
           driver: mockDriver,
           serialize() {}
         }
@@ -126,195 +128,224 @@ describe('persist.js', () => {
           key2: 'lol'
         },
         {
+          prefix: '',
           driver: mockDriver,
           serialize() {}
         }
       );
 
-      expect(mockDriver.setItem).not.toHaveBeenCalled();
+      expect(mockDriver.setItem).toBeCalledTimes(0);
     });
   });
 
   describe('saveAll()', () => {
-      it('calls lodash.isequal()', async () => {
-          const state = {
-              key1: 'val1',
-              key2: 'val2'
-          };
+    it('calls lodash.isequal()', async () => {
+      const state = {
+        key1: 'val1',
+        key2: 'val2'
+      };
 
-          const oldState = {
-              key1: 'val11',
-              key2: 'val22'
-          };
+      const oldState = {
+        key1: 'val11',
+        key2: 'val22'
+      };
 
-          await mod.saveAll(
-              state,
-              oldState,
-              {
-                  driver: mockDriver,
-                  serialize() {}
-              }
-          );
+      await mod.saveAll(
+        state,
+        oldState,
+        {
+          driver: mockDriver,
+          serialize() {}
+        }
+      );
 
-          mockIsEqual.should.be.calledWith(
-              state, oldState
-          );
-      });
+      expect(mockIsEqual).toBeCalledWith(
+        state, oldState
+      );
+    });
 
-      // it('calls serialize()', async () => {
-      //     const mockSerialize = spy(() => {});
+    it('calls serialize()', async () => {
+      const mockSerialize = jest.fn();
 
-      //     const state = {
-      //         key1: 'not_changed',
-      //         key2: 'i_am_not_changed',
-      //         key3: 'new-changed-value'
-      //     };
+      const state = {
+        key1: 'not_changed',
+        key2: 'i_am_not_changed',
+        key3: 'new-changed-value'
+      };
 
-      //     const oldState = {
-      //         key1: 'not_changed',
-      //         key2: 'i_am_not_changed',
-      //         key3: 'old-value'
-      //     };
+      const oldState = {
+        key1: 'not_changed',
+        key2: 'i_am_not_changed',
+        key3: 'old-value'
+      };
 
-      //     await mod.saveAll(
-      //         state,
-      //         oldState,
-      //         {
-      //             prefix: '@@yada-',
-      //             driver: mockDriver,
-      //             serialize: mockSerialize
-      //         }
-      //     );
+      await mod.saveAll(
+        state,
+        oldState,
+        {
+          prefix: '@@yada-',
+          driver: mockDriver,
+          serialize: mockSerialize
+        }
+      );
 
-      //     mockSerialize.should.be.calledWith(state);
-      // });
+      expect(mockSerialize).toBeCalledWith(state);
+    });
 
-      // it('calls driver.setItem()', async () => {
-      //     const state = {
-      //         key1: 'not_changed',
-      //         key2: 'i_am_not_changed',
-      //         key3: 'new-changed-value'
-      //     };
+    it('calls driver.setItem()', async () => {
+      const state = {
+        key1: 'not_changed',
+        key2: 'i_am_not_changed',
+        key3: 'new-changed-value'
+      };
 
-      //     const oldState = {
-      //         key1: 'not_changed',
-      //         key2: 'i_am_not_changed',
-      //         key3: 'old-value'
-      //     };
+      const oldState = {
+        key1: 'not_changed',
+        key2: 'i_am_not_changed',
+        key3: 'old-value'
+      };
 
-      //     await mod.saveAll(
-      //         state,
-      //         oldState,
-      //         {
-      //             prefix: '@@yada-',
-      //             driver: mockDriver,
-      //             serialize: (o) => o
-      //         }
-      //     );
+      await mod.saveAll(
+        state,
+        oldState,
+        {
+          prefix: '@@yada-',
+          driver: mockDriver,
+          serialize: (o: any) => o
+        }
+      );
 
-      //     mockDriver.setItem.should.be.calledWith(
-      //         '@@yada-state@@', state
-      //     );
-      // });
+      expect(mockDriver.setItem).toBeCalledWith(
+        '@@yada-state@@', state
+      );
+    });
 
-      // it('does not call driver.setItem()', async () => {
-      //     jest.mock('lodash.isequal', () => () => true);
-      //     jest.resetModules();
+    it('does not call driver.setItem()', async () => {
+      jest.mock('lodash.isequal', () => () => true);
+      jest.resetModules();
 
-      //     mod = require('../persist');
+      mod = require('../persist');
 
-      //     await mod.saveAll(
-      //         { key1: 'changed' },
-      //         { key1: 'not_changed' },
-      //         {
-      //             prefix: '@@yada-',
-      //             driver: mockDriver,
-      //             serialize() {}
-      //         }
-      //     );
+      await mod.saveAll(
+        { key1: 'changed' },
+        { key1: 'not_changed' },
+        {
+          prefix: '@@yada-',
+          driver: mockDriver,
+          serialize() {}
+        }
+      );
 
-      //     mockDriver.setItem.callCount.should.equal(0);
-      // });
+      expect(mockDriver.setItem).toBeCalledTimes(0);
+    });
   });
 
-  // describe('persist()', () => {
-  //     it('works with state objects provided', async () => {
-  //         await mod.persist(
-  //             { key1: 'new' },
-  //             { key1: 'old' },
-  //             { driver: mockDriver }
-  //         );
+  describe('persist()', () => {
+    it('works with state objects provided', async () => {
+      await mod.persist(
+        { key1: 'new' },
+        { key1: 'old' },
+        {
+          driver: mockDriver,
+          serialize: (o: any) => o
+        }
+      );
 
-  //         await mod.persist(
-  //             { key1: 'new' },
-  //             { key1: 'old' },
-  //             { driver: mockDriver, persistWholeStore: false }
-  //         );
+      await mod.persist(
+        { key1: 'new' },
+        { key1: 'old' },
+        {
+          driver: mockDriver,
+          persistWholeStore: false,
+          serialize: (o: any) => o
+        }
+      );
 
-  //         await mod.persist(
-  //             { key1: 'new' },
-  //             { key1: 'old' },
-  //             { driver: mockDriver, persistWholeStore: true }
-  //         );
-  //     });
+      await mod.persist(
+        { key1: 'new' },
+        { key1: 'old' },
+        {
+          driver: mockDriver,
+          persistWholeStore: true,
+          serialize: (o: any) => o
+        }
+      );
+    });
 
-  //     it('works without state objects provided', async () => {
-  //         await mod.persist(
-  //             undefined,
-  //             undefined,
-  //             { driver: mockDriver, persistWholeStore: false }
-  //         );
+    it('works without state objects provided', async () => {
+      await mod.persist(
+        undefined,
+        undefined,
+        {
+          driver: mockDriver,
+          persistWholeStore: false,
+          serialize: (o: any) => o
+        }
+      );
 
-  //         await mod.persist(
-  //             undefined,
-  //             undefined,
-  //             { driver: mockDriver, persistWholeStore: true }
-  //         );
-  //     });
+      await mod.persist(
+        undefined,
+        undefined,
+        {
+          driver: mockDriver,
+          persistWholeStore: true,
+          serialize: (o: any) => o
+        }
+      );
+    });
 
-  //     it('calls console.warn()', async () => {
-  //         jest.mock('lodash.isequal', () => () => false);
-  //         jest.resetModules();
+    it('calls console.warn()', async () => {
+        jest.mock('lodash.isequal', () => () => false);
+        jest.resetModules();
 
-  //         mod = require('../persist');
+        mod = require('../persist');
 
-  //         const error1 = 'DUMMY ERROR 1!!!';
-  //         const error2 = 'DUMMY ERROR 2!!!';
+        const error1 = 'DUMMY ERROR 1!!!';
+        const error2 = 'DUMMY ERROR 2!!!';
 
-  //         const mockDriver =  {
-  //             setItem: (
-  //                 jest.fn()
-  //                 .mockRejectedValueOnce(error1)
-  //                 .mockRejectedValueOnce(error2)
-  //             )
-  //         };
+        const mockDriver =  {
+          setItem: (
+            jest.fn()
+              .mockRejectedValueOnce(error1)
+              .mockRejectedValueOnce(error2)
+          )
+        };
 
-  //         const consoleWarn = global.console.warn;
-  //         global.console.warn = spy(() => {});
+        const consoleWarn = global.console.warn;
+        global.console.warn = jest.fn();
 
-  //         await mod.persist(
-  //             { key1: 'yay' },
-  //             { key1: 'cool' },
-  //             { driver: mockDriver }
-  //         );
+        await mod.persist(
+          { key1: 'yay' },
+          { key1: 'cool' },
+          {
+            driver: mockDriver,
+            serialize: (o: any) => o
+          }
+        );
 
-  //         await mod.persist(
-  //             { key1: 'yay' },
-  //             { key1: 'cool' },
-  //             { driver: mockDriver, persistWholeStore: true }
-  //         );
+        await mod.persist(
+          { key1: 'yay' },
+          { key1: 'cool' },
+          {
+            driver: mockDriver,
+            persistWholeStore: true,
+            serialize: (o: any) => o
+          }
+        );
 
-  //         global.console.warn.firstCall.should.be.calledWith(
-  //             'redux-remember: persist error',
-  //             error1
-  //         );
+        expect(global.console.warn).nthCalledWith(
+          1,
+          'redux-remember: persist error',
+          error1
+        );
 
-  //         global.console.warn.secondCall.should.be.calledWith(
-  //             'redux-remember: persist error',
-  //             error2
-  //         );
+        expect(global.console.warn).nthCalledWith(
+          2,
+          'redux-remember: persist error',
+          error2
+        );
 
-  //         global.console.warn = consoleWarn;
-  //     });
-  // });
+        global.console.warn = consoleWarn;
+    });
+  });
 });
