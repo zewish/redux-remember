@@ -16,7 +16,7 @@
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
     "prepare": "npm run clean && npm run build && npm run test",
     "test": "jest src/__tests__/*.test.ts",
-    "OLD_coveralls": "jest src/__tests__/*.test.ts --coverage --coverageReporters=text-lcov | coveralls"
+    "coveralls": "jest src/__tests__/*.test.ts --coverage --coverageReporters=text-lcov | coveralls"
   },
   "jest": {
     "collectCoverage": true,
