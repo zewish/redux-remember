@@ -2,8 +2,8 @@ export type SerializeFunction = (data: any) => any;
 export type UnserializeFunction = (data: any) => any;
 
 export type Driver = {
-  getItem: (key: String) => any;
-  setItem: (key: String, value: any) => any;
+  getItem: (key: string) => any;
+  setItem: (key: string, value: any) => any;
 };
 
 export type Options = {
