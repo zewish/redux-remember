@@ -14,6 +14,6 @@ type Options = {
     persistThrottle: number;
     persistWholeStore: boolean;
 };
-declare const rememberReducer: (reducers: Reducer) => Reducer;
+declare const rememberReducer: <S, A extends Action<any>>(reducers: Reducer<S, A>) => Reducer<S, A>;
 declare const rememberEnhancer: <S, A extends Action<any>, Ext>(driver: Driver, rememberedKeys: string[], { prefix, serialize, unserialize, persistThrottle, persistWholeStore }?: Partial<Options>) => (createStore: StoreCreator) => (rootReducer: Reducer<S, A>, initialState?: PreloadedState<S> | undefined, enhancer?: StoreEnhancer<Ext, {}> | undefined) => import("redux").Store<S, A> & Ext;
 export { rememberReducer, rememberEnhancer, REMEMBER_REHYDRATED, REMEMBER_PERSISTED };
