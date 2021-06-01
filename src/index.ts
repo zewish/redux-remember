@@ -10,12 +10,14 @@ import {
   StoreEnhancer
 } from 'redux';
 
-const rememberReducer = (reducers: Reducer): Reducer => {
-  const data = {
+const rememberReducer = <S = any, A extends Action = AnyAction>(
+  reducers: Reducer<S, A>
+): Reducer<S, A> => {
+  const data: any = {
     state: {}
   };
 
-  return (state = data.state, action: AnyAction) => {
+  return (state: S = data.state, action: any) => {
     if (action.type && (
       action.type === '@@INIT'
       || action.type.startsWith('@@redux/INIT')
@@ -30,7 +32,7 @@ const rememberReducer = (reducers: Reducer): Reducer => {
             ...data.state,
             ...(action.payload || {})
           },
-          { type: REMEMBER_REHYDRATED }
+          { type: REMEMBER_REHYDRATED } as any
         );
 
         return data.state;
