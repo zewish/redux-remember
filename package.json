@@ -1,11 +1,11 @@
 {
   "name": "redux-remember",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "main": "lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
-  "browser": "dist/redux-remember.js",
+  "unpkg": "dist/redux-remember.js",
   "typings": "index.d.ts",
   "sideEffects": false,
   "scripts": {
