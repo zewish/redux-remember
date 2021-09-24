@@ -111,7 +111,7 @@ describe('rehydrate.js', () => {
 
     beforeEach(() => {
       mockDriver = {
-        getItem: jest.fn((key) => `"${key}"`),
+        getItem: jest.fn((key) => `valueFor:${key.replace(mockPrefix, '')}`),
         setItem() {}
       };
 
@@ -135,19 +135,23 @@ describe('rehydrate.js', () => {
     });
 
     it('returns unserialized state', async () => {
+      const mockUnserialize = jest.fn()
+        .mockImplementation((str) => str.toUpperCase());
+
       const res = await exec({
         rememberedKeys: [ 'yay', 'k' ],
-        unserialize: (
-          jest.fn()
-            .mockReturnValueOnce('val1')
-            .mockReturnValueOnce('val2')
-        )
+        unserialize: mockUnserialize
       });
 
       expect(res).toEqual({
-        yay: 'val1',
-        k: 'val2'
+        yay: 'VALUEFOR:YAY',
+        k: 'VALUEFOR:K'
       });
+
+      expect(mockUnserialize)
+        .nthCalledWith(1, 'valueFor:yay', 'yay')
+      expect(mockUnserialize)
+        .nthCalledWith(2, 'valueFor:k', 'k')
     });
 
     it('returns state filtering null and undefined', async () => {

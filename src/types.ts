@@ -1,5 +1,5 @@
-export type SerializeFunction = (data: any) => any;
-export type UnserializeFunction = (data: any) => any;
+export type SerializeFunction = (data: any, key?: string) => any;
+export type UnserializeFunction = (data: any, key?: string) => any;
 
 export type Driver = {
   getItem: (key: string) => any;

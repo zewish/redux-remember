@@ -76,11 +76,11 @@ describe('persist.js', () => {
       );
 
       expect(mockSerialize).nthCalledWith(
-        1, 'yay'
+        1, 'yay', 'key1'
       );
 
       expect(mockSerialize).nthCalledWith(
-        2, 'wow'
+        2, 'wow', 'key3'
       );
     });
 
