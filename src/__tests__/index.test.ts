@@ -8,7 +8,7 @@ describe('index.js', () => {
       rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
     };
 
-    let mockInit: Function;
+    let mockInit: jest.Mock;
     let index: typeof indexModule;
 
     beforeEach(() => {
@@ -167,6 +167,48 @@ describe('index.js', () => {
         rememberedKeys,
         { driver, ...opts }
       )
+    });
+
+    it('calls init() with default options', () => {
+      let optionDefaults: any;
+      mockInit.mockImplementationOnce((store, rememberedKeys, opts) => {
+        optionDefaults = opts;
+      });
+      const store = 'the store!!!';
+
+      const driver = {
+        getItem() {},
+        setItem() {}
+      };
+
+      const rememberedKeys = [ 'zz', 'bb', 'kk' ];
+
+      const rootReducer = () => 'the root of the reducers';
+      const initialState = 'yup, initial state';
+      const enhancer: any = 'another enhancer';
+
+      index.rememberEnhancer(driver, rememberedKeys)(() => store)(
+        rootReducer, initialState, enhancer
+      );
+
+      expect(mockInit).toBeCalledWith(
+        store,
+        rememberedKeys,
+        { driver, ...optionDefaults }
+      )
+      
+      const stringifySpy = jest.spyOn(JSON, 'stringify');
+      const parseSpy = jest.spyOn(JSON, 'parse');
+      
+      expect(optionDefaults).toMatchObject({
+        prefix : '@persist-',
+        persistThrottle : 100,
+        persistWholeStore : false
+      });
+      expect(optionDefaults.serialize('hello', 'auth')).toEqual('\"hello\"');
+      expect(stringifySpy).toHaveBeenCalledWith('hello');
+      expect(optionDefaults.unserialize('\"bye\"', 'auth')).toEqual('bye');
+      expect(parseSpy).toHaveBeenCalledWith('\"bye\"');
     });
   });
 });
