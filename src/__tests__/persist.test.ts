@@ -1,7 +1,7 @@
 import * as persistModule from '../persist';
 import { Driver } from '../types';
 
-describe('persist.js', () => {
+describe('persist.ts', () => {
   let mockDriver: Driver;
   let mockIsEqual: (a: any, b: any) => boolean;
   let mod: typeof persistModule;
@@ -190,7 +190,7 @@ describe('persist.js', () => {
         }
       );
 
-      expect(mockSerialize).toBeCalledWith(state, '@@yada-state@@');
+      expect(mockSerialize).toBeCalledWith(state, 'rootState');
     });
 
     it('calls driver.setItem()', async () => {
@@ -217,7 +217,7 @@ describe('persist.js', () => {
       );
 
       expect(mockDriver.setItem).toBeCalledWith(
-        '@@yada-state@@', state
+        '@@yada-rootState', state
       );
     });
 
