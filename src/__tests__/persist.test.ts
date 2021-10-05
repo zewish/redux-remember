@@ -99,7 +99,7 @@ describe('persist.js', () => {
         {
           prefix: 'yada.',
           driver: mockDriver,
-          serialize: JSON.stringify
+          serialize: (string, key) => JSON.stringify(string)
         }
       );
 
@@ -154,8 +154,9 @@ describe('persist.js', () => {
         state,
         oldState,
         {
+          prefix: 'bla',
           driver: mockDriver,
-          serialize() {}
+          serialize(state, key) {}
         }
       );
 
@@ -189,7 +190,7 @@ describe('persist.js', () => {
         }
       );
 
-      expect(mockSerialize).toBeCalledWith(state);
+      expect(mockSerialize).toBeCalledWith(state, '@@yada-state@@');
     });
 
     it('calls driver.setItem()', async () => {
@@ -247,15 +248,7 @@ describe('persist.js', () => {
         { key1: 'old' },
         {
           driver: mockDriver,
-          serialize: (o: any) => o
-        }
-      );
-
-      await mod.persist(
-        { key1: 'new' },
-        { key1: 'old' },
-        {
-          driver: mockDriver,
+          prefix: 'one',
           persistWholeStore: false,
           serialize: (o: any) => o
         }
@@ -266,6 +259,7 @@ describe('persist.js', () => {
         { key1: 'old' },
         {
           driver: mockDriver,
+          prefix: 'two',
           persistWholeStore: true,
           serialize: (o: any) => o
         }
@@ -278,6 +272,7 @@ describe('persist.js', () => {
         undefined,
         {
           driver: mockDriver,
+          prefix: 'three',
           persistWholeStore: false,
           serialize: (o: any) => o
         }
@@ -288,6 +283,7 @@ describe('persist.js', () => {
         undefined,
         {
           driver: mockDriver,
+          prefix: 'four',
           persistWholeStore: true,
           serialize: (o: any) => o
         }
@@ -304,6 +300,7 @@ describe('persist.js', () => {
         const error2 = 'DUMMY ERROR 2!!!';
 
         const mockDriver =  {
+          getItem: (key: string) => {},
           setItem: (
             jest.fn()
               .mockRejectedValueOnce(error1)
@@ -318,6 +315,8 @@ describe('persist.js', () => {
           { key1: 'yay' },
           { key1: 'cool' },
           {
+            prefix: 'beep',
+            persistWholeStore: false,
             driver: mockDriver,
             serialize: (o: any) => o
           }
@@ -327,6 +326,7 @@ describe('persist.js', () => {
           { key1: 'yay' },
           { key1: 'cool' },
           {
+            prefix: 'boop',
             driver: mockDriver,
             persistWholeStore: true,
             serialize: (o: any) => o

@@ -21,16 +21,15 @@ export const loadAll = async ({
   prefix,
   unserialize
 }: LoadAllOptions) => {
-  const data = await driver.getItem(
-    `${prefix}state@@`
-  );
+  const key = `${prefix}state@@`;
+  const data = await driver.getItem(key);
 
   if (data === null || data == undefined) {
     return {};
   }
 
   return pick(
-    unserialize(data),
+    unserialize(data, key),
     rememberedKeys
   );
 };

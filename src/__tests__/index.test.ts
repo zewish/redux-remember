@@ -1,7 +1,7 @@
 import * as indexModule from '../index';
 import * as actionTypes from '../action-types';
-import { AnyAction, Reducer, StoreEnhancer } from 'redux';
-import { Driver, Options } from '../types';
+import { Reducer, StoreCreator } from 'redux';
+import { Options } from '../types';
 
 describe('index.js', () => {
     let mockRehydrate = {
@@ -111,8 +111,7 @@ describe('index.js', () => {
 
     it('calls createStore function and returns its result', () => {
       const store = 'dummy store!!!';
-      const createStore = jest.fn(() => store);
-
+      const createStore = jest.fn(() => store) as StoreCreator;
       const rootReducer = () => 'beep';
       const initialState = 'dummyInitialState';
       const enhancer: any = 'dummyEnhancer';
@@ -125,7 +124,8 @@ describe('index.js', () => {
         []
       );
 
-      const res = enhancerInstance(createStore)(
+      const storeMaker: StoreCreator = enhancerInstance(createStore);
+      const res = storeMaker(
         rootReducer, initialState, enhancer
       );
 
@@ -158,7 +158,11 @@ describe('index.js', () => {
         unserialize: (o) => o
       };
 
-      index.rememberEnhancer(driver, rememberedKeys, opts)(() => store)(
+      const storeMaker: StoreCreator = index.rememberEnhancer(
+        driver, rememberedKeys, opts
+      )((() => store) as StoreCreator);
+
+      storeMaker(
         rootReducer, initialState, enhancer
       );
 
@@ -174,7 +178,7 @@ describe('index.js', () => {
       mockInit.mockImplementationOnce((store, rememberedKeys, opts) => {
         optionDefaults = opts;
       });
-      const store = 'the store!!!';
+      const store = 'some-store';
 
       const driver = {
         getItem() {},
@@ -187,7 +191,11 @@ describe('index.js', () => {
       const initialState = 'yup, initial state';
       const enhancer: any = 'another enhancer';
 
-      index.rememberEnhancer(driver, rememberedKeys)(() => store)(
+      const storeMaker: StoreCreator = index.rememberEnhancer(
+        driver, rememberedKeys
+      )((() => store) as StoreCreator);
+
+      storeMaker(
         rootReducer, initialState, enhancer
       );
 
@@ -196,12 +204,12 @@ describe('index.js', () => {
         rememberedKeys,
         { driver, ...optionDefaults }
       )
-      
+
       const stringifySpy = jest.spyOn(JSON, 'stringify');
       const parseSpy = jest.spyOn(JSON, 'parse');
-      
+
       expect(optionDefaults).toMatchObject({
-        prefix : '@persist-',
+        prefix : '@@remember-',
         persistThrottle : 100,
         persistWholeStore : false
       });

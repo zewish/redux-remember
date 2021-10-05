@@ -196,8 +196,8 @@ API reference
         2. **rememberedKeys** *(required)* - an array of persistable keys - if an empty array is provided nothing will get persisted;
         3. **options** *(optional)* - plain object of extra options:
             - **prefix**: storage key prefix *(default: `'@@remember-'`)*;
-            - **serialize** - a plain function that takes unserialized store state and its key (`serialize(state, keyStr)`) and returns serialized state to be persisted *(default: `JSON.stringify`)*;
-            - **unserialize** - a plain function that takes serialized persisted state  and its key (`serialize(serializedStr, keyStr)`) and returns unserialized to be set in the store *(default: `JSON.parse`)*;
+            - **serialize** - a plain function that takes unserialized store state and its key (`serialize(state, stateKey)`) and returns serialized state to be persisted *(default: `JSON.stringify`)*;
+            - **unserialize** - a plain function that takes serialized persisted state  and its key (`serialize(state, stateKey)`) and returns unserialized to be set in the store *(default: `JSON.parse`)*;
             - **persistThrottle** - how much time should the persistence be throttled in milliseconds *(default: `100`)*
             - **persistWholeStore** - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small. When using this option, key won't be passed to `serialize` nor `unserialize` functions - *(default: `false`)*;
     - Returns - an enhancer to be used with Redux

@@ -14,7 +14,7 @@ export const saveAll = (
   if (!isEqual(state, oldState)) {
     return driver.setItem(
       `${prefix}state@@`,
-      serialize(state)
+      serialize(state, `${prefix}state@@`)
     );
   }
 };

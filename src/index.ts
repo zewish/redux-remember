@@ -51,7 +51,7 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
   driver: Driver,
   rememberedKeys: string[],
   {
-    prefix = '@persist-',
+    prefix = '@@remember-',
     serialize = (data) => JSON.stringify(data),
     unserialize = (data) => JSON.parse(data),
     persistThrottle = 100,
