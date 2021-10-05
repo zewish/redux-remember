@@ -35,7 +35,7 @@ describe('rehydrate.js', () => {
       await exec();
 
       expect(mockDriver.getItem).toBeCalledWith(
-        `${mockPrefix}state@@`
+        `${mockPrefix}rootState`
       );
     });
 
