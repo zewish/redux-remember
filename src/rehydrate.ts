@@ -49,7 +49,7 @@ export const loadAllKeyed = async ({
 
   return rememberedKeys.reduce((obj: { [key: string]: any }, key, i) => {
     if (items[i] !== null && items[i] !== undefined) {
-      obj[key] = unserialize(items[i]);
+      obj[key] = unserialize(items[i], key);
     }
 
     return obj;

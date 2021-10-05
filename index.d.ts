@@ -1,8 +1,8 @@
 import { Action, AnyAction, Reducer, StoreEnhancer } from 'redux';
 declare const REMEMBER_REHYDRATED = "@@REMEMBER_REHYDRATED";
 declare const REMEMBER_PERSISTED = "@@REMEMBER_PERSISTED";
-type SerializeFunction = (data: any) => any;
-type UnserializeFunction = (data: any) => any;
+type SerializeFunction = (data: any, key?: string) => any;
+type UnserializeFunction = (data: any, key?: string) => any;
 type Driver = {
     getItem: (key: string) => any;
     setItem: (key: string, value: any) => any;

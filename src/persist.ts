@@ -31,7 +31,7 @@ export const saveAllKeyed = (
 
     return driver.setItem(
       `${prefix}${key}`,
-      serialize(state[key])
+      serialize(state[key], key)
     );
   })
 );
