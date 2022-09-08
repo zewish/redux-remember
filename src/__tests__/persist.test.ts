@@ -14,10 +14,9 @@ describe('persist.ts', () => {
 
     mockIsEqual = jest.fn((a, b) => a === b);
 
-    jest.mock(
-      'lodash.isequal',
-      () => mockIsEqual
-    );
+    jest.mock('lauqe', () => ({
+      equal: mockIsEqual
+    }));
 
     mod = require('../persist');
   });
@@ -28,7 +27,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAllKeyed()', () => {
-    it('calls lodash.isequal()', async () => {
+    it('calls lauqe.equal()', async () => {
       await mod.saveAllKeyed(
         {
           key1: 'val1',
@@ -113,7 +112,7 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('lodash.isequal', () => () => true);
+      jest.mock('lauqe', () => ({ equal: () => true }));
       jest.resetModules();
 
       mod = require('../persist');
@@ -139,7 +138,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAll()', () => {
-    it('calls lodash.isequal()', async () => {
+    it('calls lauqe.equal()', async () => {
       const state = {
         key1: 'val1',
         key2: 'val2'
@@ -222,7 +221,7 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('lodash.isequal', () => () => true);
+      jest.mock('lauqe', () => ({ equal: () => true }));
       jest.resetModules();
 
       mod = require('../persist');
@@ -291,7 +290,7 @@ describe('persist.ts', () => {
     });
 
     it('calls console.warn()', async () => {
-        jest.mock('lodash.isequal', () => () => false);
+      jest.mock('lauqe', () => ({ equal: () => false }));
         jest.resetModules();
 
         mod = require('../persist');

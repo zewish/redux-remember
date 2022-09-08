@@ -2,7 +2,7 @@ import { Store } from 'redux';
 import { ExtendedOptions } from './types';
 import { rehydrate } from './rehydrate';
 import { persist } from './persist';
-import isEqual from 'lodash.isequal';
+import { equal } from 'lauqe';
 import { REMEMBER_PERSISTED } from './action-types';
 import { pick, throttle } from './utils';
 
@@ -38,7 +38,7 @@ const init = async (
       { prefix, driver, serialize, persistWholeStore }
     );
 
-    if (!isEqual(state, oldState)) {
+    if (!equal(state, oldState)) {
       store.dispatch({
         type: REMEMBER_PERSISTED,
         payload: state

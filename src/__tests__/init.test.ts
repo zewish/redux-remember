@@ -131,7 +131,7 @@ describe('init.ts', () => {
 
   it('does not call store.dispatch()', async () => {
     jest.resetModules();
-    jest.mock('lodash.isequal', () => () => true);
+    jest.mock('lauqe', () => ({ equal: () => true }));
 
     await require('../init').default(...args);
     expect(mockStore.dispatch).toBeCalledTimes(0);
