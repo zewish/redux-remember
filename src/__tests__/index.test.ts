@@ -3,7 +3,7 @@ import * as actionTypes from '../action-types';
 import { Reducer, StoreCreator } from 'redux';
 import { Options } from '../types';
 
-describe('index.js', () => {
+describe('index.ts', () => {
     let mockRehydrate = {
       rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
     };

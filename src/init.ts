@@ -2,10 +2,9 @@ import { Store } from 'redux';
 import { ExtendedOptions } from './types';
 import { rehydrate } from './rehydrate';
 import { persist } from './persist';
-import throttle from 'lodash.throttle';
-import pick from 'lodash.pick';
 import isEqual from 'lodash.isequal';
 import { REMEMBER_PERSISTED } from './action-types';
+import { pick, throttle } from './utils';
 
 const init = async (
   store: Store<any, any>,

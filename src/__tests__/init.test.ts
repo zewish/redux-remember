@@ -3,7 +3,7 @@ import * as persistModule from '../persist';
 import { REMEMBER_PERSISTED } from '../action-types';
 import { Store } from 'redux';
 
-describe('init.js', () => {
+describe('init.ts', () => {
   let mockState: any;
   let mockStore: Partial<Store> & {
     [key: string]: any
@@ -48,13 +48,11 @@ describe('init.js', () => {
     );
 
     jest.mock(
-      'lodash.pick',
-      () => mockPick
-    );
-
-    jest.mock(
-      'lodash.throttle',
-      () => mockThrottle
+      '../utils',
+      () => ({
+        pick: mockPick,
+        throttle: mockThrottle
+      })
     );
 
     init = require('../init').default;

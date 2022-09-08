@@ -1,9 +1,8 @@
 import * as rehydrateModule from '../rehydrate';
 import { REMEMBER_REHYDRATED } from '../action-types';
 import { Driver } from '../types';
-import { Store } from 'redux';
 
-describe('rehydrate.js', () => {
+describe('rehydrate.ts', () => {
   let mod: typeof rehydrateModule;
 
   beforeEach(() => {

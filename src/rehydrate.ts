@@ -1,7 +1,7 @@
-import pick from 'lodash.pick';
 import { Store } from 'redux';
 import { REMEMBER_REHYDRATED } from './action-types';
 import { ExtendedOptions } from './types';
+import { pick } from './utils';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,
@@ -23,7 +23,7 @@ export const loadAll = async ({
 }: LoadAllOptions) => {
   const data = await driver.getItem(`${prefix}rootState`);
 
-  if (data === null || data == undefined) {
+  if (data === null || data === undefined) {
     return {};
   }
 
