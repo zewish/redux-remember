@@ -1,7 +1,7 @@
-import * as indexModule from '../index';
-import * as actionTypes from '../action-types';
+import * as indexModule from '../index.js';
+import * as actionTypes from '../action-types.js';
 import { Reducer, StoreCreator } from 'redux';
-import { Options } from '../types';
+import { Options } from '../types.js';
 
 describe('index.ts', () => {
     let mockRehydrate = {
@@ -11,14 +11,14 @@ describe('index.ts', () => {
     let mockInit: jest.Mock;
     let index: typeof indexModule;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       mockRehydrate.rehydrateReducer = jest.fn(() => 'REHYDRATE_REDUCER');
       mockInit = jest.fn(() => {});
 
-      jest.mock('../rehydrate', () => mockRehydrate);
-      jest.mock('../init', () => mockInit);
+      jest.mock('../rehydrate.js', () => mockRehydrate);
+      jest.mock('../init.js', () => mockInit);
 
-      index = require('../index');
+      index = await import('../index.js');
     });
 
     afterEach(() => {

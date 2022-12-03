@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
+    "module": "node16",
+    "moduleResolution": "node",
     "lib": ["dom"],
     "esModuleInterop": true,
     "skipLibCheck": true,

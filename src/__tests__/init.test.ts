@@ -1,6 +1,6 @@
-import * as rehydrateModule from '../rehydrate';
-import * as persistModule from '../persist';
-import { REMEMBER_PERSISTED } from '../action-types';
+import * as rehydrateModule from '../rehydrate.js';
+import * as persistModule from '../persist.js';
+import { REMEMBER_PERSISTED } from '../action-types.js';
 import { Store } from 'redux';
 
 describe('init.ts', () => {
@@ -17,7 +17,7 @@ describe('init.ts', () => {
   let init: (...args: any[]) => any;
   let args: any[];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockState = 'dummy';
 
     mockStore = {
@@ -55,7 +55,7 @@ describe('init.ts', () => {
       })
     );
 
-    init = require('../init').default;
+    init = (await import('../init.js')).default as any;
 
     args = [
       mockStore,
@@ -131,9 +131,11 @@ describe('init.ts', () => {
 
   it('does not call store.dispatch()', async () => {
     jest.resetModules();
-    jest.mock('lauqe', () => ({ equal: () => true }));
+    jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
 
-    await require('../init').default(...args);
+    init = (await import('../init.js')).default as any;
+    await init(...args);
+
     expect(mockStore.dispatch).toBeCalledTimes(0);
   });
 

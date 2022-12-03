@@ -1,12 +1,12 @@
-import * as rehydrateModule from '../rehydrate';
-import { REMEMBER_REHYDRATED } from '../action-types';
-import { Driver } from '../types';
+import * as rehydrateModule from '../rehydrate.js';
+import { REMEMBER_REHYDRATED } from '../action-types.js';
+import { Driver } from '../types.js';
 
 describe('rehydrate.ts', () => {
   let mod: typeof rehydrateModule;
 
-  beforeEach(() => {
-    mod = require('../rehydrate');
+  beforeEach(async () => {
+    mod = await import('../rehydrate.js');
   });
 
   describe('loadAll()', () => {

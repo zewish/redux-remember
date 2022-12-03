@@ -1,7 +1,7 @@
 import { Store } from 'redux';
-import { REMEMBER_REHYDRATED } from './action-types';
-import { ExtendedOptions } from './types';
-import { pick } from './utils';
+import { REMEMBER_REHYDRATED } from './action-types.js';
+import { ExtendedOptions } from './types.js';
+import { pick } from './utils.js';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,

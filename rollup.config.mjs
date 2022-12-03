@@ -1,14 +1,17 @@
-import ts from '@wessberg/rollup-plugin-ts';
+import ts from 'rollup-plugin-ts';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
-export default {
+/** @type {import('rollup').RollupOptions} */
+const config = {
   input: './src/index.ts',
   output: {
+    file: './dist/redux-remember.js',
     name: 'ReduxRemember',
     exports: 'named',
     sourcemap: true,
-    interop: false,
+    format: 'umd',
+    esModule: false,
     strict: false
   },
   external: ['redux'],
@@ -23,11 +26,11 @@ export default {
     commonjs(),
     ts({
       transpiler: 'babel',
-      babelConfig: `${__dirname}/.babelrc`,
+      babelConfig: `./.babelrc`,
       hook: {
         outputPath(path, kind) {
           if (kind === 'declaration') {
-            return `${__dirname}/index.d.ts`;
+            return `./index.d.ts`;
           }
 
           return path;
@@ -36,3 +39,5 @@ export default {
     })
   ]
 };
+
+export default config;

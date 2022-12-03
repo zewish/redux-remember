@@ -1,10 +1,10 @@
 import { Store } from 'redux';
-import { ExtendedOptions } from './types';
-import { rehydrate } from './rehydrate';
-import { persist } from './persist';
-import { equal } from 'lauqe';
-import { REMEMBER_PERSISTED } from './action-types';
-import { pick, throttle } from './utils';
+import { isEqual } from '@zerodep/is.equal';
+import { ExtendedOptions } from './types.js';
+import { rehydrate } from './rehydrate.js';
+import { persist } from './persist.js';
+import { REMEMBER_PERSISTED } from './action-types.js';
+import { pick, throttle } from './utils.js';
 
 const init = async (
   store: Store<any, any>,
@@ -38,7 +38,7 @@ const init = async (
       { prefix, driver, serialize, persistWholeStore }
     );
 
-    if (!equal(state, oldState)) {
+    if (!isEqual(state, oldState)) {
       store.dispatch({
         type: REMEMBER_PERSISTED,
         payload: state

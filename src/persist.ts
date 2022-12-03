@@ -1,5 +1,5 @@
-import { equal } from 'lauqe';
-import { ExtendedOptions } from './types';
+import { isEqual } from '@zerodep/is.equal';
+import { ExtendedOptions } from './types.js';
 
 type SaveAllOptions = Pick<
   ExtendedOptions,
@@ -11,7 +11,7 @@ export const saveAll = (
   oldState: any,
   { prefix, driver, serialize }: SaveAllOptions
 ) => {
-  if (!equal(state, oldState)) {
+  if (!isEqual(state, oldState)) {
     return driver.setItem(
       `${prefix}rootState`,
       serialize(state, 'rootState')
@@ -25,7 +25,7 @@ export const saveAllKeyed = (
   { prefix, driver, serialize }: SaveAllOptions
 ) => Promise.all(
   Object.keys(state).map(key => {
-    if (equal(state[key], oldState[key])) {
+    if (isEqual(state[key], oldState[key])) {
       return Promise.resolve();
     }
 

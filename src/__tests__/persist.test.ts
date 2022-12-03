@@ -1,12 +1,12 @@
-import * as persistModule from '../persist';
-import { Driver } from '../types';
+import * as persistModule from '../persist.js';
+import { Driver } from '../types.js';
 
 describe('persist.ts', () => {
   let mockDriver: Driver;
   let mockIsEqual: (a: any, b: any) => boolean;
   let mod: typeof persistModule;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockDriver = {
       getItem: jest.fn(),
       setItem: jest.fn()
@@ -14,11 +14,11 @@ describe('persist.ts', () => {
 
     mockIsEqual = jest.fn((a, b) => a === b);
 
-    jest.mock('lauqe', () => ({
-      equal: mockIsEqual
+    jest.mock('@zerodep/is.equal', () => ({
+      isEqual: mockIsEqual
     }));
 
-    mod = require('../persist');
+    mod = await import('../persist.js');
   });
 
   afterEach(() => {
@@ -27,7 +27,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAllKeyed()', () => {
-    it('calls lauqe.equal()', async () => {
+    it('calls isEqual()', async () => {
       await mod.saveAllKeyed(
         {
           key1: 'val1',
@@ -112,10 +112,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('lauqe', () => ({ equal: () => true }));
+      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
       jest.resetModules();
 
-      mod = require('../persist');
+      mod = await import('../persist.js');
 
       await mod.saveAllKeyed(
         {
@@ -138,7 +138,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAll()', () => {
-    it('calls lauqe.equal()', async () => {
+    it('calls isEqual()', async () => {
       const state = {
         key1: 'val1',
         key2: 'val2'
@@ -221,10 +221,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('lauqe', () => ({ equal: () => true }));
+      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
       jest.resetModules();
 
-      mod = require('../persist');
+      mod = await import('../persist.js');
 
       await mod.saveAll(
         { key1: 'changed' },
@@ -290,61 +290,61 @@ describe('persist.ts', () => {
     });
 
     it('calls console.warn()', async () => {
-      jest.mock('lauqe', () => ({ equal: () => false }));
-        jest.resetModules();
+      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => false }));
+      jest.resetModules();
 
-        mod = require('../persist');
+      mod = await import('../persist.js');
 
-        const error1 = 'DUMMY ERROR 1!!!';
-        const error2 = 'DUMMY ERROR 2!!!';
+      const error1 = 'DUMMY ERROR 1!!!';
+      const error2 = 'DUMMY ERROR 2!!!';
 
-        const mockDriver =  {
-          getItem: (key: string) => {},
-          setItem: (
-            jest.fn()
-              .mockRejectedValueOnce(error1)
-              .mockRejectedValueOnce(error2)
-          )
-        };
+      const mockDriver =  {
+        getItem: (key: string) => {},
+        setItem: (
+          jest.fn()
+            .mockRejectedValueOnce(error1)
+            .mockRejectedValueOnce(error2)
+        )
+      };
 
-        const consoleWarn = global.console.warn;
-        global.console.warn = jest.fn();
+      const consoleWarn = global.console.warn;
+      global.console.warn = jest.fn();
 
-        await mod.persist(
-          { key1: 'yay' },
-          { key1: 'cool' },
-          {
-            prefix: 'beep',
-            persistWholeStore: false,
-            driver: mockDriver,
-            serialize: (o: any) => o
-          }
-        );
+      await mod.persist(
+        { key1: 'yay' },
+        { key1: 'cool' },
+        {
+          prefix: 'beep',
+          persistWholeStore: false,
+          driver: mockDriver,
+          serialize: (o: any) => o
+        }
+      );
 
-        await mod.persist(
-          { key1: 'yay' },
-          { key1: 'cool' },
-          {
-            prefix: 'boop',
-            driver: mockDriver,
-            persistWholeStore: true,
-            serialize: (o: any) => o
-          }
-        );
+      await mod.persist(
+        { key1: 'yay' },
+        { key1: 'cool' },
+        {
+          prefix: 'boop',
+          driver: mockDriver,
+          persistWholeStore: true,
+          serialize: (o: any) => o
+        }
+      );
 
-        expect(global.console.warn).nthCalledWith(
-          1,
-          'redux-remember: persist error',
-          error1
-        );
+      expect(global.console.warn).nthCalledWith(
+        1,
+        'redux-remember: persist error',
+        error1
+      );
 
-        expect(global.console.warn).nthCalledWith(
-          2,
-          'redux-remember: persist error',
-          error2
-        );
+      expect(global.console.warn).nthCalledWith(
+        2,
+        'redux-remember: persist error',
+        error2
+      );
 
-        global.console.warn = consoleWarn;
+      global.console.warn = consoleWarn;
     });
   });
 });

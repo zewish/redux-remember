@@ -1,6 +1,6 @@
-import init from './init';
-import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types';
-import { Driver, Options } from './types';
+import init from './init.js';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types.js';
+import { Driver, Options } from './types.js';
 import {
   Action,
   AnyAction,
