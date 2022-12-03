@@ -14,7 +14,8 @@ describe('persist.ts', () => {
 
     mockIsEqual = jest.fn((a, b) => a === b);
 
-    jest.mock('@zerodep/is.equal', () => ({
+    jest.mock('../utils.js', () => ({
+      ...jest.requireActual('../utils.js'),
       isEqual: mockIsEqual
     }));
 
@@ -112,7 +113,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
+      jest.mock('../utils.js', () => ({
+        ...jest.requireActual('../utils.js'),
+        isEqual: () => true
+      }));
       jest.resetModules();
 
       mod = await import('../persist.js');
@@ -221,7 +225,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
+      jest.mock('../utils.js', () => ({
+        ...jest.requireActual('../utils.js'),
+        isEqual: () => true
+      }));
       jest.resetModules();
 
       mod = await import('../persist.js');
@@ -290,7 +297,10 @@ describe('persist.ts', () => {
     });
 
     it('calls console.warn()', async () => {
-      jest.mock('@zerodep/is.equal', () => ({ isEqual: () => false }));
+      jest.mock('../utils.js', () => ({
+        ...jest.requireActual('../utils.js'),
+        isEqual: () => false
+      }));
       jest.resetModules();
 
       mod = await import('../persist.js');

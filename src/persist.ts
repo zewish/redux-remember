@@ -1,4 +1,4 @@
-import { isEqual } from '@zerodep/is.equal';
+import { isEqual } from './utils.js';
 import { ExtendedOptions } from './types.js';
 
 type SaveAllOptions = Pick<

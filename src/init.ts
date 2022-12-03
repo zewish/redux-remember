@@ -1,5 +1,5 @@
 import { Store } from 'redux';
-import { isEqual } from '@zerodep/is.equal';
+import { isEqual } from './utils.js';
 import { ExtendedOptions } from './types.js';
 import { rehydrate } from './rehydrate.js';
 import { persist } from './persist.js';

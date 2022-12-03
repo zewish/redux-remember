@@ -38,20 +38,21 @@ describe('init.ts', () => {
     mockThrottle = jest.fn((fn: any) => fn);
 
     jest.mock(
-      '../rehydrate',
+      '../rehydrate.js',
       () => mockRehydrate
     );
 
     jest.mock(
-      '../persist',
+      '../persist.js',
       () => mockPersist
     );
 
     jest.mock(
-      '../utils',
+      '../utils.js',
       () => ({
         pick: mockPick,
-        throttle: mockThrottle
+        throttle: mockThrottle,
+        isEqual: () => false
       })
     );
 
@@ -131,7 +132,11 @@ describe('init.ts', () => {
 
   it('does not call store.dispatch()', async () => {
     jest.resetModules();
-    jest.mock('@zerodep/is.equal', () => ({ isEqual: () => true }));
+    jest.mock('../utils.js', () => ({
+      pick: mockPick,
+      throttle: mockThrottle,
+      isEqual: () => true
+    }));
 
     init = (await import('../init.js')).default as any;
     await init(...args);
