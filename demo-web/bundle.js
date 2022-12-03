@@ -1,7 +1,8 @@
-(function (React, reactDom, reactRedux, redux, reduxRemember) {
+(function (React, ReactDOM, reactRedux, redux, reduxRemember) {
   'use strict';
 
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
+  ReactDOM = ReactDOM && ReactDOM.hasOwnProperty('default') ? ReactDOM['default'] : ReactDOM;
 
   var SET_TEXT1 = 'SET_TEXT1';
   var SET_TEXT2 = 'SET_TEXT2';
@@ -64,7 +65,7 @@
     persistWholeStore: true
   })));
 
-  var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/app.js";
+  var _jsxFileName = "/Users/ani/Desktop/redux-remember/demo-web/src/app.js";
 
   var App = function App(_ref) {
     var _ref$textToBePersiste = _ref.textToBePersisted,
@@ -186,20 +187,21 @@
     };
   })(App);
 
-  var _jsxFileName$1 = "/Users/wish/Desktop/redux-remember/demo-web/src/index.js";
-  reactDom.render(React.createElement(reactRedux.Provider, {
+  var _jsxFileName$1 = "/Users/ani/Desktop/redux-remember/demo-web/src/index.js";
+  var root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(React.createElement(reactRedux.Provider, {
     store: store,
     __source: {
       fileName: _jsxFileName$1,
-      lineNumber: 9
+      lineNumber: 12
     },
     __self: window
   }, React.createElement(App$1, {
     __source: {
       fileName: _jsxFileName$1,
-      lineNumber: 10
+      lineNumber: 13
     },
     __self: window
-  })), document.getElementById('root'));
+  })));
 
 }(React, ReactDOM, ReactRedux, Redux, ReduxRemember));
