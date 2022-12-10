@@ -12,7 +12,10 @@ const config = {
     sourcemap: true,
     format: 'umd',
     esModule: false,
-    strict: false
+    strict: false,
+    globals: {
+      'redux': 'Redux'
+    }
   },
   external: ['redux'],
   plugins: [

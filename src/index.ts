@@ -8,11 +8,13 @@ import {
   StoreEnhancer,
   Reducer,
   Store,
-  StoreCreator
+  StoreCreator,
+  ReducersMapObject,
+  combineReducers
 } from 'redux';
 
 const rememberReducer = <S = any, A extends Action = AnyAction>(
-  reducers: Reducer<S, A>
+  reducer: Reducer<S, A> | ReducersMapObject<S, A>
 ): Reducer<S, A> => {
   const data: any = {
     state: {}
@@ -26,9 +28,13 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
       data.state = { ...state };
     }
 
+    const rootReducer = typeof reducer === 'function'
+      ? reducer
+      : combineReducers(reducer) as Reducer<S, A>;
+
     switch (action.type) {
       case REMEMBER_REHYDRATED:
-        data.state = reducers(
+        data.state = rootReducer(
           {
             ...data.state,
             ...(action.payload || {})
@@ -39,7 +45,7 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
         return data.state;
 
       default:
-        return reducers(
+        return rootReducer(
           state,
           action
         );
