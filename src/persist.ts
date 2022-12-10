@@ -1,4 +1,4 @@
-import { isEqual } from './utils.js';
+import isDeepEqual from './is-deep-equal.js';
 import { ExtendedOptions } from './types.js';
 
 type SaveAllOptions = Pick<
@@ -11,7 +11,7 @@ export const saveAll = (
   oldState: any,
   { prefix, driver, serialize }: SaveAllOptions
 ) => {
-  if (!isEqual(state, oldState)) {
+  if (!isDeepEqual(state, oldState)) {
     return driver.setItem(
       `${prefix}rootState`,
       serialize(state, 'rootState')
@@ -25,7 +25,7 @@ export const saveAllKeyed = (
   { prefix, driver, serialize }: SaveAllOptions
 ) => Promise.all(
   Object.keys(state).map(key => {
-    if (isEqual(state[key], oldState[key])) {
+    if (isDeepEqual(state[key], oldState[key])) {
       return Promise.resolve();
     }
 

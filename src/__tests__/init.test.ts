@@ -51,8 +51,15 @@ describe('init.ts', () => {
       '../utils.js',
       () => ({
         pick: mockPick,
-        throttle: mockThrottle,
-        isEqual: () => false
+        throttle: mockThrottle
+      })
+    );
+
+    jest.mock(
+      '../is-deep-equal.js',
+      () => ({
+        __esModule: true,
+        default: () => false
       })
     );
 
@@ -132,10 +139,9 @@ describe('init.ts', () => {
 
   it('does not call store.dispatch()', async () => {
     jest.resetModules();
-    jest.mock('../utils.js', () => ({
-      pick: mockPick,
-      throttle: mockThrottle,
-      isEqual: () => true
+    jest.mock('../is-deep-equal.js', () => ({
+      __esModule: true,
+      default: () => true
     }));
 
     init = (await import('../init.js')).default as any;

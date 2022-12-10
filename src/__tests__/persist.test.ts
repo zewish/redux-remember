@@ -3,7 +3,7 @@ import { Driver } from '../types.js';
 
 describe('persist.ts', () => {
   let mockDriver: Driver;
-  let mockIsEqual: (a: any, b: any) => boolean;
+  let mockIsDeepEqual: (a: any, b: any) => boolean;
   let mod: typeof persistModule;
 
   beforeEach(async () => {
@@ -12,11 +12,11 @@ describe('persist.ts', () => {
       setItem: jest.fn()
     };
 
-    mockIsEqual = jest.fn((a, b) => a === b);
+    mockIsDeepEqual = jest.fn((a, b) => a === b);
 
-    jest.mock('../utils.js', () => ({
-      ...jest.requireActual('../utils.js'),
-      isEqual: mockIsEqual
+    jest.mock('../is-deep-equal.js', () => ({
+      __esModule: true,
+      default: mockIsDeepEqual
     }));
 
     mod = await import('../persist.js');
@@ -28,7 +28,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAllKeyed()', () => {
-    it('calls isEqual()', async () => {
+    it('calls isDeepEqual()', async () => {
       await mod.saveAllKeyed(
         {
           key1: 'val1',
@@ -45,11 +45,11 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockIsEqual).nthCalledWith(
+      expect(mockIsDeepEqual).nthCalledWith(
         1, 'val1', 'val11'
       );
 
-      expect(mockIsEqual).nthCalledWith(
+      expect(mockIsDeepEqual).nthCalledWith(
         2, 'val2', 'val22'
       );
     });
@@ -113,9 +113,9 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../utils.js', () => ({
-        ...jest.requireActual('../utils.js'),
-        isEqual: () => true
+      jest.mock('../is-deep-equal.js', () => ({
+        __esModule: true,
+        default: () => true
       }));
       jest.resetModules();
 
@@ -142,7 +142,7 @@ describe('persist.ts', () => {
   });
 
   describe('saveAll()', () => {
-    it('calls isEqual()', async () => {
+    it('calls isDeepEqual()', async () => {
       const state = {
         key1: 'val1',
         key2: 'val2'
@@ -163,7 +163,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockIsEqual).toBeCalledWith(
+      expect(mockIsDeepEqual).toBeCalledWith(
         state, oldState
       );
     });
@@ -225,9 +225,9 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../utils.js', () => ({
-        ...jest.requireActual('../utils.js'),
-        isEqual: () => true
+      jest.mock('../is-deep-equal.js', () => ({
+        __esModule: true,
+        default: () => true
       }));
       jest.resetModules();
 
@@ -297,9 +297,9 @@ describe('persist.ts', () => {
     });
 
     it('calls console.warn()', async () => {
-      jest.mock('../utils.js', () => ({
-        ...jest.requireActual('../utils.js'),
-        isEqual: () => false
+      jest.mock('../is-deep-equal.js', () => ({
+        __esModule: true,
+        default: () => false
       }));
       jest.resetModules();
 

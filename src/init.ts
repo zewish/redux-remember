@@ -1,10 +1,10 @@
 import { Store } from 'redux';
-import { isEqual } from './utils.js';
 import { ExtendedOptions } from './types.js';
 import { rehydrate } from './rehydrate.js';
 import { persist } from './persist.js';
 import { REMEMBER_PERSISTED } from './action-types.js';
 import { pick, throttle } from './utils.js';
+import isDeepEqual from './is-deep-equal.js';
 
 const init = async (
   store: Store<any, any>,
@@ -38,7 +38,7 @@ const init = async (
       { prefix, driver, serialize, persistWholeStore }
     );
 
-    if (!isEqual(state, oldState)) {
+    if (!isDeepEqual(state, oldState)) {
       store.dispatch({
         type: REMEMBER_PERSISTED,
         payload: state

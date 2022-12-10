@@ -1,4 +1,4 @@
-import { Action, AnyAction, Reducer, StoreEnhancer } from 'redux';
+import { Action, AnyAction, Reducer } from 'redux';
 declare const REMEMBER_REHYDRATED = "@@REMEMBER_REHYDRATED";
 declare const REMEMBER_PERSISTED = "@@REMEMBER_PERSISTED";
 type SerializeFunction = (data: any, key: string) => any;
@@ -15,5 +15,5 @@ type Options = {
     persistWholeStore: boolean;
 };
 declare const rememberReducer: <S = any, A extends Action<any> = AnyAction>(reducers: Reducer<S, A>) => Reducer<S, A>;
-declare const rememberEnhancer: <Ext = {}, StateExt = {}>(driver: Driver, rememberedKeys: string[], { prefix, serialize, unserialize, persistThrottle, persistWholeStore }?: Partial<Options>) => StoreEnhancer<Ext, StateExt>;
+declare const rememberEnhancer: (driver: Driver, rememberedKeys: string[], { prefix, serialize, unserialize, persistThrottle, persistWholeStore }?: Partial<Options>) => any;
 export { rememberReducer, rememberEnhancer, REMEMBER_REHYDRATED, REMEMBER_PERSISTED };
