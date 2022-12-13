@@ -12,7 +12,10 @@ const store = configureStore({
   enhancers: [rememberEnhancer(
     window.localStorage,
     rememberedKeys,
-    { persistWholeStore: true }
+    {
+      prefix: '@@rememebered-',
+      persistWholeStore: true
+    }
   )]
 });
 

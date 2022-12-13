@@ -103,6 +103,7 @@
   var store = toolkit.configureStore({
     reducer: reduxRemember.rememberReducer(reducers),
     enhancers: [reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys, {
+      prefix: '@@rememebered-',
       persistWholeStore: true
     })]
   });
