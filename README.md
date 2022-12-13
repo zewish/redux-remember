@@ -185,8 +185,8 @@ const usageInsideReducer = createSlice({
 Usage - legacy apps (without redux toolkit)
 -------------------------------------------
 
-Examples here are using redux toolkit.
-For applications without redux toolkit integrated, [check the legacy usage here](./LEGACY-USAGE.md).**
+Examples here are using redux toolkit.<br>
+If your application still isn't migrated to redux toolkit, [check the legacy usage documentation](./LEGACY-USAGE.md).
 
 
 API reference
