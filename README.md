@@ -28,108 +28,119 @@ $ npm install --save redux-remember
 $ yarn add redux-remember
 ```
 
-
 Usage - web
 -----------
 
-```js
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+```ts
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
-const myStateIsRemembered = (state = '', { type, payload }) => {
-    switch (type) {
-        case 'SET_TEXT1':
-            return payload;
-
-        default:
-            return state;
+const myStateIsRemembered = createSlice({
+  name: 'persisted-slice',
+  initialState: {
+    text: ''
+  },
+  reducers: {
+    setPersistedText(state, action: PayloadAction<{ text: string }>) {
+      state.text = action.payload;
     }
-};
+  }
+});
 
-const myStateIsForgotten = (state = '', { type, payload }) => {
-    switch (type) {
-        case 'SET_TEXT2':
-            return payload;
-
-        default:
-            return state;
+const myStateIsForgotten = createSlice({
+  name: 'forgotten-slice',
+  initialState: {
+    text: ''
+  },
+  reducers: {
+    setForgottenText(state, action: PayloadAction<{ text: string }>) {
+      state.text = action.payload;
     }
-}
+  }
+});
 
 const reducers = {
-    myStateIsRemembered,
-    myStateIsForgotten
+  myStateIsRemembered: myStateIsRemembered.reducer,
+  myStateIsForgotten: myStateIsForgotten.reducer,
+  someExtraData: (state = 'bla') => state
+};
+
+export const actions = {
+  ...myStateIsRemembered.actions,
+  ...myStateIsForgotten.actions
 };
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
-const store = createStore(
-    rememberReducer(
-        combineReducers(reducers)
-    ),
-    compose(
-        applyMiddleware(
-            // ...
-        ),
-        rememberEnhancer(
-            window.localStorage, // or window.sessionStorage, or your own custom storage driver
-            rememberedKeys
-        )
-    )
-);
+const store = configureStore({
+  reducer: rememberReducer(
+    reducers
+  ),
+  enhancers: [rememberEnhancer(
+    window.localStorage,
+    rememberedKeys,
+    { persistWholeStore: true }
+  )]
+});
 
 // Continue using the redux store as usual...
 ```
 
-Usage - react native
+Usage - react-native
 --------------------
 
-```js
+```ts
 import AsyncStorage from '@react-native-community/async-storage';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
-const myStateIsRemembered = (state = '', { type, payload }) => {
-    switch (type) {
-        case 'SET_TEXT1':
-            return payload;
-
-        default:
-            return state;
+const myStateIsRemembered = createSlice({
+  name: 'persisted-slice',
+  initialState: {
+    text: ''
+  },
+  reducers: {
+    setPersistedText(state, action: PayloadAction<{ text: string }>) {
+      state.text = action.payload;
     }
-};
+  }
+});
 
-const myStateIsForgotten = (state = '', { type, payload }) => {
-    switch (type) {
-        case 'SET_TEXT2':
-            return payload;
-
-        default:
-            return state;
+const myStateIsForgotten = createSlice({
+  name: 'forgotten-slice',
+  initialState: {
+    text: ''
+  },
+  reducers: {
+    setForgottenText(state, action: PayloadAction<{ text: string }>) {
+      state.text = action.payload;
     }
-};
+  }
+});
 
 const reducers = {
-    myStateIsRemembered,
-    myStateIsForgotten
+  myStateIsRemembered: myStateIsRemembered.reducer,
+  myStateIsForgotten: myStateIsForgotten.reducer,
+  someExtraData: (state = 'bla') => state
+};
+
+export const actions = {
+  ...myStateIsRemembered.actions,
+  ...myStateIsForgotten.actions
 };
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
-const store = createStore(
-    rememberReducer(
-        combineReducers(reducers)
-    ),
-    compose(
-        applyMiddleware(
-            // ...
-        ),
-        rememberEnhancer(
-            AsyncStorage, // or your own custom storage driver
-            rememberedKeys
-        )
-    )
-);
+const store = configureStore({
+  reducer: rememberReducer(
+    reducers
+  ),
+  enhancers: [rememberEnhancer(
+    AsyncStorage, // or your own custom storage driver
+    rememberedKeys,
+    { persistWholeStore: true }
+  )]
+});
 
 // Continue using the redux store as usual...
 ```
@@ -137,56 +148,47 @@ const store = createStore(
 Usage - inside a reducer
 ------------------------
 
-```js
-import { SOME_ACTION } from './actions';
+```ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
-const defaultState = {
-    changeMe: null,
-    rehydrated: false,
-    persisted: false
+const initialState = {
+  changeMe: null,
+  rehydrated: false,
+  persisted: false
 };
 
-export default (state = defaultState, { type, payload }) => {
-    switch (type) {
-        case REMEMBER_REHYDRATED:
-            // state gets rehydrated from storage
-            // state == { changeMe: 123 }
-            return {
-                ...state,
-                rehydrated: true
-            };
+const usageInsideReducer = createSlice({
+  name: 'usage-inside-reducer-slice',
+  initialState,
+  reducers: {
+    someAction(state, action: PayloadAction<{ changeMe: any }>) {
+      if (!state.rehydrated) {
+        return;
+      }
 
-        case REMEMBER_PERSISTED:
-            return {
-                ...state,
-                rehydrated: false,
-                persisted: true
-            };
-
-        case SOME_ACTION:
-            // example: only merge payload from SOME_ACTION event types
-            // after the state rehydration is done
-            if (!state.rehydrated) {
-                return state;
-            }
-
-            return {
-                ...state,
-                changeMe: payload
-            };
-
-        default:
-            return state;
+      state.changeMe = action.payload.changeMe;
     }
-};
+  },
+  extraReducers: (builder) => builder
+    .addCase(REMEMBER_REHYDRATED, (state, action) => {
+      state.changeMe = (action as PayloadAction<typeof initialState>).payload.changeMe;
+      state.rehydrated = true;
+    })
+    .addCase(REMEMBER_PERSISTED, (state) => {
+      state.rehydrated = false;
+      state.persisted = true;
+    })
+});
 ```
+
+**For applications without redux toolkit, [check legacy usage here](./LEGACY-USAGE.md)**
 
 API reference
 -------------
-- **rememberReducer(rootReducer: Reducer)**
+- **rememberReducer(redicers: Reducer | ReducersMapObject)**
     - Arguments:
-        1. **rootReducer** *(required)* - takes the result of `combineReducers()` function;
+        1. **redicers** *(required)* - takes the result of `combineReducers()` function or list of non-combined reducers to combine internally (same as redux-toolkit);
     - Returns - a new root reducer to use as first argument for the `createStore()` function;
 
 
