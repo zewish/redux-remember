@@ -200,7 +200,7 @@ API reference
 - **rememberReducer(redicers: Reducer | ReducersMapObject)**
     - Arguments:
         1. **redicers** *(required)* - takes the result of `combineReducers()` function or list of non-combined reducers to combine internally (same as redux toolkit);
-    - Returns - a new root reducer to use as first argument for the `configureStore()` or the `createStore()` function;
+    - Returns - a new root reducer to use as first argument for the `configureStore()` (redux toolkit) or the `createStore()` (plain redux) function;
 
 
 - **rememberEnhancer(driver: Driver, rememberedKeys: string[], options?: Options)**
