@@ -1,23 +1,29 @@
 {
   "name": "demo-web",
-  "version": "2.0.6",
+  "version": "3.1.6",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=development rollup -c ./rollup.config.js"
+    "build": "NODE_ENV=development rollup -c ./rollup.config.mjs"
   },
   "private": true,
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.20.2",
+    "@reduxjs/toolkit": "^1.9.1",
+    "@rollup/plugin-commonjs": "^23.0.4",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^5.0.1",
+    "@types/react-dom": "^18.0.9",
     "babel-preset-react-app": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
-    "rollup": "^1.16.3",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "redux-remember": "../",
+    "rollup": "^3.7.4",
+    "rollup-plugin-ts": "^3.0.2"
   }
 }

@@ -1,207 +1,249 @@
-(function (React, ReactDOM, reactRedux, redux, reduxRemember) {
+(function (require$$0, reactRedux, toolkit, reduxRemember) {
   'use strict';
 
-  React = React && React.hasOwnProperty('default') ? React['default'] : React;
-  ReactDOM = ReactDOM && ReactDOM.hasOwnProperty('default') ? ReactDOM['default'] : ReactDOM;
+  var client = {};
 
-  var SET_TEXT1 = 'SET_TEXT1';
-  var SET_TEXT2 = 'SET_TEXT2';
-  var setText1 = function setText1(text) {
-    return {
-      type: SET_TEXT1,
-      payload: text
+  var m = require$$0;
+  {
+    var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+    client.createRoot = function (c, o) {
+      i.usingClientEntryPoint = true;
+      try {
+        return m.createRoot(c, o);
+      } finally {
+        i.usingClientEntryPoint = false;
+      }
     };
-  };
-  var setText2 = function setText2(text) {
-    return {
-      type: SET_TEXT2,
-      payload: text
+    client.hydrateRoot = function (c, h, o) {
+      i.usingClientEntryPoint = true;
+      try {
+        return m.hydrateRoot(c, h, o);
+      } finally {
+        i.usingClientEntryPoint = false;
+      }
     };
-  };
+  }
 
-  var textToBePersisted = function textToBePersisted() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-    var _ref = arguments.length > 1 ? arguments[1] : undefined,
-        type = _ref.type,
-        payload = _ref.payload;
-
-    switch (type) {
-      case SET_TEXT1:
-        return payload;
-
-      default:
-        return state;
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
     }
-  };
+    return obj;
+  }
 
-  var textToBeForgotten = function textToBeForgotten() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-    var _ref2 = arguments.length > 1 ? arguments[1] : undefined,
-        type = _ref2.type,
-        payload = _ref2.payload;
-
-    switch (type) {
-      case SET_TEXT2:
-        return payload;
-
-      default:
-        return state;
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
     }
-  };
+    return keys;
+  }
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+    return target;
+  }
 
+  var textToBePersisted = toolkit.createSlice({
+    name: 'set-persisted-text',
+    initialState: {
+      text: ''
+    },
+    reducers: {
+      setPersistedText: function setPersistedText(state, action) {
+        state.text = action.payload;
+      }
+    }
+  });
+  var textToBeForgotten = toolkit.createSlice({
+    name: 'set-forgotten-text',
+    initialState: {
+      text: ''
+    },
+    reducers: {
+      setForgottenText: function setForgottenText(state, action) {
+        state.text = action.payload;
+      }
+    }
+  });
   var reducers = {
-    textToBePersisted: textToBePersisted,
-    textToBeForgotten: textToBeForgotten,
-    someData: function someData() {
+    textToBePersisted: textToBePersisted.reducer,
+    textToBeForgotten: textToBeForgotten.reducer,
+    someExtraData: function someExtraData() {
       var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'bla';
       return state;
     }
   };
+  var actions = _objectSpread2(_objectSpread2({}, textToBePersisted.actions), textToBeForgotten.actions);
 
   var rememberedKeys = ['textToBePersisted'];
-  var store = redux.createStore(reduxRemember.rememberReducer(redux.combineReducers(reducers)), redux.compose(redux.applyMiddleware(), reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys, {
-    persistWholeStore: true
-  })));
+  var store = toolkit.configureStore({
+    reducer: reduxRemember.rememberReducer(reducers),
+    enhancers: [reduxRemember.rememberEnhancer(window.localStorage, rememberedKeys, {
+      persistWholeStore: true
+    })]
+  });
+  var useAppDispatch = reactRedux.useDispatch;
+  var useAppSelector = reactRedux.useSelector;
 
-  var _jsxFileName = "/Users/ani/Desktop/redux-remember/demo-web/src/app.js";
-
-  var App = function App(_ref) {
-    var _ref$textToBePersiste = _ref.textToBePersisted,
-        textToBePersisted = _ref$textToBePersiste === void 0 ? '' : _ref$textToBePersiste,
-        _ref$textToBeForgotte = _ref.textToBeForgotten,
-        textToBeForgotten = _ref$textToBeForgotte === void 0 ? '' : _ref$textToBeForgotte,
-        setText1 = _ref.setText1,
-        setText2 = _ref.setText2;
-    return React.createElement("div", {
+  var _this = window,
+    _jsxFileName$1 = "/Users/wish/Desktop/redux-remember/demo-web/src/App.tsx";
+  var App = function App() {
+    var textToBePersisted = useAppSelector(function (store) {
+      return store.textToBePersisted.text;
+    });
+    var textToBeForgotten = useAppSelector(function (store) {
+      return store.textToBeForgotten.text;
+    });
+    var dispatch = useAppDispatch();
+    return /*#__PURE__*/React.createElement("div", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 11
-      },
-      __self: this
-    }, React.createElement("h1", {
+        fileName: _jsxFileName$1,
+        lineNumber: 10,
+        columnNumber: 5
+      }
+    }, /*#__PURE__*/React.createElement("h1", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 12
-      },
-      __self: this
-    }, "redux-remember demo (uses window.localStorage)"), React.createElement("h2", {
+        fileName: _jsxFileName$1,
+        lineNumber: 11,
+        columnNumber: 7
+      }
+    }, "redux-remember demo (uses window.localStorage)"), /*#__PURE__*/React.createElement("h2", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 13
-      },
-      __self: this
-    }, "Type something into the inputs and reload the page"), React.createElement("div", {
+        fileName: _jsxFileName$1,
+        lineNumber: 12,
+        columnNumber: 7
+      }
+    }, "Type something into the inputs and reload the page"), /*#__PURE__*/React.createElement("div", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 15
-      },
-      __self: this
-    }, React.createElement("label", {
+        fileName: _jsxFileName$1,
+        lineNumber: 14,
+        columnNumber: 7
+      }
+    }, /*#__PURE__*/React.createElement("label", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 16
-      },
-      __self: this
-    }, "I shall be remembered :)")), React.createElement("div", {
+        fileName: _jsxFileName$1,
+        lineNumber: 15,
+        columnNumber: 9
+      }
+    }, "I shall be remembered :)")), /*#__PURE__*/React.createElement("div", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 19
-      },
-      __self: this
-    }, React.createElement("input", {
+        fileName: _jsxFileName$1,
+        lineNumber: 18,
+        columnNumber: 7
+      }
+    }, /*#__PURE__*/React.createElement("input", {
       type: "text",
       value: textToBePersisted,
       onChange: function onChange(ev) {
-        return setText1(ev.target.value);
+        return dispatch(actions.setPersistedText(ev.target.value));
       },
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 20
-      },
-      __self: this
-    })), React.createElement("div", {
+        fileName: _jsxFileName$1,
+        lineNumber: 19,
+        columnNumber: 9
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 27
-      },
-      __self: this
-    }, React.createElement("label", {
+        fileName: _jsxFileName$1,
+        lineNumber: 26,
+        columnNumber: 7
+      }
+    }, /*#__PURE__*/React.createElement("label", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 28
-      },
-      __self: this
-    }, "I shall be forgotten :(")), React.createElement("div", {
+        fileName: _jsxFileName$1,
+        lineNumber: 27,
+        columnNumber: 9
+      }
+    }, "I shall be forgotten :(")), /*#__PURE__*/React.createElement("div", {
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 31
-      },
-      __self: this
-    }, React.createElement("input", {
+        fileName: _jsxFileName$1,
+        lineNumber: 30,
+        columnNumber: 7
+      }
+    }, /*#__PURE__*/React.createElement("input", {
       type: "text",
       value: textToBeForgotten,
       onChange: function onChange(ev) {
-        return setText2(ev.target.value);
+        return dispatch(actions.setForgottenText(ev.target.value));
       },
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 32
-      },
-      __self: this
-    })), React.createElement("div", {
+        fileName: _jsxFileName$1,
+        lineNumber: 31,
+        columnNumber: 9
+      }
+    })), /*#__PURE__*/React.createElement("div", {
       className: "source-code",
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 39
-      },
-      __self: this
-    }, React.createElement("a", {
+        fileName: _jsxFileName$1,
+        lineNumber: 38,
+        columnNumber: 7
+      }
+    }, /*#__PURE__*/React.createElement("a", {
       href: "https://github.com/zewish/redux-remember/tree/master/demo-web/src",
       target: "_blank",
       rel: "noopener noreferrer nofollow",
+      __self: _this,
       __source: {
-        fileName: _jsxFileName,
-        lineNumber: 40
-      },
-      __self: this
+        fileName: _jsxFileName$1,
+        lineNumber: 39,
+        columnNumber: 9
+      }
     }, "[ See demo source ]")));
   };
 
-  var App$1 = reactRedux.connect(function (_ref2) {
-    var textToBePersisted = _ref2.textToBePersisted,
-        textToBeForgotten = _ref2.textToBeForgotten;
-    return {
-      textToBePersisted: textToBePersisted,
-      textToBeForgotten: textToBeForgotten
-    };
-  }, function (dispatch) {
-    return {
-      setText1: function setText1$1(text) {
-        return dispatch(setText1(text));
-      },
-      setText2: function setText2$1(text) {
-        return dispatch(setText2(text));
-      }
-    };
-  })(App);
-
-  var _jsxFileName$1 = "/Users/ani/Desktop/redux-remember/demo-web/src/index.js";
-  var root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(React.createElement(reactRedux.Provider, {
+  var _jsxFileName = "/Users/wish/Desktop/redux-remember/demo-web/src/index.tsx";
+  var root = client.createRoot(document.getElementById('root'));
+  root.render( /*#__PURE__*/React.createElement(reactRedux.Provider, {
     store: store,
+    __self: window,
     __source: {
-      fileName: _jsxFileName$1,
-      lineNumber: 12
-    },
-    __self: window
-  }, React.createElement(App$1, {
+      fileName: _jsxFileName,
+      lineNumber: 11,
+      columnNumber: 3
+    }
+  }, /*#__PURE__*/React.createElement(App, {
+    __self: window,
     __source: {
-      fileName: _jsxFileName$1,
-      lineNumber: 13
-    },
-    __self: window
+      fileName: _jsxFileName,
+      lineNumber: 12,
+      columnNumber: 5
+    }
   })));
 
-}(React, ReactDOM, ReactRedux, Redux, ReduxRemember));
+})(ReactDOM, ReactRedux, RTK, ReduxRemember);
