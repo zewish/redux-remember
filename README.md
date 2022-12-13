@@ -152,7 +152,13 @@ Usage - inside a reducer
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
-const initialState = {
+type InitialState = {
+  changeMe: any;
+  rehydrated: boolean;
+  persisted: boolean;
+};
+
+const initialState: InitialState = {
   changeMe: null,
   rehydrated: false,
   persisted: false
@@ -172,7 +178,7 @@ const usageInsideReducer = createSlice({
   },
   extraReducers: (builder) => builder
     .addCase(REMEMBER_REHYDRATED, (state, action) => {
-      state.changeMe = (action as PayloadAction<typeof initialState>).payload.changeMe;
+      state.changeMe = (action as PayloadAction<InitialState>).payload.changeMe;
       state.rehydrated = true;
     })
     .addCase(REMEMBER_PERSISTED, (state) => {
