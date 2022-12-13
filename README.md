@@ -182,7 +182,12 @@ const usageInsideReducer = createSlice({
 });
 ```
 
-**For applications without redux toolkit, [check legacy usage here](./LEGACY-USAGE.md)**
+Usage - legacy apps (without redux toolkit)
+-------------------------------------------
+
+Examples here are using redux toolkit.
+For applications without redux toolkit integrated, [check the legacy usage here](./LEGACY-USAGE.md).**
+
 
 API reference
 -------------
