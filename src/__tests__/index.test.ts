@@ -1,100 +1,121 @@
 import * as indexModule from '../index.js';
 import * as actionTypes from '../action-types.js';
-import { Reducer, StoreCreator } from 'redux';
+import { Reducer, ReducersMapObject, StoreCreator } from 'redux';
 import { Options } from '../types.js';
 
 describe('index.ts', () => {
-    let mockRehydrate = {
-      rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
-    };
+  let mockRehydrate = {
+    rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
+  };
 
-    let mockInit: jest.Mock;
-    let index: typeof indexModule;
+  let mockInit: jest.Mock;
+  let mockCombineReducers: jest.Mock;
+  let index: typeof indexModule;
 
-    beforeEach(async () => {
-      mockRehydrate.rehydrateReducer = jest.fn(() => 'REHYDRATE_REDUCER');
-      mockInit = jest.fn(() => {});
+  beforeEach(async () => {
+    mockRehydrate.rehydrateReducer = jest.fn(() => 'REHYDRATE_REDUCER');
+    mockInit = jest.fn(() => {});
+    mockCombineReducers = jest.fn(() => {});
 
-      jest.mock('../rehydrate.js', () => mockRehydrate);
-      jest.mock('../init.js', () => mockInit);
+    jest.mock('../rehydrate.js', () => mockRehydrate);
+    jest.mock('../init.js', () => mockInit);
+    jest.mock('redux', () => ({
+      ...jest.requireActual('redux'),
+      combineReducers: mockCombineReducers
+    }));
 
-      index = await import('../index.js');
+    index = await import('../index.js');
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
+
+  it('exports proper items', () => {
+    expect(index.REMEMBER_REHYDRATED).toEqual(
+      actionTypes.REMEMBER_REHYDRATED
+    );
+
+    expect(index.REMEMBER_PERSISTED).toEqual(
+      actionTypes.REMEMBER_PERSISTED
+    );
+
+    expect(typeof index.rememberReducer).toBe(
+      'function'
+    );
+
+    expect(typeof index.rememberEnhancer).toBe(
+      'function'
+    );
+  });
+
+  describe('rememberReducer()', () => {
+    let mockReducer: Reducer;
+
+    const exec = (state: any, action: any) => (
+      index.rememberReducer(mockReducer)(state, action)
+    );
+
+    beforeEach(() => {
+      mockReducer = jest.fn((state: any, action: any) => state);
     });
 
-    afterEach(() => {
-      jest.clearAllMocks();
-      jest.resetModules();
+    it('call combineReducers()', async () => {
+      const reducersObj: ReducersMapObject<any, any> = {
+        dummy: () => 'test123'
+      };
+
+      const mockState = { dummy: 'test' };
+      mockCombineReducers.mockReturnValue(() => mockState);
+
+      expect(index.rememberReducer(reducersObj)(undefined, {})).toEqual(
+        mockState
+      );
+
+      expect(mockCombineReducers).toBeCalledWith(reducersObj);
     });
 
-    it('exports proper items', () => {
-      expect(index.REMEMBER_REHYDRATED).toEqual(
-        actionTypes.REMEMBER_REHYDRATED
-      );
-
-      expect(index.REMEMBER_PERSISTED).toEqual(
-        actionTypes.REMEMBER_PERSISTED
-      );
-
-      expect(typeof index.rememberReducer).toBe(
-        'function'
-      );
-
-      expect(typeof index.rememberEnhancer).toBe(
-        'function'
+    it('does not break when state and action are empty', () => {
+      expect(exec(undefined, {})).toEqual(
+        {}
       );
     });
 
-    describe('rememberReducer()', () => {
-      let mockReducer: Reducer;
+    it('returns preloaded state', () => {
+      const state = { 'cool': 'state' };
 
-      const exec = (state: any, action: any) => (
-        index.rememberReducer(mockReducer)(state, action)
+      expect(exec(state, { type: '@@INIT' })).toEqual(
+        state
       );
 
-      beforeEach(() => {
-        mockReducer = jest.fn((state: any, action: any) => state);
-      });
-
-      it('does not break when state and action are empty', () => {
-        expect(exec(undefined, {})).toEqual(
-          {}
-        );
-      });
-
-      it('returns preloaded state', () => {
-        const state = { 'cool': 'state' };
-
-        expect(exec(state, { type: '@@INIT' })).toEqual(
-          state
-        );
-
-        expect(exec(state, { type: '@@redux/INIT.12345' })).toEqual(
-          state
-        );
-      });
-
-      it('returns rehydrated state', () => {
-        const payload = {
-          wow: 'beep',
-          nah: 'lol'
-        };
-
-        expect(exec(
-          null,
-          {
-            type: actionTypes.REMEMBER_REHYDRATED,
-            payload
-          }
-        )).toEqual(payload);
-      });
-
-      it('does not fail if there is missing payload', () => {
-        expect(exec(
-          null,
-          { type: actionTypes.REMEMBER_REHYDRATED }
-        )).toEqual({});
-      });
+      expect(exec(state, { type: '@@redux/INIT.12345' })).toEqual(
+        state
+      );
     });
+
+    it('returns rehydrated state', () => {
+      const payload = {
+        wow: 'beep',
+        nah: 'lol'
+      };
+
+      expect(exec(
+        null,
+        {
+          type: actionTypes.REMEMBER_REHYDRATED,
+          payload
+        }
+      )).toEqual(payload);
+    });
+
+    it('does not fail if there is missing payload', () => {
+      expect(exec(
+        null,
+        { type: actionTypes.REMEMBER_REHYDRATED }
+      )).toEqual({});
+    });
+  });
 
   describe('rememberEnhancer()', () => {
     it('throws when no driver', () => {
