@@ -1,18 +1,24 @@
 {
   "name": "redux-remember",
-  "version": "3.1.8",
+  "version": "3.1.10",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "umd:main": "dist/redux-remember.js",
   "module": "es/index.js",
   "unpkg": "dist/redux-remember.js",
+  "source": "src/index.ts",
   "typings": "index.d.ts",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "import": "./es/index.js",
-      "require": "./lib/index.js"
-    }
+      "require": "./lib/index.js",
+      "default": "./lib/index.js",
+      "umd": "./dist/redux-remember.js"
+    },
+    "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
@@ -44,6 +50,7 @@
     }
   },
   "files": [
+    "src",
     "dist",
     "es",
     "lib",
