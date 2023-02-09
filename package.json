@@ -55,7 +55,8 @@
     "es",
     "lib",
     "index.d.ts",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "repository": {
     "type": "git",
