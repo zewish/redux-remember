@@ -72,10 +72,9 @@ export const actions = {
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
+const reducer = rememberReducer(reducers);
 const store = configureStore({
-  reducer: rememberReducer(
-    reducers
-  ),
+  reducer,
   enhancers: [rememberEnhancer(
     window.localStorage,
     rememberedKeys,
@@ -131,10 +130,9 @@ export const actions = {
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
+const reducer = rememberReducer(reducers);
 const store = configureStore({
-  reducer: rememberReducer(
-    reducers
-  ),
+  reducer,
   enhancers: [rememberEnhancer(
     AsyncStorage, // or your own custom storage driver
     rememberedKeys,

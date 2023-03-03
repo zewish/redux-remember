@@ -5,10 +5,9 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rememberedKeys = [ 'textToBePersisted' ];
 
+const reducer = rememberReducer(reducers);
 const store = configureStore({
-  reducer: rememberReducer(
-    reducers
-  ),
+  reducer,
   enhancers: [rememberEnhancer(
     window.localStorage,
     rememberedKeys,

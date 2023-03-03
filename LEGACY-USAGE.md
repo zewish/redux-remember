@@ -34,10 +34,12 @@ const reducers = {
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
+const reducer = rememberReducer(
+  combineReducers(reducers)
+);
+
 const store = createStore(
-  rememberReducer(
-    combineReducers(reducers)
-  ),
+  reducer,
   compose(
     applyMiddleware(
       // ...
@@ -87,10 +89,12 @@ const reducers = {
 
 const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
+const reducer = rememberReducer(
+  combineReducers(reducers)
+);
+
 const store = createStore(
-  rememberReducer(
-    combineReducers(reducers)
-  ),
+  reducer,
   compose(
     applyMiddleware(
       // ...
