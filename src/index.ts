@@ -13,6 +13,8 @@ import {
   combineReducers
 } from 'redux';
 
+export * from './types.js';
+
 const rememberReducer = <S = any, A extends Action = AnyAction>(
   reducer: Reducer<S, A> | ReducersMapObject<S, A>
 ): Reducer<S, A> => {
