@@ -50,3 +50,19 @@ export const throttle = <T extends (...args: any) => void>(
     }, timeLeft);
   }) as T;
 };
+
+export const debounce = <T extends (...args: any) => void>(
+  callback: T,
+  msecs: number
+): T => {
+  let nextCallTimeout: TimeoutHandle | null;
+
+  return ((...args: any): void => {
+    clearTimeout(nextCallTimeout as TimeoutHandle);
+
+    nextCallTimeout = setTimeout(() => {
+      callback(...args);
+      nextCallTimeout = null;
+    }, msecs);
+  }) as T;
+};

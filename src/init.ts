@@ -3,7 +3,7 @@ import { ExtendedOptions } from './types.js';
 import { rehydrate } from './rehydrate.js';
 import { persist } from './persist.js';
 import { REMEMBER_PERSISTED } from './action-types.js';
-import { pick, throttle } from './utils.js';
+import { pick, throttle, debounce } from './utils.js';
 import isDeepEqual from './is-deep-equal.js';
 
 const init = async (
@@ -15,6 +15,7 @@ const init = async (
     serialize,
     unserialize,
     persistThrottle,
+    persistDebounce,
     persistWholeStore
   }: ExtendedOptions
 ) => {
@@ -26,7 +27,7 @@ const init = async (
 
   let oldState = {};
 
-  store.subscribe(throttle(async () => {
+  const persistFunc = async () => {
     const state = pick(
       store.getState(),
       rememberedKeys
@@ -46,7 +47,13 @@ const init = async (
     }
 
     oldState = state;
-  }, persistThrottle));
+  }
+
+  if (persistDebounce && persistDebounce > 0) {
+    store.subscribe(debounce(persistFunc, persistDebounce))
+  } else {
+    store.subscribe(throttle(persistFunc, persistThrottle))
+  }
 };
 
 export default init;

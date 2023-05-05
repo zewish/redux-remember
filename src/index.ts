@@ -63,6 +63,7 @@ const rememberEnhancer = (
     serialize = (data, key) => JSON.stringify(data),
     unserialize = (data, key) => JSON.parse(data),
     persistThrottle = 100,
+    persistDebounce,
     persistWholeStore = false
   }: Partial<Options> = {}
 ): any => {
@@ -88,7 +89,7 @@ const rememberEnhancer = (
     init(
       store,
       rememberedKeys,
-      { driver, prefix, serialize, unserialize, persistThrottle, persistWholeStore }
+      { driver, prefix, serialize, unserialize, persistThrottle, persistDebounce, persistWholeStore }
     );
 
     return store;

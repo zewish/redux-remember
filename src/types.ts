@@ -11,6 +11,7 @@ export type Options = {
   serialize: SerializeFunction,
   unserialize: UnserializeFunction,
   persistThrottle: number,
+  persistDebounce?: number,
   persistWholeStore: boolean
 };
 
