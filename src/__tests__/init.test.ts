@@ -13,6 +13,7 @@ describe('init.ts', () => {
   let mockPersist: Partial<typeof persistModule>;
   let mockPick: Function;
   let mockThrottle: Function;
+  let mockDebounce: Function;
 
   let init: (...args: any[]) => any;
   let args: any[];
@@ -36,6 +37,7 @@ describe('init.ts', () => {
 
     mockPick = jest.fn((state: any) => state);
     mockThrottle = jest.fn((fn: any) => fn);
+    mockDebounce = jest.fn((fn: any) => fn);
 
     jest.mock(
       '../rehydrate.js',
@@ -51,7 +53,8 @@ describe('init.ts', () => {
       '../utils.js',
       () => ({
         pick: mockPick,
-        throttle: mockThrottle
+        throttle: mockThrottle,
+        debounce: mockDebounce
       })
     );
 
@@ -101,7 +104,7 @@ describe('init.ts', () => {
     );
   });
 
-  it('calls lodash.pick()', async () => {
+  it('calls pick()', async () => {
     await init(...args);
 
     expect(mockPick).toBeCalledWith(
@@ -110,7 +113,13 @@ describe('init.ts', () => {
     );
   });
 
-  it('calls lodash.throttle()', async () => {
+  it('calls throttle()', async () => {
+    await init(...args);
+
+    expect(mockPick).toBeCalledTimes(1);
+  });
+
+  it('calls debounce()', async () => {
     await init(...args);
 
     expect(mockPick).toBeCalledTimes(1);
