@@ -1,4 +1,4 @@
-import isDeepEqual from '../is-deep-equal.js';
+import isDeepEqual from '../is-deep-equal';
 
 const stringObj = new String('c');
 const intObj = new Number(2161);

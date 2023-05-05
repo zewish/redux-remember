@@ -1,5 +1,5 @@
-import * as persistModule from '../persist.js';
-import { Driver } from '../types.js';
+import * as persistModule from '../persist';
+import { Driver } from '../types';
 
 describe('persist.ts', () => {
   let mockDriver: Driver;
@@ -14,12 +14,12 @@ describe('persist.ts', () => {
 
     mockIsDeepEqual = jest.fn((a, b) => a === b);
 
-    jest.mock('../is-deep-equal.js', () => ({
+    jest.mock('../is-deep-equal', () => ({
       __esModule: true,
       default: mockIsDeepEqual
     }));
 
-    mod = await import('../persist.js');
+    mod = await import('../persist');
   });
 
   afterEach(() => {
@@ -113,13 +113,13 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../is-deep-equal.js', () => ({
+      jest.mock('../is-deep-equal', () => ({
         __esModule: true,
         default: () => true
       }));
       jest.resetModules();
 
-      mod = await import('../persist.js');
+      mod = await import('../persist');
 
       await mod.saveAllKeyed(
         {
@@ -225,13 +225,13 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../is-deep-equal.js', () => ({
+      jest.mock('../is-deep-equal', () => ({
         __esModule: true,
         default: () => true
       }));
       jest.resetModules();
 
-      mod = await import('../persist.js');
+      mod = await import('../persist');
 
       await mod.saveAll(
         { key1: 'changed' },
@@ -297,13 +297,13 @@ describe('persist.ts', () => {
     });
 
     it('calls console.warn()', async () => {
-      jest.mock('../is-deep-equal.js', () => ({
+      jest.mock('../is-deep-equal', () => ({
         __esModule: true,
         default: () => false
       }));
       jest.resetModules();
 
-      mod = await import('../persist.js');
+      mod = await import('../persist');
 
       const error1 = 'DUMMY ERROR 1!!!';
       const error2 = 'DUMMY ERROR 2!!!';

@@ -1,6 +1,6 @@
-import init from './init.js';
-import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types.js';
-import { Driver, Options } from './types.js';
+import init from './init';
+import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types';
+import { Driver, Options } from './types';
 import {
   Action,
   AnyAction,
@@ -13,7 +13,7 @@ import {
   combineReducers
 } from 'redux';
 
-export * from './types.js';
+export * from './types';
 
 const rememberReducer = <S = any, A extends Action = AnyAction>(
   reducer: Reducer<S, A> | ReducersMapObject<S, A>

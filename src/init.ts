@@ -1,10 +1,10 @@
 import { Store } from 'redux';
-import { ExtendedOptions } from './types.js';
-import { rehydrate } from './rehydrate.js';
-import { persist } from './persist.js';
-import { REMEMBER_PERSISTED } from './action-types.js';
-import { pick, throttle, debounce } from './utils.js';
-import isDeepEqual from './is-deep-equal.js';
+import { ExtendedOptions } from './types';
+import { rehydrate } from './rehydrate';
+import { persist } from './persist';
+import { REMEMBER_PERSISTED } from './action-types';
+import { pick, throttle, debounce } from './utils';
+import isDeepEqual from './is-deep-equal';
 
 const init = async (
   store: Store<any, any>,

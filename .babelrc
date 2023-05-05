@@ -34,6 +34,11 @@
           },
           "exclude": ["@babel/plugin-transform-regenerator"]
         }]
+      ],
+      "plugins": [
+        ["module-extension-resolver", {
+          "extensionsToKeep": [".js"]
+        }]
       ]
     },
     "lib": {

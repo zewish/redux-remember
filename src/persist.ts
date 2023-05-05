@@ -1,5 +1,5 @@
-import isDeepEqual from './is-deep-equal.js';
-import { ExtendedOptions } from './types.js';
+import isDeepEqual from './is-deep-equal';
+import { ExtendedOptions } from './types';
 
 type SaveAllOptions = Pick<
   ExtendedOptions,

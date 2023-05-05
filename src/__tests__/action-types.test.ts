@@ -1,4 +1,4 @@
-import * as actionTypes from '../action-types.js';
+import * as actionTypes from '../action-types';
 
 describe('action-types.ts', () => {
   it('exports proper items', () => {

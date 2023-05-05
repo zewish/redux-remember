@@ -1,6 +1,6 @@
-import * as rehydrateModule from '../rehydrate.js';
-import * as persistModule from '../persist.js';
-import { REMEMBER_PERSISTED } from '../action-types.js';
+import * as rehydrateModule from '../rehydrate';
+import * as persistModule from '../persist';
+import { REMEMBER_PERSISTED } from '../action-types';
 import { Store } from 'redux';
 
 describe('init.ts', () => {
@@ -40,17 +40,17 @@ describe('init.ts', () => {
     mockDebounce = jest.fn((fn: any) => fn);
 
     jest.mock(
-      '../rehydrate.js',
+      '../rehydrate',
       () => mockRehydrate
     );
 
     jest.mock(
-      '../persist.js',
+      '../persist',
       () => mockPersist
     );
 
     jest.mock(
-      '../utils.js',
+      '../utils',
       () => ({
         pick: mockPick,
         throttle: mockThrottle,
@@ -59,14 +59,14 @@ describe('init.ts', () => {
     );
 
     jest.mock(
-      '../is-deep-equal.js',
+      '../is-deep-equal',
       () => ({
         __esModule: true,
         default: () => false
       })
     );
 
-    init = (await import('../init.js')).default as any;
+    init = (await import('../init')).default as any;
 
     args = [
       mockStore,
@@ -148,12 +148,12 @@ describe('init.ts', () => {
 
   it('does not call store.dispatch()', async () => {
     jest.resetModules();
-    jest.mock('../is-deep-equal.js', () => ({
+    jest.mock('../is-deep-equal', () => ({
       __esModule: true,
       default: () => true
     }));
 
-    init = (await import('../init.js')).default as any;
+    init = (await import('../init')).default as any;
     await init(...args);
 
     expect(mockStore.dispatch).toBeCalledTimes(0);
