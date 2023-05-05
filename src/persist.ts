@@ -6,7 +6,7 @@ type SaveAllOptions = Pick<
   'prefix' | 'driver' | 'serialize'
 >;
 
-export const saveAll = (
+export const saveAll = async (
   state: any,
   oldState: any,
   { prefix, driver, serialize }: SaveAllOptions
@@ -24,7 +24,7 @@ export const saveAllKeyed = (
   oldState: any,
   { prefix, driver, serialize }: SaveAllOptions
 ) => Promise.all(
-  Object.keys(state).map(key => {
+  Object.keys(state).map((key) => {
     if (isDeepEqual(state[key], oldState[key])) {
       return Promise.resolve();
     }

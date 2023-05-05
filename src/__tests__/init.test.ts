@@ -70,7 +70,7 @@ describe('init.ts', () => {
 
     args = [
       mockStore,
-      [ 1, 2, 3 ],
+      [1, 2, 3],
       {
         prefix: 'yay',
         driver: 'some-driver',

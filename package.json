@@ -29,7 +29,8 @@
     "build:es": "cross-env BABEL_ENV=es babel --extensions '.ts' src --source-maps --out-dir es",
     "build": "npm run build:lib && npm run build:es && npm run build:umd",
     "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
-    "test": "jest ./src/__tests__/*.test.ts"
+    "lint": "eslint ./src/*.ts",
+    "test": "npm run lint && jest ./src/__tests__/*.test.ts"
   },
   "jest": {
     "collectCoverage": true,
@@ -89,8 +90,12 @@
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@types/jest": "^29.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "babel-plugin-module-extension-resolver": "^1.0.0",
     "cross-env": "^7.0.3",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "jest": "^29.5.0",
     "redux": "*",
     "rimraf": "^5.0.0",

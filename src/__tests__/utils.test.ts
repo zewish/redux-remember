@@ -96,5 +96,5 @@ describe('utils.ts', () => {
       expect(spy).toBeCalledTimes(1);
       expect(spy).lastCalledWith(99);
     });
-  })
+  });
 });

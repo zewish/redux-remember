@@ -159,7 +159,7 @@ describe('persist.ts', () => {
         {
           prefix: 'bla',
           driver: mockDriver,
-          serialize(state, key) {}
+          serialize(data, key) {}
         }
       );
 
@@ -308,7 +308,7 @@ describe('persist.ts', () => {
       const error1 = 'DUMMY ERROR 1!!!';
       const error2 = 'DUMMY ERROR 2!!!';
 
-      const mockDriver =  {
+      mockDriver = {
         getItem: (key: string) => {},
         setItem: (
           jest.fn()

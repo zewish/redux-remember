@@ -52,7 +52,7 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
           action
         );
     }
-  }
+  };
 };
 
 const rememberEnhancer = (
@@ -89,7 +89,15 @@ const rememberEnhancer = (
     init(
       store,
       rememberedKeys,
-      { driver, prefix, serialize, unserialize, persistThrottle, persistDebounce, persistWholeStore }
+      {
+        driver,
+        prefix,
+        serialize,
+        unserialize,
+        persistThrottle,
+        persistDebounce,
+        persistWholeStore
+      }
     );
 
     return store;

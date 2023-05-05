@@ -47,7 +47,7 @@ const init = async (
     }
 
     oldState = state;
-  }
+  };
 
   if (persistDebounce && persistDebounce > 0) {
     store.subscribe(debounce(persistFunc, persistDebounce));

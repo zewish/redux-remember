@@ -64,7 +64,7 @@ describe('rehydrate.ts', () => {
       };
 
       const res = await exec({
-        rememberedKeys: [ 'keyA', 'keyB' ],
+        rememberedKeys: ['keyA', 'keyB'],
         unserialize: () => data
       });
 
@@ -82,7 +82,7 @@ describe('rehydrate.ts', () => {
       };
 
       const res = await exec({
-        rememberedKeys: [ 'keyZ', 'keyY' ],
+        rememberedKeys: ['keyZ', 'keyY'],
         driver: {
           getItem: () => Promise.resolve(data)
         },
@@ -119,7 +119,7 @@ describe('rehydrate.ts', () => {
 
     it('should call driver.getItem()', async () => {
       await exec({
-        rememberedKeys: [ 'say', 'what' ]
+        rememberedKeys: ['say', 'what']
       });
 
       expect(mockDriver.getItem).nthCalledWith(
@@ -138,7 +138,7 @@ describe('rehydrate.ts', () => {
         .mockImplementation((str) => str.toUpperCase());
 
       const res = await exec({
-        rememberedKeys: [ 'yay', 'k' ],
+        rememberedKeys: ['yay', 'k'],
         unserialize: mockUnserialize
       });
 
@@ -148,14 +148,14 @@ describe('rehydrate.ts', () => {
       });
 
       expect(mockUnserialize)
-        .nthCalledWith(1, 'valueFor:yay', 'yay')
+        .nthCalledWith(1, 'valueFor:yay', 'yay');
       expect(mockUnserialize)
-        .nthCalledWith(2, 'valueFor:k', 'k')
+        .nthCalledWith(2, 'valueFor:k', 'k');
     });
 
     it('returns state filtering null and undefined', async () => {
       const res = await exec({
-        rememberedKeys: [ 'so', 'iAmNull', 'great', 'iAmUndefined' ],
+        rememberedKeys: ['so', 'iAmNull', 'great', 'iAmUndefined'],
         driver: {
           getItem: (
             jest.fn()
@@ -175,7 +175,7 @@ describe('rehydrate.ts', () => {
   });
 
   describe('rehydrate()', () => {
-    let mockStore = {
+    const mockStore = {
       dispatch: jest.fn()
     };
 

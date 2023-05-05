@@ -4,7 +4,7 @@ import { Reducer, ReducersMapObject, StoreCreator } from 'redux';
 import { Options } from '../types';
 
 describe('index.ts', () => {
-  let mockRehydrate = {
+  const mockRehydrate = {
     rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
   };
 
@@ -83,7 +83,7 @@ describe('index.ts', () => {
     });
 
     it('returns preloaded state', () => {
-      const state = { 'cool': 'state' };
+      const state = { cool: 'state' };
 
       expect(exec(state, { type: '@@INIT' })).toEqual(
         state
@@ -165,7 +165,7 @@ describe('index.ts', () => {
         setItem() {}
       };
 
-      const rememberedKeys = [ 'zz', 'bb', 'kk' ];
+      const rememberedKeys = ['zz', 'bb', 'kk'];
 
       const rootReducer = () => 'the root of the reducers';
       const initialState = 'yup, initial state';
@@ -191,7 +191,7 @@ describe('index.ts', () => {
         store,
         rememberedKeys,
         { driver, ...opts }
-      )
+      );
     });
 
     it('calls init() with default options', () => {
@@ -206,7 +206,7 @@ describe('index.ts', () => {
         setItem() {}
       };
 
-      const rememberedKeys = [ 'zz', 'bb', 'kk' ];
+      const rememberedKeys = ['zz', 'bb', 'kk'];
 
       const rootReducer = () => 'the root of the reducers';
       const initialState = 'yup, initial state';
@@ -224,20 +224,20 @@ describe('index.ts', () => {
         store,
         rememberedKeys,
         { driver, ...optionDefaults }
-      )
+      );
 
       const stringifySpy = jest.spyOn(JSON, 'stringify');
       const parseSpy = jest.spyOn(JSON, 'parse');
 
       expect(optionDefaults).toMatchObject({
-        prefix : '@@remember-',
-        persistThrottle : 100,
-        persistWholeStore : false
+        prefix: '@@remember-',
+        persistThrottle: 100,
+        persistWholeStore: false
       });
-      expect(optionDefaults.serialize('hello', 'auth')).toEqual('\"hello\"');
+      expect(optionDefaults.serialize('hello', 'auth')).toEqual('"hello"');
       expect(stringifySpy).toHaveBeenCalledWith('hello');
-      expect(optionDefaults.unserialize('\"bye\"', 'auth')).toEqual('bye');
-      expect(parseSpy).toHaveBeenCalledWith('\"bye\"');
+      expect(optionDefaults.unserialize('"bye"', 'auth')).toEqual('bye');
+      expect(parseSpy).toHaveBeenCalledWith('"bye"');
     });
   });
 });

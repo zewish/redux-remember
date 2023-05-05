@@ -10,10 +10,8 @@ const arrayObj = ['a', 42, 3.14, null];
 const objectObj = { a: 1, b: 2 };
 const dateObj = new Date('2000-01-01T00:00:00.000Z');
 const errorObj = new Error('error object');
-const functionObj = () => {
-  return 42;
-};
-export const generatorObj = (function* () {
+const functionObj = () => 42;
+export const generatorObj = (function* generatorFn() {
   yield 1;
   yield 'a';
   yield true;
@@ -23,7 +21,7 @@ const mapObj = new Map([
   ['b', 2],
 ]);
 const promiseObj = new Promise(() => {});
-const regexObj = new RegExp('[a-fd]', 'gi');
+const regexObj = /[a-fd]/gi;
 const setObj = new Set(['a', 'b']);
 const symbolObj = Symbol('a symbol');
 
@@ -247,7 +245,7 @@ describe('is-deep-equal.ts', () => {
   });
 
   it('Two Symbols are different', () => {
-    expect(isDeepEqual(Symbol(), Symbol())).toEqual(false);
+    expect(isDeepEqual(Symbol('1'), Symbol('1'))).toEqual(false);
   });
 
   it('WeakMap refs are the same', () => {

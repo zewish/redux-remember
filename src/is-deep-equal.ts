@@ -27,7 +27,7 @@ const isDeepEqual = (a: any, b: any): boolean => {
   }
 
   if (Array.isArray(a)) {
-    if (a.length != b.length) {
+    if (a.length !== b.length) {
       return false;
     }
 
@@ -58,7 +58,7 @@ const isDeepEqual = (a: any, b: any): boolean => {
   const bType = getObjectType(b);
 
   if (aType === 'DataView' && bType === 'DataView') {
-    if (a.byteLength != b.byteLength || a.byteOffset != b.byteOffset) {
+    if (a.byteLength !== b.byteLength || a.byteOffset !== b.byteOffset) {
       return false;
     }
 
@@ -66,7 +66,7 @@ const isDeepEqual = (a: any, b: any): boolean => {
   }
 
   if (aType === 'ArrayBuffer' && bType === 'ArrayBuffer') {
-    if (a.byteLength != b.byteLength) {
+    if (a.byteLength !== b.byteLength) {
       return false;
     }
 
@@ -78,13 +78,13 @@ const isDeepEqual = (a: any, b: any): boolean => {
       return false;
     }
 
-    for (let [key] of a.entries()) {
+    for (const [key] of a.entries()) {
       if (!b.has(key)) {
         return false;
       }
     }
 
-    for (let [key, value] of a.entries()) {
+    for (const [key, value] of a.entries()) {
       if (!isDeepEqual(value, b.get(key))) {
         return false;
       }
@@ -98,7 +98,7 @@ const isDeepEqual = (a: any, b: any): boolean => {
       return false;
     }
 
-    for (let [key] of a.entries()) {
+    for (const [key] of a.entries()) {
       if (!b.has(key)) {
         return false;
       }

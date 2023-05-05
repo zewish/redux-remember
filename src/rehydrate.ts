@@ -40,7 +40,7 @@ export const loadAllKeyed = async ({
   unserialize
 }: LoadAllOptions) => {
   const items = await Promise.all(
-    rememberedKeys.map(key => driver.getItem(
+    rememberedKeys.map((key) => driver.getItem(
       `${prefix}${key}`
     ))
   );
