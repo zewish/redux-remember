@@ -14,6 +14,10 @@ type Options = {
     persistThrottle: number;
     persistWholeStore: boolean;
 };
+type ExtendedOptions = Options & {
+    driver: Driver;
+};
 declare const rememberReducer: <S = any, A extends Action<any> = AnyAction>(reducer: Reducer<S, A> | ReducersMapObject<S, A>) => Reducer<S, A>;
 declare const rememberEnhancer: (driver: Driver, rememberedKeys: string[], { prefix, serialize, unserialize, persistThrottle, persistWholeStore }?: Partial<Options>) => any;
 export { rememberReducer, rememberEnhancer, REMEMBER_REHYDRATED, REMEMBER_PERSISTED };
+export type { SerializeFunction, UnserializeFunction, Driver, Options, ExtendedOptions };

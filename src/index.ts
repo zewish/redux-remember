@@ -1,6 +1,6 @@
 import init from './init.js';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types.js';
-import { Driver, Options } from './types.js';
+import { Driver, Options, ExtendedOptions, SerializeFunction, UnserializeFunction } from './types.js';
 import {
   Action,
   AnyAction,
@@ -101,3 +101,11 @@ export {
   REMEMBER_REHYDRATED,
   REMEMBER_PERSISTED
 };
+
+export type {
+  SerializeFunction,
+  UnserializeFunction,
+  Driver,
+  Options,
+  ExtendedOptions,
+}
