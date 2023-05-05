@@ -50,9 +50,9 @@ const init = async (
   }
 
   if (persistDebounce && persistDebounce > 0) {
-    store.subscribe(debounce(persistFunc, persistDebounce))
+    store.subscribe(debounce(persistFunc, persistDebounce));
   } else {
-    store.subscribe(throttle(persistFunc, persistThrottle))
+    store.subscribe(throttle(persistFunc, persistThrottle));
   }
 };
 

@@ -4,3 +4,4 @@ lib/
 dist/
 coverage/
 .DS_Store
+index.d.ts

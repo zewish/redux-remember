@@ -70,31 +70,31 @@ describe('utils.ts', () => {
 
     it('only calls after the debounce interval', () => {
       const spy = jest.fn();
-      const debouncedSpy = utils.debounce(spy, 1000)
-      debouncedSpy()
+      const debouncedSpy = utils.debounce(spy, 1000);
+      debouncedSpy();
 
-      expect(spy).not.toHaveBeenCalled()
-      
-      jest.advanceTimersByTime(500)
-      expect(spy).not.toHaveBeenCalled()
-      
-      jest.advanceTimersByTime(500)
-      expect(spy).toBeCalledTimes(1)
+      expect(spy).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(500);
+      expect(spy).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(500);
+      expect(spy).toBeCalledTimes(1);
     });
 
     it('debounces, and only calls with the latest call arguments', () => {
       const spy = jest.fn((value: number) => {});
-      const debouncedSpy = utils.debounce(spy, 1000)
+      const debouncedSpy = utils.debounce(spy, 1000);
 
       for (let i = 0; i < 100; i++) {
-          debouncedSpy(i);
+        debouncedSpy(i);
       }
 
-      expect(spy).not.toHaveBeenCalled()
+      expect(spy).not.toHaveBeenCalled();
 
       jest.runAllTimers();
       expect(spy).toBeCalledTimes(1);
-      expect(spy).lastCalledWith(99)
+      expect(spy).lastCalledWith(99);
     });
   })
 });

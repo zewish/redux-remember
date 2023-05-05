@@ -12,7 +12,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": false,
-    "keyofStringsOnly": true,
     "noFallthroughCasesInSwitch": true,
     "module": "CommonJS",
     "moduleResolution": "node",
