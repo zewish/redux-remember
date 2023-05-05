@@ -1,6 +1,7 @@
 import * as rehydrateModule from '../rehydrate';
 import * as persistModule from '../persist';
 import { REMEMBER_PERSISTED } from '../action-types';
+import { ExtendedOptions } from '../types';
 import { Store } from 'redux';
 
 describe('init.ts', () => {
@@ -17,6 +18,7 @@ describe('init.ts', () => {
 
   let init: (...args: any[]) => any;
   let args: any[];
+  let options: Partial<ExtendedOptions>;
 
   beforeEach(async () => {
     mockState = 'dummy';
@@ -68,16 +70,21 @@ describe('init.ts', () => {
 
     init = (await import('../init')).default as any;
 
+    options = {
+      prefix: 'yay',
+      driver: {
+        getItem: () => {},
+        setItem: () => {}
+      },
+      serialize() {},
+      unserialize() {},
+      persistWholeStore: true
+    };
+
     args = [
       mockStore,
       [1, 2, 3],
-      {
-        prefix: 'yay',
-        driver: 'some-driver',
-        serialize() {},
-        unserialize() {},
-        persistWholeStore: true
-      }
+      options
     ];
   });
 
@@ -115,14 +122,14 @@ describe('init.ts', () => {
 
   it('calls throttle()', async () => {
     await init(...args);
-
-    expect(mockPick).toBeCalledTimes(1);
+    expect(mockThrottle).toBeCalledTimes(1);
   });
 
   it('calls debounce()', async () => {
-    await init(...args);
+    options.persistDebounce = 100;
 
-    expect(mockPick).toBeCalledTimes(1);
+    await init(...args);
+    expect(mockDebounce).toBeCalledTimes(1);
   });
 
   it('calls persist()', async () => {
