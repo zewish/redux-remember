@@ -1,22 +1,21 @@
 {
   "name": "redux-remember",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
-  "umd:main": "dist/redux-remember.js",
   "module": "es/index.js",
   "unpkg": "dist/redux-remember.js",
   "source": "src/index.ts",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./es/index.js",
+      "umd": "./dist/redux-remember.js",
       "require": "./lib/index.js",
-      "default": "./lib/index.js",
-      "umd": "./dist/redux-remember.js"
+      "import": "./es/index.js",
+      "default": "./lib/index.js"
     },
     "./package.json": "./package.json"
   },
