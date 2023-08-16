@@ -17,7 +17,8 @@
     "demo-web/**",
     "dist/**",
     "lib/**",
-    "es/**"
+    "es/**",
+    "rollup.config.mjs"
   ],
   "rules": {
     "comma-dangle": 0,

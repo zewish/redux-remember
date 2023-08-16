@@ -29,7 +29,8 @@ const config = {
     commonjs(),
     ts({
       transpiler: 'babel',
-      babelConfig: `./.babelrc`,
+      babelConfig: './.babelrc',
+      browserslist: false,
       hook: {
         outputPath(path, kind) {
           if (kind === 'declaration') {

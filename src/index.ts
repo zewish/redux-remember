@@ -35,17 +35,22 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
       : combineReducers(reducer) as Reducer<S, A>;
 
     switch (action.type) {
-      case REMEMBER_REHYDRATED:
+      case REMEMBER_REHYDRATED: {
+        const rehydratedState = {
+          ...data.state,
+          ...(action.payload || {})
+        };
+
         data.state = rootReducer(
+          rehydratedState,
           {
-            ...data.state,
-            ...(action.payload || {})
-          },
-          { type: REMEMBER_REHYDRATED } as any
+            type: REMEMBER_REHYDRATED,
+            payload: rehydratedState
+          } as any
         );
 
         return data.state;
-
+      }
       default:
         return rootReducer(
           state,

@@ -7,20 +7,20 @@ Legacy usage - web
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
-const myStateIsRemembered = (state = '', { type, payload }) => {
-  switch (type) {
+const myStateIsRemembered = (state = '', action) => {
+  switch (action.type) {
     case 'SET_TEXT1':
-      return payload;
+      return action.payload;
 
     default:
       return state;
   }
 };
 
-const myStateIsForgotten = (state = '', { type, payload }) => {
-  switch (type) {
+const myStateIsForgotten = (state = '', action) => {
+  switch (action.type) {
     case 'SET_TEXT2':
-      return payload;
+      return action.payload;
 
     default:
       return state;
@@ -62,20 +62,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
-const myStateIsRemembered = (state = '', { type, payload }) => {
-  switch (type) {
+const myStateIsRemembered = (state = '', action) => {
+  switch (action.type) {
     case 'SET_TEXT1':
-      return payload;
+      return action.payload;
 
     default:
       return state;
   }
 };
 
-const myStateIsForgotten = (state = '', { type, payload }) => {
-  switch (type) {
+const myStateIsForgotten = (state = '', action) => {
+  switch (action.type) {
     case 'SET_TEXT2':
-      return payload;
+      return action.payload;
 
     default:
       return state;
@@ -122,13 +122,13 @@ const defaultState = {
   persisted: false
 };
 
-export default (state = defaultState, { type, payload }) => {
-  switch (type) {
+const changeMeReducer = (state = defaultState, action) => {
+  switch (action.type) {
     case REMEMBER_REHYDRATED:
       // state gets rehydrated from storage
-      // state == { changeMe: 123 }
+      // payload is Rehydrated Root State
       return {
-        ...state,
+        ...changeMe: action.payload.changeMeReducer?.changeMe || null,
         rehydrated: true
       };
 
@@ -148,11 +148,13 @@ export default (state = defaultState, { type, payload }) => {
 
       return {
         ...state,
-        changeMe: payload
+        changeMe: action.payload
       };
 
     default:
       return state;
   }
-};
+}
+
+export default changeMeReducer;
 ```

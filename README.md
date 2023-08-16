@@ -147,7 +147,7 @@ Usage - inside a reducer
 ------------------------
 
 ```ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAction, PayloadAction } from '@reduxjs/toolkit';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
 type InitialState = {
@@ -162,8 +162,8 @@ const initialState: InitialState = {
   persisted: false
 };
 
-const usageInsideReducer = createSlice({
-  name: 'usage-inside-reducer-slice',
+const myReducer = createSlice({
+  name: 'my-reducer',
   initialState,
   reducers: {
     someAction(state, action: PayloadAction<{ changeMe: any }>) {
@@ -175,11 +175,13 @@ const usageInsideReducer = createSlice({
     }
   },
   extraReducers: (builder) => builder
-    .addCase(REMEMBER_REHYDRATED, (state, action) => {
-      state.changeMe = (action as PayloadAction<InitialState>).payload.changeMe;
+    .addCase(createAction<{ myReducer?: InitialState }>(REMEMBER_REHYDRATED), (state, action) => {
+      // @INFO: action.payload.myReducer => rehydrated state of this reducer or "undefined" during the first run
+      state.changeMe = action.payload.myReducer?.changeMe || null;
       state.rehydrated = true;
     })
-    .addCase(REMEMBER_PERSISTED, (state) => {
+    .addCase(createAction<{ myReducer?: InitialState }>(REMEMBER_PERSISTED), (state, action) => {
+      // @INFO: action.payload.myReducer => persisted state of this reducer or "undefined" in case this reducer is not persisted
       state.rehydrated = false;
       state.persisted = true;
     })
