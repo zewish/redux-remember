@@ -89,7 +89,7 @@ Usage - react-native
 --------------------
 
 ```ts
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
@@ -186,6 +186,23 @@ const myReducer = createSlice({
       state.persisted = true;
     })
 });
+
+const reducers = {
+  myReducer: myReducer.reducer,
+  // ...
+};
+
+const reducer = rememberReducer(reducers);
+const store = configureStore({
+  reducer,
+  enhancers: [rememberEnhancer(
+    window.localStorage, // or AsyncStorage, or your own custom storage driver
+    rememberedKeys,
+    { persistWholeStore: true }
+  )]
+});
+
+// Continue using the redux store as usual...
 ```
 
 Usage - legacy apps (without redux toolkit)
@@ -197,7 +214,7 @@ If your application still isn't migrated to redux toolkit, [check the legacy usa
 
 API reference
 -------------
-- **rememberReducer(redicers: Reducer | ReducersMapObject)**
+- **rememberReducer(reducers: Reducer | ReducersMapObject)**
     - Arguments:
         1. **redicers** *(required)* - takes the result of `combineReducers()` function or list of non-combined reducers to combine internally (same as redux toolkit);
     - Returns - a new root reducer to use as first argument for the `configureStore()` (redux toolkit) or the `createStore()` (plain redux) function;
