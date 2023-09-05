@@ -9,10 +9,10 @@
   "unpkg": "dist/redux-remember.js",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "index.d.ts",
+  "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
+      "types": "./types/index.d.ts",
       "umd": "./dist/redux-remember.js",
       "require": "./lib/index.js",
       "import": "./es/index.js",
@@ -27,7 +27,8 @@
     "build:umd": "rollup -c ./rollup.config.mjs",
     "build:lib": "node ./babel-build.mjs lib",
     "build:es": "node ./babel-build.mjs es",
-    "build": "npm run build:lib && npm run build:es && npm run build:umd",
+    "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir types",
+    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:types",
     "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
     "lint": "eslint ./src/*.ts",
     "test": "npm run lint && jest ./src/__tests__/*.test.ts"
@@ -38,16 +39,13 @@
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
     "transform": {
-      "^.+\\.ts$": [
-        "ts-jest",
-        {
-          "useESM": true,
-          "extensionsToTreatAsEsm": [
-            ".js",
-            ".ts"
-          ]
-        }
-      ]
+      "^.+\\.ts$": ["ts-jest", {
+        "useESM": true,
+        "extensionsToTreatAsEsm": [
+          ".js",
+          ".ts"
+        ]
+      }]
     }
   },
   "files": [
@@ -55,7 +53,7 @@
     "dist",
     "es",
     "lib",
-    "index.d.ts",
+    "types",
     "LICENSE",
     "README.md",
     "!**/__tests__"

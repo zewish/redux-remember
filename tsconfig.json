@@ -6,10 +6,10 @@
     "lib": ["dom"],
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }

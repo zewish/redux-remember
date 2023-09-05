@@ -30,16 +30,7 @@ const config = {
     ts({
       transpiler: 'babel',
       babelConfig: './.babelrc.mjs',
-      browserslist: false,
-      hook: {
-        outputPath(path, kind) {
-          if (kind === 'declaration') {
-            return `./index.d.ts`;
-          }
-
-          return path;
-        }
-      }
+      browserslist: false
     })
   ]
 };

@@ -4,10 +4,10 @@ import fs from 'fs-extra';
 import babel from '@babel/core';
 import { glob } from 'glob';
 
-const envName = process.argv[2];
+const [, scriptName, envName] = process.argv;
 
 if (envName !== 'es' && envName !== 'lib') {
-  console.info(`Usage: node ${path.basename(process.argv[1])} <es/lib>`);
+  console.info(`Usage: node ${path.basename(scriptName)} <es/lib>`);
   process.exit(1);
 }
 
@@ -53,7 +53,6 @@ const OUT_DIR = `${__dirname}/${envName}`;
     }
 
     const mapFileName = outputFileName + '.map';
-    result.map.sourcesContent = undefined;
 
     await fs.writeFile(
       mapFileName,
