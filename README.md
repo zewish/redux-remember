@@ -41,7 +41,7 @@ const myStateIsRemembered = createSlice({
     text: ''
   },
   reducers: {
-    setPersistedText(state, action: PayloadAction<{ text: string }>) {
+    setPersistedText(state, action: PayloadAction<string>) {
       state.text = action.payload;
     }
   }
@@ -53,7 +53,7 @@ const myStateIsForgotten = createSlice({
     text: ''
   },
   reducers: {
-    setForgottenText(state, action: PayloadAction<{ text: string }>) {
+    setForgottenText(state, action: PayloadAction<string>) {
       state.text = action.payload;
     }
   }
@@ -99,7 +99,7 @@ const myStateIsRemembered = createSlice({
     text: ''
   },
   reducers: {
-    setPersistedText(state, action: PayloadAction<{ text: string }>) {
+    setPersistedText(state, action: PayloadAction<string>) {
       state.text = action.payload;
     }
   }
@@ -111,7 +111,7 @@ const myStateIsForgotten = createSlice({
     text: ''
   },
   reducers: {
-    setForgottenText(state, action: PayloadAction<{ text: string }>) {
+    setForgottenText(state, action: PayloadAction<string>) {
       state.text = action.payload;
     }
   }
