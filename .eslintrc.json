@@ -18,6 +18,7 @@
     "dist/**",
     "lib/**",
     "es/**",
+    "babel-build.mjs",
     "rollup.config.mjs"
   ],
   "rules": {

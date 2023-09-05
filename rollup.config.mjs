@@ -29,7 +29,7 @@ const config = {
     commonjs(),
     ts({
       transpiler: 'babel',
-      babelConfig: './.babelrc',
+      babelConfig: './.babelrc.mjs',
       browserslist: false,
       hook: {
         outputPath(path, kind) {
