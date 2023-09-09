@@ -1,5 +1,8 @@
 name: build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
 permissions:
   contents: read
   pages: write
@@ -16,7 +19,7 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v3
       with:
-        node-version: 18.x
+        node-version: lts/*
         check-latest: true
     - name: Build and test
       run: |

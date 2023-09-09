@@ -1,0 +1,24 @@
+name: test
+on: [pull_request]
+concurrency:
+  group: "test"
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+        check-latest: true
+    - name: Build and test
+      run: |
+        npm ci
+        npm run prepare
+    - name: Check coverage
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
