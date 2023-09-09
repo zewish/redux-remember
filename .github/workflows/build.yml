@@ -1,20 +1,37 @@
 name: build
 on: [push, pull_request]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "build"
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup node
+      uses: actions/setup-node@v3
       with:
-        node-version: lts/*
+        node-version: 18.x
         check-latest: true
-    - run: npm install
-    - run: npm run prepare
-    - uses: coverallsapp/github-action@master
+    - name: Install deps
+      run: npm install
+    - name: Build and test
+      run: npm run prepare
+    - name: Check coverage
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: peaceiris/actions-gh-pages@v3
+    - name: Setup pages
+      uses: actions/configure-pages@v3
+    - name: Upload page artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./demo-web
+        path: './demo-web/'
+    - name: Deploy demo to pages
+      id: deployment
+      uses: actions/deploy-pages@v2
