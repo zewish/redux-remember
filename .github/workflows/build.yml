@@ -20,7 +20,7 @@ jobs:
         check-latest: true
     - name: Build and test
       run: |
-        npm install
+        npm ci
         npm run prepare
     - name: Check coverage
       uses: coverallsapp/github-action@master
@@ -31,7 +31,7 @@ jobs:
     - name: Build pages
       run: |
         cd ./demo-web/
-        npm install
+        npm ci
         npm run build
         cd ..
         mkdir -p ./pages/demo-web/
