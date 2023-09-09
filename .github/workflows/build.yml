@@ -18,10 +18,10 @@ jobs:
       with:
         node-version: 18.x
         check-latest: true
-    - name: Install deps
-      run: npm install
     - name: Build and test
-      run: npm run prepare
+      run: |
+        npm install
+        npm run prepare
     - name: Check coverage
       uses: coverallsapp/github-action@master
       with:
