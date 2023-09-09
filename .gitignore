@@ -5,3 +5,4 @@ dist/
 coverage/
 .DS_Store
 types/
+demo-web/bundle.js

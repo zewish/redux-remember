@@ -28,10 +28,13 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Setup pages
       uses: actions/configure-pages@v3
-    - name: Setup pages structure
+    - name: Build pages
       run: |
-        mkdir ./pages
-        mv ./demo-web/ ./pages/
+        cd ./demo-web/
+        npm run build
+        cd ..
+        mkdir -p ./pages/demo-web/
+        cp -f ./demo-web/index.html ./demo-web/bundle.js ./pages/demo-web/
     - name: Upload page artifact
       uses: actions/upload-pages-artifact@v2
       with:

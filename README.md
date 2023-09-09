@@ -18,7 +18,7 @@ __Works with any of the following:__
 - SessionStorage (web)
 - Your own custom storage driver that implements `setItem(key, value)` and `getItem(key)`
 
-### [__See demo!__](https://rawgit.com/zewish/redux-remember/master/demo-web/index.html)
+### [__See demo!__](https://zewish.github.io/redux-remember/demo-web/)
 
 Installation
 ------------
