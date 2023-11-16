@@ -60,7 +60,7 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
   };
 };
 
-const rememberEnhancer = (
+const rememberEnhancer = <Ext = {}, StateExt = {}>(
   driver: Driver,
   rememberedKeys: string[],
   {
@@ -71,7 +71,7 @@ const rememberEnhancer = (
     persistDebounce,
     persistWholeStore = false
   }: Partial<Options> = {}
-): any => {
+): StoreEnhancer<Ext, StateExt> => {
   if (!driver) {
     throw Error('redux-remember error: driver required');
   }
@@ -80,10 +80,10 @@ const rememberEnhancer = (
     throw Error('redux-remember error: rememberedKeys needs to be an array');
   }
 
-  const storeCreator = (createStore: StoreCreator) => (
-    rootReducer: Reducer<any>,
+  const storeCreator = (createStore: StoreCreator): StoreCreator => (
+    rootReducer: Reducer,
     initialState?: PreloadedState<any>,
-    enhancer?: StoreEnhancer<any>
+    enhancer?: StoreEnhancer
   ): Store => {
     const store = createStore(
       rootReducer,
