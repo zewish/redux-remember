@@ -64,19 +64,22 @@ export const rehydrate = async (
     unserialize
   }: RehydrateOptions
 ) => {
-  let state = {};
+  let state = store.getState();
 
   try {
     const load = persistWholeStore
       ? loadAll
       : loadAllKeyed;
 
-    state = await load({
-      rememberedKeys,
-      driver,
-      prefix,
-      unserialize
-    });
+    state = {
+      ...state,
+      ...await load({
+        rememberedKeys,
+        driver,
+        prefix,
+        unserialize
+      })
+    };
   } catch (err) {
     console.warn(
       'redux-remember: rehydrate error',
