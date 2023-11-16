@@ -175,8 +175,10 @@ describe('rehydrate.ts', () => {
   });
 
   describe('rehydrate()', () => {
+    let mockState = {};
     const mockStore = {
-      dispatch: jest.fn()
+      dispatch: jest.fn(),
+      getState: jest.fn(() => mockState)
     };
 
     let rememberedKeys: string[];
@@ -195,7 +197,10 @@ describe('rehydrate.ts', () => {
 
     beforeEach(() => {
       rememberedKeys = ['3', '2', '1'];
+
+      mockState = {};
       mockStore.dispatch = jest.fn();
+      mockStore.getState = jest.fn(() => mockState);
 
       mockDriver = {
         getItem: jest.fn((key) => `"${key}"`),
@@ -231,6 +236,18 @@ describe('rehydrate.ts', () => {
       global.console.warn = consoleWarn;
     });
 
+    it('calls store.getState()', async () => {
+      await exec({
+        driver: {
+          getItem: async () => ({})
+        },
+        unserialize: (o: any) => o,
+        persistWholeStore: true
+      });
+
+      expect(mockStore.getState).toBeCalledTimes(1);
+    });
+
     it('calls store.dispatch()', async () => {
       await exec({
         unserialize: (o: any) => JSON.parse(o)
@@ -262,6 +279,34 @@ describe('rehydrate.ts', () => {
         payload: {
           2: 'lol',
           3: 'zaz'
+        }
+      });
+    });
+
+    it('merges with existing state', async () => {
+      mockState = {
+        1: 'prev-state-1',
+        2: 'prev-state-2'
+      };
+
+      await exec({
+        driver: {
+          getItem: async () => ({
+            3: 'number-3',
+            2: 'number-2',
+            100: 'skip-me'
+          })
+        },
+        unserialize: (o: any) => o,
+        persistWholeStore: true
+      });
+
+      expect(mockStore.dispatch).nthCalledWith(1, {
+        type: REMEMBER_REHYDRATED,
+        payload: {
+          3: 'number-3',
+          2: 'number-2',
+          1: 'prev-state-1'
         }
       });
     });

@@ -37,6 +37,7 @@
     "no-unused-vars": 0,
     "no-underscore-dangle": 0,
     "no-self-compare": 0,
+    "no-prototype-builtins": 0,
     "function-paren-newline": 0,
     "no-new-wrappers": 0,
     "guard-for-in": 0,

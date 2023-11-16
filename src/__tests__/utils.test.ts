@@ -22,6 +22,17 @@ describe('utils.ts', () => {
         third: 'get me too'
       });
     });
+
+    it('does not copy non-existent properties', () => {
+      const src = {
+        first: 'get the first only',
+        skipped: 'I will be skipped :(',
+      };
+
+      expect(utils.pick(src, ['first', 'third'] as any)).toEqual({
+        first: 'get the first only'
+      });
+    });
   });
 
   describe('throttle()', () => {

@@ -13,7 +13,10 @@ export const pick = <T extends Record<string, any>, K extends keyof T>(
 
   while (++index < keys.length) {
     const key = keys[index];
-    dest[key] = src[key];
+
+    if (src.hasOwnProperty(key)) {
+      dest[key] = src[key];
+    }
   }
 
   return dest;
