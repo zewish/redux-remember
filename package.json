@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "build:umd": "rollup -c ./rollup.config.mjs",
     "build:lib": "node ./babel-build.mjs lib",
     "build:es": "node ./babel-build.mjs es",
-    "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir types",
+    "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir types && rimraf -V ./types/__tests__",
     "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:types",
     "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
     "lint": "eslint ./src/*.ts",

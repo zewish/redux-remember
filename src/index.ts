@@ -24,8 +24,8 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
 
   return (state: S = data.state, action: any) => {
     if (action.type && (
-      action.type === '@@INIT'
-      || action.type.startsWith('@@redux/INIT')
+      action?.type === '@@INIT'
+      || action?.type?.startsWith('@@redux/INIT')
     )) {
       data.state = { ...state };
     }
@@ -69,7 +69,8 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
     unserialize = (data, key) => JSON.parse(data),
     persistThrottle = 100,
     persistDebounce,
-    persistWholeStore = false
+    persistWholeStore = false,
+    initActionType
   }: Partial<Options> = {}
 ): StoreEnhancer<Ext, StateExt> => {
   if (!driver) {
@@ -81,17 +82,12 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
   }
 
   const storeCreator = (createStore: StoreCreator): StoreCreator => (
-    rootReducer: Reducer,
+    rootReducer: Reducer<any>,
     initialState?: PreloadedState<any>,
     enhancer?: StoreEnhancer
   ): Store => {
-    const store = createStore(
-      rootReducer,
-      initialState,
-      enhancer
-    );
-
-    init(
+    let isInitialized = false;
+    const initialize = (store: Store) => init(
       store,
       rememberedKeys,
       {
@@ -104,6 +100,27 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
         persistWholeStore
       }
     );
+
+    const store = createStore(
+      (state, action) => {
+        if (!isInitialized
+          && initActionType
+          && action.type === initActionType
+        ) {
+          isInitialized = true;
+          setTimeout(() => initialize(store), 0);
+        }
+
+        return rootReducer(state, action);
+      },
+      initialState,
+      enhancer
+    );
+
+    if (!initActionType) {
+      isInitialized = true;
+      initialize(store);
+    }
 
     return store;
   };

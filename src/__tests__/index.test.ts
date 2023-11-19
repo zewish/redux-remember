@@ -118,6 +118,26 @@ describe('index.ts', () => {
   });
 
   describe('rememberEnhancer()', () => {
+    const mockDriver = {
+      getItem() {},
+      setItem() {}
+    };
+
+    let mockCreateStore: StoreCreator;
+    const mockStore = 'my-mocked-store';
+    const rememberedKeys = ['zz', 'bb', 'kk'];
+    const rootReducer = (state = {}) => state;
+    let rootReducerWrapper: Reducer;
+    const initialState = { myReducer: 'bla' };
+    const enhancer: any = 'dummy enhancer';
+
+    beforeEach(() => {
+      mockCreateStore = jest.fn((wrapper) => {
+        rootReducerWrapper = wrapper;
+        return mockStore;
+      }) as StoreCreator;
+    });
+
     it('throws when no driver', () => {
       expect(() => index.rememberEnhancer(undefined as any, undefined as any, {} as any)).toThrow(
         'redux-remember error: driver required'
@@ -131,46 +151,24 @@ describe('index.ts', () => {
     });
 
     it('calls createStore function and returns its result', () => {
-      const store = 'dummy store!!!';
-      const createStore = jest.fn(() => store) as StoreCreator;
-      const rootReducer = () => 'beep';
-      const initialState = 'dummyInitialState';
-      const enhancer: any = 'dummyEnhancer';
-
       const enhancerInstance = index.rememberEnhancer(
-        {
-          getItem() {},
-          setItem() {}
-        },
+        mockDriver,
         []
       );
 
-      const storeMaker: StoreCreator = enhancerInstance(createStore);
+      const storeMaker: StoreCreator = enhancerInstance(mockCreateStore);
       const res = storeMaker(
         rootReducer, initialState, enhancer
       );
 
-      expect(createStore).toBeCalledWith(
-        rootReducer, initialState, enhancer
+      expect(mockCreateStore).toBeCalledWith(
+        expect.any(Function), initialState, enhancer
       );
 
-      expect(res).toEqual(store);
+      expect(res).toEqual(mockStore);
     });
 
     it('calls init()', () => {
-      const store = 'the store!!!';
-
-      const driver = {
-        getItem() {},
-        setItem() {}
-      };
-
-      const rememberedKeys = ['zz', 'bb', 'kk'];
-
-      const rootReducer = () => 'the root of the reducers';
-      const initialState = 'yup, initial state';
-      const enhancer: any = 'another enhancer';
-
       const opts: Options = {
         prefix: '@@yay!',
         persistThrottle: 432,
@@ -180,50 +178,38 @@ describe('index.ts', () => {
       };
 
       const storeMaker: StoreCreator = index.rememberEnhancer(
-        driver, rememberedKeys, opts
-      )((() => store) as StoreCreator);
+        mockDriver, rememberedKeys, opts
+      )((() => mockStore) as StoreCreator);
 
       storeMaker(
         rootReducer, initialState, enhancer
       );
 
       expect(mockInit).toBeCalledWith(
-        store,
+        mockStore,
         rememberedKeys,
-        { driver, ...opts }
+        { driver: mockDriver, ...opts }
       );
     });
 
     it('calls init() with default options', () => {
       let optionDefaults: any;
-      mockInit.mockImplementationOnce((store, rememberedKeys, opts) => {
+      mockInit.mockImplementationOnce((_store, _rememberedKeys, opts) => {
         optionDefaults = opts;
       });
-      const store = 'some-store';
-
-      const driver = {
-        getItem() {},
-        setItem() {}
-      };
-
-      const rememberedKeys = ['zz', 'bb', 'kk'];
-
-      const rootReducer = () => 'the root of the reducers';
-      const initialState = 'yup, initial state';
-      const enhancer: any = 'another enhancer';
 
       const storeMaker: StoreCreator = index.rememberEnhancer(
-        driver, rememberedKeys
-      )((() => store) as StoreCreator);
+        mockDriver, rememberedKeys
+      )((() => mockStore) as StoreCreator);
 
       storeMaker(
         rootReducer, initialState, enhancer
       );
 
       expect(mockInit).toBeCalledWith(
-        store,
+        mockStore,
         rememberedKeys,
-        { driver, ...optionDefaults }
+        { driver: mockDriver, ...optionDefaults }
       );
 
       const stringifySpy = jest.spyOn(JSON, 'stringify');
@@ -238,6 +224,40 @@ describe('index.ts', () => {
       expect(stringifySpy).toHaveBeenCalledWith('hello');
       expect(optionDefaults.unserialize('"bye"', 'auth')).toEqual('bye');
       expect(parseSpy).toHaveBeenCalledWith('"bye"');
+    });
+
+    it('does not call init() until init action is dispatched', () => {
+      jest.useFakeTimers();
+
+      const initActionType = 'WAIT_FOR_ME_BEFORE_INIT';
+      const opts: Options = {
+        prefix: '@@very-cool-prefix!',
+        persistThrottle: 42,
+        persistWholeStore: true,
+        serialize: (o) => o,
+        unserialize: (o) => o
+      };
+
+      const storeMaker: StoreCreator = index.rememberEnhancer(
+        mockDriver, rememberedKeys, { ...opts, initActionType }
+      )(mockCreateStore);
+
+      storeMaker(
+        rootReducer, initialState, enhancer
+      );
+
+      expect(mockInit).not.toBeCalled();
+      rootReducerWrapper({}, { type: initActionType });
+      jest.advanceTimersByTime(1);
+
+      expect(mockInit).toBeCalledWith(
+        mockStore,
+        rememberedKeys,
+        { driver: mockDriver, ...opts }
+      );
+
+      jest.clearAllTimers();
+      jest.useRealTimers();
     });
   });
 });

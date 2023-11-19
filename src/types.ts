@@ -12,7 +12,8 @@ export type Options = {
   unserialize: UnserializeFunction,
   persistThrottle: number,
   persistDebounce?: number,
-  persistWholeStore: boolean
+  persistWholeStore: boolean,
+  initActionType?: string
 };
 
 export type ExtendedOptions = Options & {
