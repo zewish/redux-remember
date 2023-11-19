@@ -1,9 +1,9 @@
 import ts from 'rollup-plugin-ts';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import { RollupOptions } from 'rollup';
 
-/** @type {import('rollup').RollupOptions} */
-const config = {
+const config: RollupOptions = {
   input: './src/index.ts',
   output: {
     file: './dist/redux-remember.js',

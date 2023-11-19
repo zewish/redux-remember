@@ -19,7 +19,7 @@
     "lib/**",
     "es/**",
     "babel-build.mjs",
-    "rollup.config.mjs"
+    "rollup.config.ts"
   ],
   "rules": {
     "comma-dangle": 0,

@@ -2,11 +2,11 @@ import ts from 'rollup-plugin-ts';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
+import { RollupOptions } from 'rollup';
 
 process.env.NODE_ENV = 'development';
 
-/** @type {import('rollup').RollupOptions} */
-const config = {
+const config: RollupOptions = {
   input: './src/index.tsx',
   context: 'window',
   output: {
@@ -41,7 +41,8 @@ const config = {
     commonjs(),
     ts({
       transpiler: 'babel',
-      babelConfig: `./.babelrc`
+      babelConfig: './.babelrc.mjs',
+      browserslist: false
     }),
     replace({
       preventAssignment: true,
