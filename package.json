@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
@@ -25,8 +25,8 @@
     "clean": "rimraf -V es lib dist",
     "typecheck": "tsc --noEmit",
     "build:umd": "rollup -c ./rollup.config.ts --configPlugin rollup-plugin-ts",
-    "build:lib": "node ./babel-build.mjs lib",
-    "build:es": "node ./babel-build.mjs es",
+    "build:lib": "BABEL_ENV=lib babel --extensions '.ts' src --source-maps --out-dir lib",
+    "build:es": "BABEL_ENV=es babel --extensions '.ts' src --source-maps --out-dir es",
     "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir types && rimraf -V ./types/__tests__",
     "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:types",
     "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
@@ -39,13 +39,16 @@
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
     "transform": {
-      "^.+\\.ts$": ["ts-jest", {
-        "useESM": true,
-        "extensionsToTreatAsEsm": [
-          ".js",
-          ".ts"
-        ]
-      }]
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": true,
+          "extensionsToTreatAsEsm": [
+            ".js",
+            ".ts"
+          ]
+        }
+      ]
     }
   },
   "files": [
@@ -81,6 +84,7 @@
     "react-native"
   ],
   "devDependencies": {
+    "@babel/cli": "^7.23.4",
     "@babel/core": "^7.23.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/plugin-transform-runtime": "^7.23.3",
