@@ -9,8 +9,8 @@ Redux Remember saves and loads your redux state from a key-value store of your c
 
 __Important__
 
-The current version of Redux Remember is tested with redux@5.0.0+ and redux-toolkit@2.0.1+.<br />
-In case you are using TypeScript and want to use Redux Remember with an older versions of Redux you might need to switch back to version 4.2.2 of Redux Remember.
+The current version of Redux Remember is tested working with redux@5.0.0+ and redux-toolkit@2.0.1+.<br />
+In case you want to use this library with an older versions of Redux or Redux Toolkit you might need to switch back to version 4.2.2 of Redux Remember.
 
 __Key features:__
 - Saves (persists) and loads (rehydrates) only allowed keys and does not touch anything else.
