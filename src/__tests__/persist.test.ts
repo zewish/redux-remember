@@ -45,11 +45,11 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockIsDeepEqual).nthCalledWith(
+      expect(mockIsDeepEqual).toHaveBeenNthCalledWith(
         1, 'val1', 'val11'
       );
 
-      expect(mockIsDeepEqual).nthCalledWith(
+      expect(mockIsDeepEqual).toHaveBeenNthCalledWith(
         2, 'val2', 'val22'
       );
     });
@@ -75,11 +75,11 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockSerialize).nthCalledWith(
+      expect(mockSerialize).toHaveBeenNthCalledWith(
         1, 'yay', 'key1'
       );
 
-      expect(mockSerialize).nthCalledWith(
+      expect(mockSerialize).toHaveBeenNthCalledWith(
         2, 'wow', 'key3'
       );
     });
@@ -103,11 +103,11 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockDriver.setItem).nthCalledWith(
+      expect(mockDriver.setItem).toHaveBeenNthCalledWith(
         1, 'yada.key1', '"yay"'
       );
 
-      expect(mockDriver.setItem).nthCalledWith(
+      expect(mockDriver.setItem).toHaveBeenNthCalledWith(
         2, 'yada.key3', '"wow"'
       );
     });
@@ -137,7 +137,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockDriver.setItem).toBeCalledTimes(0);
+      expect(mockDriver.setItem).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -163,7 +163,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockIsDeepEqual).toBeCalledWith(
+      expect(mockIsDeepEqual).toHaveBeenCalledWith(
         state, oldState
       );
     });
@@ -193,7 +193,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockSerialize).toBeCalledWith(state, 'rootState');
+      expect(mockSerialize).toHaveBeenCalledWith(state, 'rootState');
     });
 
     it('calls driver.setItem()', async () => {
@@ -219,7 +219,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockDriver.setItem).toBeCalledWith(
+      expect(mockDriver.setItem).toHaveBeenCalledWith(
         '@@yada-rootState', state
       );
     });
@@ -243,7 +243,7 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(mockDriver.setItem).toBeCalledTimes(0);
+      expect(mockDriver.setItem).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -342,13 +342,13 @@ describe('persist.ts', () => {
         }
       );
 
-      expect(global.console.warn).nthCalledWith(
+      expect(global.console.warn).toHaveBeenNthCalledWith(
         1,
         'redux-remember: persist error',
         error1
       );
 
-      expect(global.console.warn).nthCalledWith(
+      expect(global.console.warn).toHaveBeenNthCalledWith(
         2,
         'redux-remember: persist error',
         error2

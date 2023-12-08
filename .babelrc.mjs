@@ -32,7 +32,7 @@ export default {
       presets: getPresets({ modules: false }),
       plugins: [
         [require.resolve('babel-plugin-module-extension-resolver'), {
-          extensionsToKeep: ['.js']
+          dstExtension: '.mjs'
         }]
       ]
     },

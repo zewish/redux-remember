@@ -33,7 +33,7 @@ describe('rehydrate.ts', () => {
     it('should call driver.getItem()', async () => {
       await exec();
 
-      expect(mockDriver.getItem).toBeCalledWith(
+      expect(mockDriver.getItem).toHaveBeenCalledWith(
         `${mockPrefix}rootState`
       );
     });
@@ -122,12 +122,12 @@ describe('rehydrate.ts', () => {
         rememberedKeys: ['say', 'what']
       });
 
-      expect(mockDriver.getItem).nthCalledWith(
+      expect(mockDriver.getItem).toHaveBeenNthCalledWith(
         1,
         `${mockPrefix}say`
       );
 
-      expect(mockDriver.getItem).nthCalledWith(
+      expect(mockDriver.getItem).toHaveBeenNthCalledWith(
         2,
         `${mockPrefix}what`
       );
@@ -148,9 +148,9 @@ describe('rehydrate.ts', () => {
       });
 
       expect(mockUnserialize)
-        .nthCalledWith(1, 'valueFor:yay', 'yay');
+        .toHaveBeenNthCalledWith(1, 'valueFor:yay', 'yay');
       expect(mockUnserialize)
-        .nthCalledWith(2, 'valueFor:k', 'k');
+        .toHaveBeenNthCalledWith(2, 'valueFor:k', 'k');
     });
 
     it('returns state filtering null and undefined', async () => {
@@ -221,13 +221,13 @@ describe('rehydrate.ts', () => {
       await exec();
       await exec({ persistWholeStore: true });
 
-      expect(global.console.warn).nthCalledWith(
+      expect(global.console.warn).toHaveBeenNthCalledWith(
         1,
         'redux-remember: rehydrate error',
         error
       );
 
-      expect(global.console.warn).nthCalledWith(
+      expect(global.console.warn).toHaveBeenNthCalledWith(
         2,
         'redux-remember: rehydrate error',
         error
@@ -245,7 +245,7 @@ describe('rehydrate.ts', () => {
         persistWholeStore: true
       });
 
-      expect(mockStore.getState).toBeCalledTimes(1);
+      expect(mockStore.getState).toHaveBeenCalledTimes(1);
     });
 
     it('calls store.dispatch()', async () => {
@@ -265,7 +265,7 @@ describe('rehydrate.ts', () => {
         persistWholeStore: true
       });
 
-      expect(mockStore.dispatch).nthCalledWith(1, {
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, {
         type: REMEMBER_REHYDRATED,
         payload: {
           3: 'pref1.3',
@@ -274,7 +274,7 @@ describe('rehydrate.ts', () => {
         }
       });
 
-      expect(mockStore.dispatch).nthCalledWith(2, {
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, {
         type: REMEMBER_REHYDRATED,
         payload: {
           2: 'lol',
@@ -301,7 +301,7 @@ describe('rehydrate.ts', () => {
         persistWholeStore: true
       });
 
-      expect(mockStore.dispatch).nthCalledWith(1, {
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, {
         type: REMEMBER_REHYDRATED,
         payload: {
           3: 'number-3',

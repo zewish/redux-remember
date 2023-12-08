@@ -8,14 +8,16 @@ const rememberedKeys = [ 'textToBePersisted' ];
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
-  enhancers: [rememberEnhancer(
-    window.localStorage,
-    rememberedKeys,
-    {
-      prefix: '@@rememebered-',
-      persistWholeStore: true
-    }
-  )]
+  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(
+    rememberEnhancer(
+      window.localStorage,
+      rememberedKeys,
+      {
+        prefix: '@@rememebered-',
+        persistWholeStore: true
+      }
+    )
+  )
 });
 
 export type RootState = ReturnType<typeof store.getState>;

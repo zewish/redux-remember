@@ -69,11 +69,11 @@ describe('index.ts', () => {
       const mockState = { dummy: 'test' };
       mockCombineReducers.mockReturnValue(() => mockState);
 
-      expect(index.rememberReducer(reducersObj)(undefined, {})).toEqual(
+      expect(index.rememberReducer(reducersObj)(undefined, { type: 'TEST' })).toEqual(
         mockState
       );
 
-      expect(mockCombineReducers).toBeCalledWith(reducersObj);
+      expect(mockCombineReducers).toHaveBeenCalledWith(reducersObj);
     });
 
     it('does not break when state and action are empty', () => {
@@ -161,7 +161,7 @@ describe('index.ts', () => {
         rootReducer, initialState, enhancer
       );
 
-      expect(mockCreateStore).toBeCalledWith(
+      expect(mockCreateStore).toHaveBeenCalledWith(
         expect.any(Function), initialState, enhancer
       );
 
@@ -185,7 +185,7 @@ describe('index.ts', () => {
         rootReducer, initialState, enhancer
       );
 
-      expect(mockInit).toBeCalledWith(
+      expect(mockInit).toHaveBeenCalledWith(
         mockStore,
         rememberedKeys,
         { driver: mockDriver, ...opts }
@@ -206,7 +206,7 @@ describe('index.ts', () => {
         rootReducer, initialState, enhancer
       );
 
-      expect(mockInit).toBeCalledWith(
+      expect(mockInit).toHaveBeenCalledWith(
         mockStore,
         rememberedKeys,
         { driver: mockDriver, ...optionDefaults }
@@ -246,11 +246,11 @@ describe('index.ts', () => {
         rootReducer, initialState, enhancer
       );
 
-      expect(mockInit).not.toBeCalled();
+      expect(mockInit).not.toHaveBeenCalled();
       rootReducerWrapper({}, { type: initActionType });
       jest.advanceTimersByTime(1);
 
-      expect(mockInit).toBeCalledWith(
+      expect(mockInit).toHaveBeenCalledWith(
         mockStore,
         rememberedKeys,
         { driver: mockDriver, ...opts }

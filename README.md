@@ -75,11 +75,12 @@ const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will b
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
-  enhancers: [rememberEnhancer(
-    window.localStorage,
-    rememberedKeys,
-    { persistWholeStore: true }
-  )]
+  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(
+    rememberEnhancer(
+      window.localStorage, // or window.sessionStorage, or your own custom storage driver
+      rememberedKeys
+    )
+  )
 });
 
 // Continue using the redux store as usual...
@@ -133,11 +134,12 @@ const rememberedKeys = [ 'myStateIsRemembered' ]; // 'myStateIsForgotten' will b
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
-  enhancers: [rememberEnhancer(
-    AsyncStorage, // or your own custom storage driver
-    rememberedKeys,
-    { persistWholeStore: true }
-  )]
+  enhancers:  (getDefaultEnhancers) => getDefaultEnhancers().concat(
+    rememberEnhancer(
+      AsyncStorage, // or your own custom storage driver
+      rememberedKeys
+    )
+  )
 });
 
 // Continue using the redux store as usual...
@@ -195,11 +197,12 @@ const reducers = {
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
-  enhancers: [rememberEnhancer(
-    window.localStorage, // or AsyncStorage, or your own custom storage driver
-    rememberedKeys,
-    { persistWholeStore: true }
-  )]
+  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(
+    rememberEnhancer(
+      window.localStorage, // or window.sessionStorage, or AsyncStorage, or your own custom storage driver
+      rememberedKeys
+    )
+  )
 });
 
 // Continue using the redux store as usual...

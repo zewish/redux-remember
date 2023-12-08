@@ -48,7 +48,7 @@ describe('utils.ts', () => {
     it('calls immediately on first call', () => {
       const spy = jest.fn();
       utils.throttle(spy, 1000)();
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('throttles, and always calls with the latest call arguments', () => {
@@ -60,12 +60,12 @@ describe('utils.ts', () => {
       fn('third-skipped');
       fn('fourth');
 
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).lastCalledWith('first');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith('first');
 
       jest.advanceTimersByTime(1000);
-      expect(spy).toBeCalledTimes(2);
-      expect(spy).lastCalledWith('fourth');
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenLastCalledWith('fourth');
     });
   });
 
@@ -90,7 +90,7 @@ describe('utils.ts', () => {
       expect(spy).not.toHaveBeenCalled();
 
       jest.advanceTimersByTime(500);
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('debounces, and only calls with the latest call arguments', () => {
@@ -104,8 +104,8 @@ describe('utils.ts', () => {
       expect(spy).not.toHaveBeenCalled();
 
       jest.runAllTimers();
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).lastCalledWith(99);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenLastCalledWith(99);
     });
   });
 });

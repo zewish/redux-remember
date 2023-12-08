@@ -3,26 +3,25 @@ import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from './action-types';
 import { Driver, Options } from './types';
 import {
   Action,
-  AnyAction,
-  PreloadedState,
   StoreEnhancer,
   Reducer,
   Store,
   StoreCreator,
   ReducersMapObject,
-  combineReducers
+  combineReducers,
+  UnknownAction
 } from 'redux';
 
 export * from './types';
 
-const rememberReducer = <S = any, A extends Action = AnyAction>(
-  reducer: Reducer<S, A> | ReducersMapObject<S, A>
-): Reducer<S, A> => {
+const rememberReducer = <S = any, A extends Action = UnknownAction, PreloadedState = S>(
+  reducer: Reducer<S, A, PreloadedState> | ReducersMapObject<S, A, PreloadedState>
+): Reducer<S, A, PreloadedState> => {
   const data: any = {
     state: {}
   };
 
-  return (state: S = data.state, action: any) => {
+  return (state: any = data.state, action: any) => {
     if (action.type && (
       action?.type === '@@INIT'
       || action?.type?.startsWith('@@redux/INIT')
@@ -32,13 +31,13 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
 
     const rootReducer = typeof reducer === 'function'
       ? reducer
-      : combineReducers(reducer) as Reducer<S, A>;
+      : combineReducers(reducer);
 
     switch (action.type) {
       case REMEMBER_REHYDRATED: {
         const rehydratedState = {
           ...data.state,
-          ...(action.payload || {})
+          ...(action?.payload || {})
         };
 
         data.state = rootReducer(
@@ -60,7 +59,7 @@ const rememberReducer = <S = any, A extends Action = AnyAction>(
   };
 };
 
-const rememberEnhancer = <Ext = {}, StateExt = {}>(
+const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
   driver: Driver,
   rememberedKeys: string[],
   {
@@ -83,7 +82,7 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
 
   const storeCreator = (createStore: StoreCreator): StoreCreator => (
     rootReducer: Reducer<any>,
-    initialState?: PreloadedState<any>,
+    preloadedState?: any,
     enhancer?: StoreEnhancer
   ): Store => {
     let isInitialized = false;
@@ -113,7 +112,7 @@ const rememberEnhancer = <Ext = {}, StateExt = {}>(
 
         return rootReducer(state, action);
       },
-      initialState,
+      preloadedState,
       enhancer
     );
 

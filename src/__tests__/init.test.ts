@@ -98,7 +98,7 @@ describe('init.ts', () => {
 
     const { serialize, ...rehydrateOpts } = args[2];
 
-    expect(mockRehydrate.rehydrate).toBeCalledWith(
+    expect(mockRehydrate.rehydrate).toHaveBeenCalledWith(
       args[0], args[1], rehydrateOpts
     );
   });
@@ -106,7 +106,7 @@ describe('init.ts', () => {
   it('calls store.subscribe()', async () => {
     await init(...args);
 
-    expect(mockStore.subscribe).toBeCalledWith(
+    expect(mockStore.subscribe).toHaveBeenCalledWith(
       expect.any(Function)
     );
   });
@@ -114,7 +114,7 @@ describe('init.ts', () => {
   it('calls pick()', async () => {
     await init(...args);
 
-    expect(mockPick).toBeCalledWith(
+    expect(mockPick).toHaveBeenCalledWith(
       mockState,
       args[1]
     );
@@ -122,14 +122,14 @@ describe('init.ts', () => {
 
   it('calls throttle()', async () => {
     await init(...args);
-    expect(mockThrottle).toBeCalledTimes(1);
+    expect(mockThrottle).toHaveBeenCalledTimes(1);
   });
 
   it('calls debounce()', async () => {
     options.persistDebounce = 100;
 
     await init(...args);
-    expect(mockDebounce).toBeCalledTimes(1);
+    expect(mockDebounce).toHaveBeenCalledTimes(1);
   });
 
   it('calls persist()', async () => {
@@ -137,7 +137,7 @@ describe('init.ts', () => {
 
     const { unserialize, ...persistOpts } = args[2];
 
-    expect(mockPersist.persist).toBeCalledWith(
+    expect(mockPersist.persist).toHaveBeenCalledWith(
       mockState,
       {},
       persistOpts
@@ -147,7 +147,7 @@ describe('init.ts', () => {
   it('calls store.dispatch()', async () => {
     await init(...args);
 
-    expect(mockStore.dispatch).toBeCalledWith({
+    expect(mockStore.dispatch).toHaveBeenCalledWith({
       type: REMEMBER_PERSISTED,
       payload: mockState
     });
@@ -163,7 +163,7 @@ describe('init.ts', () => {
     init = (await import('../init')).default as any;
     await init(...args);
 
-    expect(mockStore.dispatch).toBeCalledTimes(0);
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(0);
   });
 
   it('remembers old state between store.subscribe() calls', async () => {
@@ -186,7 +186,7 @@ describe('init.ts', () => {
 
     await mockStore.__call_subscribe_func__();
 
-    expect(mockPersist.persist).nthCalledWith(
+    expect(mockPersist.persist).toHaveBeenNthCalledWith(
       1,
       'state1',
       {},
@@ -196,7 +196,7 @@ describe('init.ts', () => {
     mockStore.getState = () => 'state2';
     await mockStore.__call_subscribe_func__();
 
-    expect(mockPersist.persist).nthCalledWith(
+    expect(mockPersist.persist).toHaveBeenNthCalledWith(
       2,
       'state2',
       'state1',

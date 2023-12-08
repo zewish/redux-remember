@@ -2,6 +2,7 @@ import ts from 'rollup-plugin-ts';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
+import terser from '@rollup/plugin-terser';
 import { RollupOptions } from 'rollup';
 
 process.env.NODE_ENV = 'development';
@@ -11,25 +12,9 @@ const config: RollupOptions = {
   context: 'window',
   output: {
     file: `./bundle.js`,
-    format: 'iife',
-    exports: 'named',
-    globals: {
-      'react': 'React',
-      'react-dom': 'ReactDOM',
-      'redux': 'Redux',
-      'react-redux': 'ReactRedux',
-      'redux-remember': 'ReduxRemember',
-      '@reduxjs/toolkit': 'RTK'
-    }
+    sourcemap: true,
+    format: 'iife'
   },
-  external: [
-    'react',
-    'react-dom',
-    'redux',
-    'react-redux',
-    'redux-remember',
-    '@reduxjs/toolkit'
-  ],
   plugins: [
     resolve({
       mainFields: [
@@ -47,6 +32,27 @@ const config: RollupOptions = {
     replace({
       preventAssignment: true,
       'process.env.NODE_ENV': `'${process.env.NODE_ENV}'`
+    }),
+    terser({
+      parse: {
+        ecma: 2020
+      },
+      compress: {
+        ecma: 5,
+        comparisons: false,
+        inline: 2
+      },
+      mangle: {
+        safari10: true
+      },
+      keep_classnames: false,
+      keep_fnames: false,
+      ie8: false,
+      output: {
+        ecma: 5,
+        comments: false,
+        ascii_only: true
+      }
     })
   ]
 };
