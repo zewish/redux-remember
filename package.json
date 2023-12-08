@@ -5,16 +5,16 @@
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
   "types": "dist/types/index.d.ts",
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/mjs/index.mjs",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "require": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.cjs",
       "import": "./dist/mjs/index.mjs",
-      "default": "./dist/cjs/index.js"
+      "default": "./dist/cjs/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -22,7 +22,7 @@
   "scripts": {
     "clean": "rimraf -V dist",
     "typecheck": "tsc --noEmit",
-    "build:cjs": "BABEL_ENV=cjs babel --extensions '.ts' src --source-maps --out-dir dist/cjs",
+    "build:cjs": "BABEL_ENV=cjs babel --extensions '.ts' src --source-maps --out-file-extension '.cjs' --out-dir dist/cjs",
     "build:mjs": "BABEL_ENV=mjs babel --extensions '.ts' src --source-maps --out-file-extension '.mjs' --out-dir dist/mjs",
     "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir dist/types && rimraf -V dist/types/__tests__",
     "build": "npm run build:cjs && npm run build:mjs && npm run build:types",
