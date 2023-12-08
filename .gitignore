@@ -1,9 +1,6 @@
 node_modules/
-es/
-cjs/
 dist/
 coverage/
 .DS_Store
-types/
 demo-web/bundle.js
 demo-web/bundle.js.map

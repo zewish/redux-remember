@@ -28,16 +28,16 @@ export default {
   ],
   presets: getPresets(),
   env: {
-    es: {
+    cjs: {
+      presets: getPresets({ modules: 'commonjs' })
+    },
+    mjs: {
       presets: getPresets({ modules: false }),
       plugins: [
         [require.resolve('babel-plugin-module-extension-resolver'), {
           dstExtension: '.mjs'
         }]
       ]
-    },
-    lib: {
-      presets: getPresets({ modules: 'commonjs' })
     },
     test: {
       presets: getPresets({

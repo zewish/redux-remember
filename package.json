@@ -4,31 +4,28 @@
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
-  "main": "cjs/index.js",
-  "module": "es/index.js",
-  "unpkg": "dist/redux-remember.js",
+  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.mjs",
   "react-native": "src/index.ts",
   "source": "src/index.ts",
-  "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./types/index.d.ts",
-      "umd": "./dist/redux-remember.js",
-      "require": "./cjs/index.js",
-      "import": "./es/index.mjs",
-      "default": "./cjs/index.js"
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.mjs",
+      "default": "./dist/cjs/index.js"
     },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
   "scripts": {
-    "clean": "rimraf -V es cjs dist",
+    "clean": "rimraf -V dist",
     "typecheck": "tsc --noEmit",
-    "build:umd": "rollup -c ./rollup.config.ts --configPlugin rollup-plugin-ts",
-    "build:cjs": "BABEL_ENV=cjs babel --extensions '.ts' src --source-maps --out-dir cjs",
-    "build:es": "BABEL_ENV=es babel --extensions '.ts' src --source-maps --out-file-extension '.mjs' --out-dir es",
-    "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir types && rimraf -V ./types/__tests__",
-    "build": "npm run build:cjs && npm run build:es && npm run build:umd && npm run build:types",
+    "build:cjs": "BABEL_ENV=cjs babel --extensions '.ts' src --source-maps --out-dir dist/cjs",
+    "build:mjs": "BABEL_ENV=mjs babel --extensions '.ts' src --source-maps --out-file-extension '.mjs' --out-dir dist/mjs",
+    "build:types": "tsc --pretty --declaration --declarationMap --emitDeclarationOnly --outDir dist/types && rimraf -V dist/types/__tests__",
+    "build": "npm run build:cjs && npm run build:mjs && npm run build:types",
     "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
     "lint": "eslint ./src/*.ts",
     "test": "npm run lint && jest ./src/__tests__/*.test.ts"
@@ -54,9 +51,6 @@
   "files": [
     "src",
     "dist",
-    "es",
-    "cjs",
-    "types",
     "LICENSE",
     "README.md",
     "!**/__tests__"
@@ -85,30 +79,26 @@
   ],
   "devDependencies": {
     "@babel/cli": "^7.23.4",
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^7.23.5",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-transform-runtime": "^7.23.3",
-    "@babel/preset-env": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.4",
+    "@babel/preset-env": "^7.23.5",
     "@babel/preset-typescript": "^7.23.3",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@types/jest": "^29.5.8",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
+    "@types/jest": "^29.5.11",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
     "babel-plugin-module-extension-resolver": "^1.0.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
-    "fs-extra": "^11.1.1",
+    "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "jest": "^29.7.0",
-    "redux": "*",
+    "redux": ">=5.0.0",
     "rimraf": "^5.0.5",
-    "rollup": "^4.5.0",
-    "rollup-plugin-ts": "^3.4.5",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
-    "redux": "*"
+    "redux": ">=5.0.0"
   }
 }
