@@ -1,4 +1,4 @@
-import { createRequire } from 'module'
+import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 const browsers = [
@@ -29,7 +29,12 @@ export default {
   presets: getPresets(),
   env: {
     cjs: {
-      presets: getPresets({ modules: 'commonjs' })
+      presets: getPresets({ modules: 'commonjs' }),
+      plugins: [
+        [require.resolve('babel-plugin-module-extension-resolver'), {
+          dstExtension: '.cjs'
+        }]
+      ]
     },
     mjs: {
       presets: getPresets({ modules: false }),
