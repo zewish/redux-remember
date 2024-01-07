@@ -1,32 +1,32 @@
 import { PersistError, RehydrateError } from '../errors';
 
 describe('errors.ts', () => {
-  const extractParentErrorStack = (errorInstance: Error): string => {
-    const stackLines = errorInstance.stack!.split('\n');
-    return stackLines
-      .slice(2, stackLines.length)
-      .join('\n');
-  };
-
   describe('PersistError', () => {
     it('extends Error', () => {
-      const instance = new PersistError(new Error());
+      const error = new Error('ERROR 1-0');
+      const instance = new PersistError(error);
 
       expect(instance).toBeInstanceOf(Error);
       expect(instance).toBeInstanceOf(PersistError);
-      expect(instance.message).toEqual('redux-remember: persist error');
+      expect(instance.originalError).toEqual(error);
+      expect(instance.message).toEqual(`${error.name}: ${error.message}`);
     });
 
     it('copies the stack trace of wrapped Error', () => {
-      const error = new Error('ERROR 1');
-      const instance = new PersistError(error);
-      const instanceMessage = instance.stack!.slice(
-        0,
-        instance.stack!.indexOf('\n')
-      );
+      const error = new Error('ERROR 1-1');
+      const errorStackLines = error.stack!.split('\n');
+      const errorStackOnly = errorStackLines
+        .slice(1, errorStackLines.length)
+        .join('\n');
 
-      expect(instanceMessage).toEqual(`PersistError: ${instance.message}`);
-      expect(extractParentErrorStack(instance)).toEqual(error.stack);
+      const instance = new PersistError(error);
+      const instanceStackLine1 = instance.stack!.split('\n')[1];
+
+      expect(instance.stack).toEqual(
+        `PersistError: Error: ${error.message}\n`
+        + `${instanceStackLine1}\n`
+        + `${errorStackOnly}`
+      );
     });
 
     it('does not break when an invalid error is wrapped', () => {
@@ -36,23 +36,30 @@ describe('errors.ts', () => {
 
   describe('RehydrateError', () => {
     it('extends Error', () => {
-      const instance = new RehydrateError(new Error());
+      const error = new Error('ERROR 2-0');
+      const instance = new RehydrateError(error);
 
       expect(instance).toBeInstanceOf(Error);
       expect(instance).toBeInstanceOf(RehydrateError);
-      expect(instance.message).toEqual('redux-remember: rehydrate error');
+      expect(instance.originalError).toEqual(error);
+      expect(instance.message).toEqual(`${error.name}: ${error.message}`);
     });
 
     it('copies the stack trace of wrapped Error', () => {
-      const error = new Error('ERROR 2');
-      const instance = new RehydrateError(error);
-      const instanceMessage = instance.stack!.slice(
-        0,
-        instance.stack!.indexOf('\n')
-      );
+      const error = new Error('ERROR 1-1');
+      const errorStackLines = error.stack!.split('\n');
+      const errorStackOnly = errorStackLines
+        .slice(1, errorStackLines.length)
+        .join('\n');
 
-      expect(instanceMessage).toEqual(`RehydrateError: ${instance.message}`);
-      expect(extractParentErrorStack(instance)).toEqual(error.stack);
+      const instance = new RehydrateError(error);
+      const instanceStackLine1 = instance.stack!.split('\n')[1];
+
+      expect(instance.stack).toEqual(
+        `RehydrateError: Error: ${error.message}\n`
+        + `${instanceStackLine1}\n`
+        + `${errorStackOnly}`
+      );
     });
 
     it('does not break when an invalid error is wrapped', () => {

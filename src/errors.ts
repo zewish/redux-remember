@@ -1,28 +1,32 @@
 class CustomError extends Error {
-  constructor(message: string, previousError: unknown) {
-    const prevStack = (previousError as Error)?.stack || '';
+  originalError?: Error;
 
-    super(message);
+  constructor(originalError: unknown) {
+    const isOrigErrorValid = originalError instanceof Error;
+    const prevStackLines = isOrigErrorValid
+      ? originalError.stack?.split('\n')
+      : [];
+
+    super(isOrigErrorValid
+      ? `${originalError.name}: ${originalError.message}`
+      : '');
+
     this.name = this.constructor.name;
+    if (isOrigErrorValid) {
+      this.originalError = originalError;
+    }
 
-    if (prevStack && this.stack) {
+    if (prevStackLines?.length && this.stack) {
       this.stack = this.stack
         .split('\n')
         .slice(0, 2)
-        .concat(prevStack)
+        .concat(
+          prevStackLines.slice(1, prevStackLines.length)
+        )
         .join('\n');
     }
   }
 }
 
-export class PersistError extends CustomError {
-  constructor(previousError: unknown) {
-    super('redux-remember: persist error', previousError);
-  }
-}
-
-export class RehydrateError extends CustomError {
-  constructor(previousError: unknown) {
-    super('redux-remember: rehydrate error', previousError);
-  }
-}
+export class PersistError extends CustomError {}
+export class RehydrateError extends CustomError {}
