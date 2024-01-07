@@ -1,5 +1,11 @@
+import { PersistError } from './errors';
 import isDeepEqual from './is-deep-equal';
 import { ExtendedOptions } from './types';
+
+type PersistOptions = Pick<
+  ExtendedOptions,
+  'prefix' | 'driver' | 'serialize' | 'persistWholeStore' | 'errorHandler'
+>
 
 type SaveAllOptions = Pick<
   ExtendedOptions,
@@ -43,11 +49,9 @@ export const persist = async (
     prefix,
     driver,
     persistWholeStore,
-    serialize
-  }: Pick<
-    ExtendedOptions,
-    'prefix' | 'driver' | 'persistWholeStore' | 'serialize'
-  >
+    serialize,
+    errorHandler
+  }: PersistOptions
 ) => {
   try {
     const save = persistWholeStore
@@ -60,9 +64,6 @@ export const persist = async (
       { prefix, driver, serialize }
     );
   } catch (err) {
-    console.warn(
-      'redux-remember: persist error',
-      err
-    );
+    errorHandler(new PersistError(err));
   }
 };

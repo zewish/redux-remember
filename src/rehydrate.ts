@@ -2,10 +2,11 @@ import { Store } from 'redux';
 import { REMEMBER_REHYDRATED } from './action-types';
 import { ExtendedOptions } from './types';
 import { pick } from './utils';
+import { RehydrateError } from './errors';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,
-  'prefix' | 'driver' | 'persistWholeStore' | 'unserialize'
+  'driver' | 'prefix' | 'unserialize' | 'persistWholeStore' | 'errorHandler'
 >
 
 type LoadAllOptions = Pick<
@@ -20,15 +21,16 @@ export const loadAll = async ({
   driver,
   prefix,
   unserialize
-}: LoadAllOptions) => {
-  const data = await driver.getItem(`${prefix}rootState`);
+}: LoadAllOptions): Promise<Record<string, any>> => {
+  const key = 'rootState';
+  const data = await driver.getItem(`${prefix}${key}`);
 
   if (data === null || data === undefined) {
     return {};
   }
 
   return pick(
-    unserialize(data, 'rootState'),
+    unserialize(data, key),
     rememberedKeys
   );
 };
@@ -38,14 +40,14 @@ export const loadAllKeyed = async ({
   driver,
   prefix,
   unserialize
-}: LoadAllOptions) => {
+}: LoadAllOptions): Promise<Record<string, any>> => {
   const items = await Promise.all(
     rememberedKeys.map((key) => driver.getItem(
       `${prefix}${key}`
     ))
   );
 
-  return rememberedKeys.reduce((obj: { [key: string]: any }, key, i) => {
+  return rememberedKeys.reduce((obj: Record<string, any>, key, i) => {
     if (items[i] !== null && items[i] !== undefined) {
       obj[key] = unserialize(items[i], key);
     }
@@ -61,7 +63,8 @@ export const rehydrate = async (
     prefix,
     driver,
     persistWholeStore,
-    unserialize
+    unserialize,
+    errorHandler
   }: RehydrateOptions
 ) => {
   let state = store.getState();
@@ -81,10 +84,7 @@ export const rehydrate = async (
       })
     };
   } catch (err) {
-    console.warn(
-      'redux-remember: rehydrate error',
-      err
-    );
+    errorHandler(new RehydrateError(err));
   }
 
   store.dispatch({

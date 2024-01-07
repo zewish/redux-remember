@@ -18,7 +18,7 @@ describe('init.ts', () => {
 
   let init: (...args: any[]) => any;
   let args: any[];
-  let options: Partial<ExtendedOptions>;
+  let options: ExtendedOptions;
 
   beforeEach(async () => {
     mockState = 'dummy';
@@ -68,7 +68,7 @@ describe('init.ts', () => {
       })
     );
 
-    init = (await import('../init')).default as any;
+    init = (await import('../init')).default;
 
     options = {
       prefix: 'yay',
@@ -78,6 +78,8 @@ describe('init.ts', () => {
       },
       serialize() {},
       unserialize() {},
+      errorHandler() {},
+      persistThrottle: 100,
       persistWholeStore: true
     };
 
@@ -96,7 +98,7 @@ describe('init.ts', () => {
   it('calls rehydrate()', async () => {
     await init(...args);
 
-    const { serialize, ...rehydrateOpts } = args[2];
+    const { serialize, persistThrottle, ...rehydrateOpts } = args[2];
 
     expect(mockRehydrate.rehydrate).toHaveBeenCalledWith(
       args[0], args[1], rehydrateOpts
@@ -135,7 +137,7 @@ describe('init.ts', () => {
   it('calls persist()', async () => {
     await init(...args);
 
-    const { unserialize, ...persistOpts } = args[2];
+    const { unserialize, persistThrottle, ...persistOpts } = args[2];
 
     expect(mockPersist.persist).toHaveBeenCalledWith(
       mockState,
@@ -160,7 +162,7 @@ describe('init.ts', () => {
       default: () => true
     }));
 
-    init = (await import('../init')).default as any;
+    init = (await import('../init')).default;
     await init(...args);
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(0);

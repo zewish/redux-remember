@@ -1,3 +1,5 @@
+import { PersistError, RehydrateError } from './errors';
+
 export type SerializeFunction = (data: any, key: string) => any;
 export type UnserializeFunction = (data: any, key: string) => any;
 
@@ -13,6 +15,7 @@ export type Options = {
   persistThrottle: number,
   persistDebounce?: number,
   persistWholeStore: boolean,
+  errorHandler: (error: PersistError | RehydrateError) => void;
   initActionType?: string
 };
 

@@ -185,14 +185,18 @@ describe('rehydrate.ts', () => {
     let mockPrefix: string;
     let mockDriver: Driver;
 
-    const exec = (opts = {}) => mod.rehydrate(
+    type Opts = Partial<Required<Parameters<typeof mod.rehydrate>[2]>>;
+    const exec = (opts: Opts = {}) => mod.rehydrate(
       mockStore as any,
       rememberedKeys,
       {
         prefix: mockPrefix,
         driver: mockDriver,
+        errorHandler() {},
+        unserialize: (data) => JSON.parse(data),
+        persistWholeStore: false,
         ...opts
-      } as any
+      }
     );
 
     beforeEach(() => {
@@ -210,35 +214,58 @@ describe('rehydrate.ts', () => {
       mockPrefix = 'pref1.';
     });
 
-    it('calls console.warn()', async () => {
-      const error = 'UH OH! OH NO!';
+    it('propery passes rehydrate errors to errorHandler()', async () => {
+      const error1 = 'UH OH ONE!';
+      const error2 = 'UH OH TWO!';
 
-      const consoleWarn = global.console.warn;
-      global.console.warn = jest.fn();
+      const rehydrateErrorMock = jest.fn((error) => ({
+        message: `REHYDRATE ERROR: ${error}`
+      }));
 
-      mockDriver.getItem = () => Promise.reject(error);
+      const errorHandlerMock = jest.fn();
+      jest.mock('../errors', () => ({
+        __esModule: true,
+        RehydrateError: rehydrateErrorMock
+      }));
 
-      await exec();
-      await exec({ persistWholeStore: true });
+      mockDriver.getItem = jest.fn()
+        .mockRejectedValueOnce(error1)
+        .mockRejectedValueOnce(error2);
 
-      expect(global.console.warn).toHaveBeenNthCalledWith(
+      jest.resetModules();
+      mod = await import('../rehydrate');
+
+      await exec({
+        errorHandler: errorHandlerMock,
+        persistWholeStore: true
+      });
+      await exec({ errorHandler: errorHandlerMock });
+
+      expect(rehydrateErrorMock).toHaveBeenNthCalledWith(
         1,
-        'redux-remember: rehydrate error',
-        error
+        error1
       );
 
-      expect(global.console.warn).toHaveBeenNthCalledWith(
+      expect(rehydrateErrorMock).toHaveBeenNthCalledWith(
         2,
-        'redux-remember: rehydrate error',
-        error
+        error2
       );
 
-      global.console.warn = consoleWarn;
+      expect(errorHandlerMock).toHaveBeenNthCalledWith(
+        1,
+        { message: `REHYDRATE ERROR: ${error1}` }
+      );
+
+      expect(errorHandlerMock).toHaveBeenNthCalledWith(
+        2,
+        { message: `REHYDRATE ERROR: ${error2}` }
+      );
     });
 
     it('calls store.getState()', async () => {
       await exec({
         driver: {
+          setItem: () => { throw new Error('not implemented'); },
           getItem: async () => ({})
         },
         unserialize: (o: any) => o,
@@ -255,6 +282,7 @@ describe('rehydrate.ts', () => {
 
       await exec({
         driver: {
+          setItem: () => { throw new Error('not implemented'); },
           getItem: async () => ({
             3: 'zaz',
             2: 'lol',
@@ -291,6 +319,7 @@ describe('rehydrate.ts', () => {
 
       await exec({
         driver: {
+          setItem: () => { throw new Error('not implemented'); },
           getItem: async () => ({
             3: 'number-3',
             2: 'number-2',

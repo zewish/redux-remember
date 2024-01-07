@@ -12,6 +12,7 @@ import {
   UnknownAction
 } from 'redux';
 
+export * from './errors';
 export * from './types';
 
 const rememberReducer = <S = any, A extends Action = UnknownAction, PreloadedState = S>(
@@ -69,15 +70,16 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
     persistThrottle = 100,
     persistDebounce,
     persistWholeStore = false,
-    initActionType
+    initActionType,
+    errorHandler = console.warn
   }: Partial<Options> = {}
 ): StoreEnhancer<Ext, StateExt> => {
   if (!driver) {
-    throw Error('redux-remember error: driver required');
+    throw new Error('redux-remember error: driver required');
   }
 
   if (!Array.isArray(rememberedKeys)) {
-    throw Error('redux-remember error: rememberedKeys needs to be an array');
+    throw new Error('redux-remember error: rememberedKeys needs to be an array');
   }
 
   const storeCreator = (createStore: StoreCreator): StoreCreator => (
@@ -96,7 +98,8 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
         unserialize,
         persistThrottle,
         persistDebounce,
-        persistWholeStore
+        persistWholeStore,
+        errorHandler
       }
     );
 

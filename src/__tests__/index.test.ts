@@ -174,7 +174,8 @@ describe('index.ts', () => {
         persistThrottle: 432,
         persistWholeStore: true,
         serialize: (o) => o,
-        unserialize: (o) => o
+        unserialize: (o) => o,
+        errorHandler() {}
       };
 
       const storeMaker: StoreCreator = index.rememberEnhancer(
@@ -235,7 +236,8 @@ describe('index.ts', () => {
         persistThrottle: 42,
         persistWholeStore: true,
         serialize: (o) => o,
-        unserialize: (o) => o
+        unserialize: (o) => o,
+        errorHandler() {}
       };
 
       const storeMaker: StoreCreator = index.rememberEnhancer(

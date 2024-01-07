@@ -159,7 +159,7 @@ describe('persist.ts', () => {
         {
           prefix: 'bla',
           driver: mockDriver,
-          serialize(data, key) {}
+          serialize() {}
         }
       );
 
@@ -256,7 +256,8 @@ describe('persist.ts', () => {
           driver: mockDriver,
           prefix: 'one',
           persistWholeStore: false,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler() {}
         }
       );
 
@@ -267,7 +268,8 @@ describe('persist.ts', () => {
           driver: mockDriver,
           prefix: 'two',
           persistWholeStore: true,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler() {}
         }
       );
     });
@@ -280,7 +282,8 @@ describe('persist.ts', () => {
           driver: mockDriver,
           prefix: 'three',
           persistWholeStore: false,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler() {}
         }
       );
 
@@ -291,22 +294,34 @@ describe('persist.ts', () => {
           driver: mockDriver,
           prefix: 'four',
           persistWholeStore: true,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler() {}
         }
       );
     });
 
-    it('calls console.warn()', async () => {
+    it('propery passes persist errors to errorHandler()', async () => {
+      const error1 = 'DUMMY ERROR 1!!!';
+      const error2 = 'DUMMY ERROR 2!!!';
+
+      const persistErrorMock = jest.fn((error) => ({
+        message: `PERSIST ERROR: ${error}`
+      }));
+
+      const errorHandlerMock = jest.fn();
+
+      jest.mock('../errors', () => ({
+        __esModule: true,
+        PersistError: persistErrorMock
+      }));
+
       jest.mock('../is-deep-equal', () => ({
         __esModule: true,
         default: () => false
       }));
+
       jest.resetModules();
-
       mod = await import('../persist');
-
-      const error1 = 'DUMMY ERROR 1!!!';
-      const error2 = 'DUMMY ERROR 2!!!';
 
       mockDriver = {
         getItem: (key: string) => {},
@@ -317,9 +332,6 @@ describe('persist.ts', () => {
         )
       };
 
-      const consoleWarn = global.console.warn;
-      global.console.warn = jest.fn();
-
       await mod.persist(
         { key1: 'yay' },
         { key1: 'cool' },
@@ -327,7 +339,8 @@ describe('persist.ts', () => {
           prefix: 'beep',
           persistWholeStore: false,
           driver: mockDriver,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler: errorHandlerMock
         }
       );
 
@@ -338,23 +351,30 @@ describe('persist.ts', () => {
           prefix: 'boop',
           driver: mockDriver,
           persistWholeStore: true,
-          serialize: (o: any) => o
+          serialize: (o: any) => o,
+          errorHandler: errorHandlerMock
         }
       );
 
-      expect(global.console.warn).toHaveBeenNthCalledWith(
+      expect(persistErrorMock).toHaveBeenNthCalledWith(
         1,
-        'redux-remember: persist error',
         error1
       );
 
-      expect(global.console.warn).toHaveBeenNthCalledWith(
+      expect(persistErrorMock).toHaveBeenNthCalledWith(
         2,
-        'redux-remember: persist error',
         error2
       );
 
-      global.console.warn = consoleWarn;
+      expect(errorHandlerMock).toHaveBeenNthCalledWith(
+        1,
+        { message: `PERSIST ERROR: ${error1}` }
+      );
+
+      expect(errorHandlerMock).toHaveBeenNthCalledWith(
+        2,
+        { message: `PERSIST ERROR: ${error2}` }
+      );
     });
   });
 });

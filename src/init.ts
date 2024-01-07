@@ -16,13 +16,14 @@ const init = async (
     unserialize,
     persistThrottle,
     persistDebounce,
-    persistWholeStore
+    persistWholeStore,
+    errorHandler
   }: ExtendedOptions
 ) => {
   await rehydrate(
     store,
     rememberedKeys,
-    { prefix, driver, unserialize, persistWholeStore }
+    { prefix, driver, unserialize, persistWholeStore, errorHandler }
   );
 
   let oldState = {};
@@ -36,7 +37,7 @@ const init = async (
     await persist(
       state,
       oldState,
-      { prefix, driver, serialize, persistWholeStore }
+      { prefix, driver, serialize, persistWholeStore, errorHandler }
     );
 
     if (!isDeepEqual(state, oldState)) {

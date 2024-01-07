@@ -1,26 +1,26 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { Options } from '@babel/preset-env';
+import { TransformOptions } from '@babel/core';
 
 const browsers = [
   '>1%',
   'last 4 versions',
-  'Firefox ESR',
-  'not ie < 9'
+  'Firefox ESR'
 ];
 
 const getPresets = ({
   modules,
   targets = { browsers }
-} = {}) => [
+}: Partial<Options> = {}) => [
   require.resolve('@babel/preset-typescript'),
   [require.resolve('@babel/preset-env'), {
     modules,
     targets,
+    loose: true,
     exclude: ['@babel/plugin-transform-regenerator']
   }]
 ];
 
-export default {
+const config: TransformOptions = {
   plugins: [
     [require.resolve('@babel/plugin-proposal-object-rest-spread'), {
       useBuiltIns: true
@@ -50,4 +50,6 @@ export default {
       })
     }
   }
-}
+};
+
+export default config;
