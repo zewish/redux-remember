@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2022", "dom", "dom.iterable"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -13,16 +11,13 @@
     "strict": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": true,
-    "module": "CommonJS",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "noImplicitAny": true,
-    "downlevelIteration": true,
-    "sourceMap": true
+    "downlevelIteration": true
   },
-  "include": ["src"]
+  "include": ["src", "rollup.config.ts"]
 }

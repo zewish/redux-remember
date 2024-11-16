@@ -138,18 +138,6 @@ describe('index.ts', () => {
       }) as StoreCreator;
     });
 
-    it('throws when no driver', () => {
-      expect(() => index.rememberEnhancer(undefined as any, undefined as any, {} as any)).toThrow(
-        'redux-remember error: driver required'
-      );
-    });
-
-    it('throws when rememberedKeys is not an array', () => {
-      expect(() => index.rememberEnhancer({} as any, undefined as any, {} as any)).toThrow(
-        'redux-remember error: rememberedKeys needs to be an array'
-      );
-    });
-
     it('calls createStore function and returns its result', () => {
       const enhancerInstance = index.rememberEnhancer(
         mockDriver,

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducers from './reducers';
-import { rememberReducer, rememberEnhancer, Driver } from 'redux-remember';
+import { reducers, actions } from './slices';
+import { rememberReducer, rememberEnhancer } from 'redux-remember';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-const rememberedKeys = [ 'textToBePersisted' ];
+const rememberedKeys: Array<keyof typeof reducers> = [ 'persisted' ];
 
 const store = configureStore({
   reducer: rememberReducer(reducers),
@@ -24,4 +24,5 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
+export { actions };
 export default store;

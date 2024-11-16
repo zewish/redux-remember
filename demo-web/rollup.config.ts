@@ -1,4 +1,4 @@
-import ts from 'rollup-plugin-ts';
+import ts from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
@@ -26,9 +26,8 @@ const config: RollupOptions = {
     }),
     commonjs(),
     ts({
-      transpiler: 'babel',
-      babelConfig: './.babelrc.mjs',
-      browserslist: false
+      tsconfig: './tsconfig.json',
+      sourceMap: true
     }),
     replace({
       preventAssignment: true,

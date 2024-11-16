@@ -4,27 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c ./rollup.config.ts --configPlugin rollup-plugin-ts"
+    "build": "rollup -c ./rollup.config.ts --configPlugin typescript"
   },
   "private": true,
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
-    "@babel/preset-react": "^7.25.9",
     "@reduxjs/toolkit": "^2.3.0",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-replace": "^6.0.1",
     "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.1",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
     "redux-remember": "../",
-    "rollup": "^4.27.2",
-    "rollup-plugin-ts": "^3.4.5"
+    "rollup": "^4.27.2"
   }
 }

@@ -113,42 +113,25 @@ Legacy usage - inside a reducer
 -------------------------------
 
 ```js
-import { SOME_ACTION } from './actions';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
 const defaultState = {
-  changeMe: null,
-  rehydrated: false,
-  persisted: false
+  isRehydrated: false,
+  isPersisted: false
 };
 
-const changeMeReducer = (state = defaultState, action) => {
+const reduxRemember = (state = defaultState, action) => {
   switch (action.type) {
     case REMEMBER_REHYDRATED:
-      // state gets rehydrated from storage
-      // payload is Rehydrated Root State
+      // "action.payload" is the Rehydrated Root State
       return {
-        ...changeMe: action.payload.changeMeReducer?.changeMe || null,
-        rehydrated: true
+        isRehydrated: true
       };
 
     case REMEMBER_PERSISTED:
       return {
         ...state,
-        rehydrated: false,
-        persisted: true
-      };
-
-    case SOME_ACTION:
-      // example: only merge payload from SOME_ACTION event types
-      // after the state rehydration is done
-      if (!state.rehydrated) {
-        return state;
-      }
-
-      return {
-        ...state,
-        changeMe: action.payload
+        isPersisted: true
       };
 
     default:
@@ -156,5 +139,5 @@ const changeMeReducer = (state = defaultState, action) => {
   }
 }
 
-export default changeMeReducer;
+export default reduxRemember;
 ```

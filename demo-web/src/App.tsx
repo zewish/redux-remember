@@ -1,10 +1,8 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from './store';
-import { actions } from './store/reducers';
+import { actions, useAppDispatch, useAppSelector } from './store';
 
 const App = () => {
-  const textToBePersisted = useAppSelector((store) => store.textToBePersisted.text);
-  const textToBeForgotten = useAppSelector((store) => store.textToBeForgotten.text);
+  const textToBePersisted = useAppSelector((store) => store.persisted.text);
+  const textToBeForgotten = useAppSelector((store) => store.forgotten.text);
   const dispatch = useAppDispatch();
 
   return (
@@ -16,10 +14,10 @@ const App = () => {
         />
       </div>
 
-      <p>
+      <div className="description">
         <h1>redux-remember demo</h1>
         <h2>Type something into the inputs and reload the page</h2>
-      </p>
+      </div>
 
       <div className="fields-wrapper">
         <div>

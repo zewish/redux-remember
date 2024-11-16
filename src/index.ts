@@ -74,14 +74,6 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
     errorHandler = console.warn
   }: Partial<Options> = {}
 ): StoreEnhancer<Ext, StateExt> => {
-  if (!driver) {
-    throw new Error('redux-remember error: driver required');
-  }
-
-  if (!Array.isArray(rememberedKeys)) {
-    throw new Error('redux-remember error: rememberedKeys needs to be an array');
-  }
-
   const storeCreator = (createStore: StoreCreator): StoreCreator => (
     rootReducer: Reducer<any>,
     preloadedState?: any,

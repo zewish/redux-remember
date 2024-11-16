@@ -157,48 +157,31 @@ Usage - inside a reducer
 import { createSlice, createAction, PayloadAction } from '@reduxjs/toolkit';
 import { REMEMBER_REHYDRATED, REMEMBER_PERSISTED } from 'redux-remember';
 
-type InitialState = {
-  changeMe: any;
-  rehydrated: boolean;
-  persisted: boolean;
+const initialState = {
+  isRehydrated: false,
+  isPersisted: false
 };
 
-const initialState: InitialState = {
-  changeMe: null,
-  rehydrated: false,
-  persisted: false
-};
-
-const myReducer = createSlice({
-  name: 'my-reducer',
+const reduxRemember = createSlice({
+  name: 'redux-remember',
   initialState,
-  reducers: {
-    someAction(state, action: PayloadAction<{ changeMe: any }>) {
-      if (!state.rehydrated) {
-        return;
-      }
-
-      state.changeMe = action.payload.changeMe;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => builder
-    .addCase(createAction<{ myReducer?: InitialState }>(REMEMBER_REHYDRATED), (state, action) => {
-      // @INFO: action.payload.myReducer => rehydrated state of this reducer or "undefined" during the first run
-      state.changeMe = action.payload.myReducer?.changeMe || null;
-      state.rehydrated = true;
+    .addCase(createAction(REMEMBER_REHYDRATED), (state, action) => {
+      // "action.payload" is the Rehydrated Root State
+      state.isRehydrated = true;
     })
-    .addCase(createAction<{ myReducer?: InitialState }>(REMEMBER_PERSISTED), (state, action) => {
-      // @INFO: action.payload.myReducer => persisted state of this reducer or "undefined" in case this reducer is not persisted
-      state.rehydrated = false;
-      state.persisted = true;
+    .addCase(createAction(REMEMBER_PERSISTED), (state, action) => {
+      state.isPersisted = true;
     })
 });
 
 const reducers = {
-  myReducer: myReducer.reducer,
+  reduxRemember: reduxRemember.reducer,
   // ...
 };
 
+const rememberedKeys = [ 'myStateIsRemembered' ];
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
@@ -210,7 +193,41 @@ const store = configureStore({
   )
 });
 
+export type RootState = ReturnType<typeof store.getState>;
+export default store;
+
 // Continue using the redux store as usual...
+```
+
+Usage - React rehydration gate
+------------------------------
+
+**Preqrequisite: to be used with: [Usage - inside a reducer](#usage---inside-a-reducer) or similar**
+
+```tsx
+import { FC, PropsWithChildren } from 'react';
+import { useSelector } from 'react-redux';
+import ReactDOM from 'react-dom/client';
+import store, { RootState } from './store';
+
+const RehydrateGate: FC<PropsWithChildren> = ({ children }) => {
+  const isRehydrated = useSelector<RootState>((state) => state.reduxRemember.isRehyrdated);
+  return isRehydrated
+    ? children
+    : <div>Rehydrating, please wait...</div>;
+};
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root')!
+);
+
+root.render(
+  <Provider store={store}>
+    <RehydrateGate>
+      <App />
+    </RehydrateGate>
+  </Provider>
+);
 ```
 
 Usage - legacy apps (without redux toolkit)
