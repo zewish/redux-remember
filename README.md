@@ -150,6 +150,60 @@ const store = configureStore({
 // Continue using the redux store as usual...
 ```
 
+Usage - react-native with multiple storage types 
+------------------------------------------------
+
+**Custom Driver that uses both expo-secure-store and AsyncStorage**
+
+```ts
+import { configureStore } from '@reduxjs/toolkit';
+import { Driver, rememberReducer, rememberEnhancer } from 'redux-remember';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import reducers from './reducers';
+
+const prefix = '@@remember-';
+
+const secureKeys = ['secureKey1', 'secureKey2'];
+
+const rememberedKeys = [
+  'insecureKey1', 'insecureKey2',
+  ...secureKeys
+];
+
+export const customDriver: Driver = {
+  setItem(key: string, value: any) {
+    const originalKey = key.slice(prefix.length);
+    if (secureKeys.includes(originalKey)) {
+      return SecureStore.setItemAsync(originalKey, value);
+    }
+
+    return AsyncStorage.setItem(key, value);
+  },
+  getItem(key: string) {
+    const originalKey = key.slice(prefix.length);
+    if (secureKeys.includes(originalKey)) {
+      return SecureStore.getItemAsync(originalKey);
+    }
+
+    return AsyncStorage.getItem(key);
+  }
+};
+
+const store = configureStore({
+  reducer: rememberReducer(reducers),
+  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(
+    rememberEnhancer(
+      customDriver,
+      rememberedKeys,
+      { prefix }
+    )
+  )
+});
+
+// Continue using the redux store as usual...
+```
+
 Usage - inside a reducer
 ------------------------
 
@@ -202,7 +256,7 @@ export default store;
 Usage - React rehydration gate
 ------------------------------
 
-**Preqrequisite: to be used with: [Usage - inside a reducer](#usage---inside-a-reducer) or similar**
+**Prerequisite: to be used with: [Usage - inside a reducer](#usage---inside-a-reducer) or similar**
 
 ```tsx
 import { FC, PropsWithChildren } from 'react';
