@@ -178,7 +178,7 @@ export const customDriver: Driver = {
       return SecureStore.setItemAsync(originalKey, value);
     }
 
-    return AsyncStorage.setItem(key, value);
+    return AsyncStorage.setItem(originalKey, value);
   },
   getItem(key: string) {
     const originalKey = key.slice(prefix.length);
@@ -186,7 +186,7 @@ export const customDriver: Driver = {
       return SecureStore.getItemAsync(originalKey);
     }
 
-    return AsyncStorage.getItem(key);
+    return AsyncStorage.getItem(originalKey);
   }
 };
 
