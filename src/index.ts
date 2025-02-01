@@ -67,6 +67,7 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
     prefix = '@@remember-',
     serialize = (data, key) => JSON.stringify(data),
     unserialize = (data, key) => JSON.parse(data),
+    stateReconciler,
     persistThrottle = 100,
     persistDebounce,
     persistWholeStore = false,
@@ -91,7 +92,8 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
         persistThrottle,
         persistDebounce,
         persistWholeStore,
-        errorHandler
+        errorHandler,
+        stateReconciler,
       }
     );
 

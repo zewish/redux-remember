@@ -339,5 +339,55 @@ describe('rehydrate.ts', () => {
         }
       });
     });
+
+    it('merges with existing state using the stateReconciler()', async () => {
+      mockState = {
+        1: {
+          1: 'prev-state-sub-1',
+          2: 'prev-state-sub-2'
+        },
+        2: 'prev-state-2'
+      };
+
+      await exec({
+        stateReconciler: (c, l) => {
+          const state = { ...c };
+
+          Object.keys(l).forEach((key) => {
+            if (typeof state[key] === 'object' && typeof l[key] === 'object') {
+              Object.keys(l[key]).forEach((innerKey) => {
+                state[key][innerKey] = l[key][innerKey];
+              });
+            } else {
+              state[key] = l[key];
+            }
+          });
+
+          return state;
+        },
+        driver: {
+          setItem: () => { throw new Error('not implemented'); },
+          getItem: jest.fn()
+            .mockReturnValueOnce('number-3')
+            .mockReturnValueOnce('prev-state-2')
+            .mockReturnValueOnce({
+              1: 'loaded-state-sub-1'
+            })
+        },
+        unserialize: (o: any) => o,
+      });
+
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, {
+        type: REMEMBER_REHYDRATED,
+        payload: {
+          1: {
+            1: 'loaded-state-sub-1',
+            2: 'prev-state-sub-2'
+          },
+          2: 'prev-state-2',
+          3: 'number-3'
+        }
+      });
+    });
   });
 });

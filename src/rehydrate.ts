@@ -6,7 +6,7 @@ import { RehydrateError } from './errors';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,
-  'driver' | 'prefix' | 'unserialize' | 'persistWholeStore' | 'errorHandler'
+  'driver' | 'prefix' | 'unserialize' | 'persistWholeStore' | 'errorHandler' | 'stateReconciler'
 >
 
 type LoadAllOptions = Pick<
@@ -64,7 +64,8 @@ export const rehydrate = async (
     driver,
     persistWholeStore,
     unserialize,
-    errorHandler
+    errorHandler,
+    stateReconciler,
   }: RehydrateOptions
 ) => {
   let state = store.getState();
@@ -74,15 +75,16 @@ export const rehydrate = async (
       ? loadAll
       : loadAllKeyed;
 
-    state = {
-      ...state,
-      ...await load({
-        rememberedKeys,
-        driver,
-        prefix,
-        unserialize
-      })
-    };
+    const loadedState = await load({
+      rememberedKeys,
+      driver,
+      prefix,
+      unserialize
+    });
+
+    state = typeof stateReconciler === 'function'
+      ? stateReconciler(state, loadedState)
+      : ({ ...state, ...loadedState });
   } catch (err) {
     errorHandler(new RehydrateError(err));
   }

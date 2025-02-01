@@ -17,13 +17,14 @@ const init = async (
     persistThrottle,
     persistDebounce,
     persistWholeStore,
-    errorHandler
+    errorHandler,
+    stateReconciler,
   }: ExtendedOptions
 ) => {
   await rehydrate(
     store,
     rememberedKeys,
-    { prefix, driver, unserialize, persistWholeStore, errorHandler }
+    { prefix, driver, unserialize, persistWholeStore, errorHandler, stateReconciler }
   );
 
   let oldState = {};

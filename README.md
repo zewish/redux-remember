@@ -304,7 +304,7 @@ API reference
         1. **driver** *(required)* - storage driver instance, that implements the `setItem(key, value)` and `getItem(key)` functions;
         2. **rememberedKeys** *(required)* - an array of persistable keys - if an empty array is provided nothing will get persisted;
         3. **options** *(optional)* - plain object of extra options:
-            - **prefix**: storage key prefix *(default: `'@@remember-'`)*;
+            - **prefix** - storage key prefix *(default: `'@@remember-'`)*;
             - **serialize** - a plain function that takes unserialized store state and its key (`serialize(state, stateKey)`) and returns serialized state to be persisted *(default: `JSON.stringify`)*;
             - **unserialize** - a plain function that takes serialized persisted state  and its key (`serialize(state, stateKey)`) and returns unserialized to be set in the store *(default: `JSON.parse`)*;
             - **persistThrottle** - how much time should the persistence be throttled in milliseconds *(default: `100`)*
@@ -312,4 +312,5 @@ API reference
             - **persistWholeStore** - a boolean which specifies if the whole store should be persisted at once. Generally only use this if you're using your own storage driver which has gigabytes of storage limits. Don't use this when using window.localStorage, window.sessionStorage or AsyncStorage as their limits are quite small. When using this option, key won't be passed to `serialize` nor `unserialize` functions - *(default: `false`)*;
             - **errorHandler** - an error handler hook function which is gets a first argument of type `PersistError` or `RehydrateError` - these include a full error stack trace pointing to the source of the error. If this option isn't specified the default behaviour is to log the error using console.warn() - *(default: `console.warn`)*;
             - **initActionType** (optional) - a string which allows you to postpone the initialization of `Redux Remember` until an action with this type is dispatched to the store. This is used in special cases whenever you want to do something before state gets rehydrated and persisted automatically (e.g. preload your state from SSR). **NOTE: With this option enabled Redux Remember will be completely disabled until `dispatch({ type: YOUR_INIT_ACTION_TYPE_STRING })` is called**;
+            - **stateReconciler** (optional) - a plain function that takes the current state and the driver loaded state (`stateReconciler(currentState, loadedState)`) and returns a new state. This can be used to deeply merge the two states before it's dispatched through the `REMEMBER_REHYDRATED` action.
     - Returns - an enhancer to be used with Redux
