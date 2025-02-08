@@ -162,10 +162,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import reducers from './reducers';
 
-const prefix = '@@remember-';
-
 const secureKeys = ['secureKey1', 'secureKey2'];
-
 const rememberedKeys = [
   'insecureKey1', 'insecureKey2',
   ...secureKeys
@@ -173,17 +170,15 @@ const rememberedKeys = [
 
 export const customDriver: Driver = {
   setItem(key: string, value: any) {
-    const originalKey = key.slice(prefix.length);
-    if (secureKeys.includes(originalKey)) {
-      return SecureStore.setItemAsync(originalKey, value);
+    if (secureKeys.includes(originalKey)) { // If using prefix use: secureKeys.includes(key.slice(prefix.length))
+      return SecureStore.setItemAsync(key, value);
     }
 
     return AsyncStorage.setItem(key, value);
   },
   getItem(key: string) {
-    const originalKey = key.slice(prefix.length);
-    if (secureKeys.includes(originalKey)) {
-      return SecureStore.getItemAsync(originalKey);
+    if (secureKeys.includes(key)) { // If using prefix use: secureKeys.includes(key.slice(prefix.length))
+      return SecureStore.getItemAsync(key);
     }
 
     return AsyncStorage.getItem(key);
@@ -196,7 +191,7 @@ const store = configureStore({
     rememberEnhancer(
       customDriver,
       rememberedKeys,
-      { prefix }
+      { prefix: '' }
     )
   )
 });
