@@ -12,9 +12,9 @@ describe('init.ts', () => {
 
   let mockRehydrate: Partial<typeof rehydrateModule>;
   let mockPersist: Partial<typeof persistModule>;
-  let mockPick: Function;
-  let mockThrottle: Function;
-  let mockDebounce: Function;
+  let mockPick: jest.MockedFn<any>;
+  let mockThrottle: jest.MockedFn<any>;
+  let mockDebounce: jest.MockedFn<any>;
 
   let init: (...args: any[]) => any;
   let args: any[];
@@ -98,6 +98,7 @@ describe('init.ts', () => {
   it('calls rehydrate()', async () => {
     await init(...args);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { serialize, persistThrottle, ...rehydrateOpts } = args[2];
 
     expect(mockRehydrate.rehydrate).toHaveBeenCalledWith(
@@ -137,6 +138,7 @@ describe('init.ts', () => {
   it('calls persist()', async () => {
     await init(...args);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { unserialize, persistThrottle, ...persistOpts } = args[2];
 
     expect(mockPersist.persist).toHaveBeenCalledWith(
@@ -170,7 +172,7 @@ describe('init.ts', () => {
 
   it('remembers old state between store.subscribe() calls', async () => {
     mockStore.getState = () => 'state1';
-    mockStore.subscribe = (fn: Function): any => {
+    mockStore.subscribe = (fn: jest.MockedFn<any>): any => {
       mockStore.__call_subscribe_func__ = fn;
     };
 

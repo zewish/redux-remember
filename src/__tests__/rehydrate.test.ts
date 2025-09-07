@@ -41,7 +41,7 @@ describe('rehydrate.ts', () => {
     it('returns an empty object', async () => {
       const res1 = await exec({
         driver: {
-          getItem: async () => null
+          getItem: () => Promise.resolve(null)
         }
       });
 
@@ -49,7 +49,7 @@ describe('rehydrate.ts', () => {
 
       const res2 = await exec({
         driver: {
-          getItem: async () => undefined
+          getItem: () => Promise.resolve(undefined)
         }
       });
 
@@ -266,7 +266,7 @@ describe('rehydrate.ts', () => {
       await exec({
         driver: {
           setItem: () => { throw new Error('not implemented'); },
-          getItem: async () => ({})
+          getItem: () => Promise.resolve({})
         },
         unserialize: (o: any) => o,
         persistWholeStore: true
@@ -283,7 +283,7 @@ describe('rehydrate.ts', () => {
       await exec({
         driver: {
           setItem: () => { throw new Error('not implemented'); },
-          getItem: async () => ({
+          getItem: () => Promise.resolve({
             3: 'zaz',
             2: 'lol',
             100: 'nope'
@@ -320,7 +320,7 @@ describe('rehydrate.ts', () => {
       await exec({
         driver: {
           setItem: () => { throw new Error('not implemented'); },
-          getItem: async () => ({
+          getItem: () => Promise.resolve({
             3: 'number-3',
             2: 'number-2',
             100: 'skip-me'

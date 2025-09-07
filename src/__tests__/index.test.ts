@@ -58,10 +58,10 @@ describe('index.ts', () => {
     );
 
     beforeEach(() => {
-      mockReducer = jest.fn((state: any, action: any) => state);
+      mockReducer = jest.fn((state: any) => state);
     });
 
-    it('call combineReducers()', async () => {
+    it('call combineReducers()', () => {
       const reducersObj: ReducersMapObject<any, any> = {
         dummy: () => 'test123'
       };

@@ -65,8 +65,8 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
   rememberedKeys: string[],
   {
     prefix = '@@remember-',
-    serialize = (data, key) => JSON.stringify(data),
-    unserialize = (data, key) => JSON.parse(data),
+    serialize = (data) => JSON.stringify(data),
+    unserialize = (data) => JSON.parse(data),
     persistThrottle = 100,
     persistDebounce,
     persistWholeStore = false,
@@ -113,7 +113,7 @@ const rememberEnhancer = <Ext extends {} = {}, StateExt extends {} = {}>(
 
     if (!initActionType) {
       isInitialized = true;
-      initialize(store);
+      void initialize(store);
     }
 
     return store;

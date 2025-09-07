@@ -12,7 +12,7 @@ type SaveAllOptions = Pick<
   'prefix' | 'driver' | 'serialize'
 >;
 
-export const saveAll = async (
+export const saveAll = (
   state: any,
   oldState: any,
   { prefix, driver, serialize }: SaveAllOptions

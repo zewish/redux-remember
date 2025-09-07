@@ -1,5 +1,8 @@
-import { Options } from '@babel/preset-env';
-import { TransformOptions } from '@babel/core';
+import { type Options } from '@babel/preset-env';
+import { type TransformOptions } from '@babel/core';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.filename);
 
 const browsers = [
   '>1%',

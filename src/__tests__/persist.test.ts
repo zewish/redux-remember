@@ -99,7 +99,7 @@ describe('persist.ts', () => {
         {
           prefix: 'yada.',
           driver: mockDriver,
-          serialize: (string, key) => JSON.stringify(string)
+          serialize: (string) => JSON.stringify(string)
         }
       );
 
@@ -324,7 +324,7 @@ describe('persist.ts', () => {
       mod = await import('../persist');
 
       mockDriver = {
-        getItem: (key: string) => {},
+        getItem() {},
         setItem: (
           jest.fn()
             .mockRejectedValueOnce(error1)

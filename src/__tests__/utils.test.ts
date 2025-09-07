@@ -52,7 +52,7 @@ describe('utils.ts', () => {
     });
 
     it('throttles, and always calls with the latest call arguments', () => {
-      const spy = jest.fn((value: string) => {});
+      const spy = jest.fn((value: string) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
       const fn = utils.throttle(spy, 1000);
 
       fn('first');
@@ -94,7 +94,7 @@ describe('utils.ts', () => {
     });
 
     it('debounces, and only calls with the latest call arguments', () => {
-      const spy = jest.fn((value: number) => {});
+      const spy = jest.fn((value: number) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
       const debouncedSpy = utils.debounce(spy, 1000);
 
       for (let i = 0; i < 100; i++) {
