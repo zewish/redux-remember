@@ -215,7 +215,7 @@ describe('index.ts', () => {
       expect(parseSpy).toHaveBeenCalledWith('"bye"');
     });
 
-    it('does not call init() until init action is dispatched', () => {
+    it('calls init() only once after the init action is dispatched', () => {
       jest.useFakeTimers();
 
       const initActionType = 'WAIT_FOR_ME_BEFORE_INIT';
@@ -245,6 +245,9 @@ describe('index.ts', () => {
         rememberedKeys,
         { driver: mockDriver, ...opts }
       );
+
+      rootReducerWrapper({}, { type: initActionType });
+      expect(mockInit).toHaveBeenCalledTimes(1);
 
       jest.clearAllTimers();
       jest.useRealTimers();
