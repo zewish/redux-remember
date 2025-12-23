@@ -1,3 +1,4 @@
+import { describe, it, expect, test } from 'vitest';
 import isDeepEqual from '../is-deep-equal';
 
 const stringObj = new String('c');

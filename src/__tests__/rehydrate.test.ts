@@ -1,4 +1,5 @@
-import * as rehydrateModule from '../rehydrate';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type * as rehydrateModule from '../rehydrate';
 import { REMEMBER_REHYDRATED } from '../action-types';
 import { Driver } from '../types';
 
@@ -7,6 +8,11 @@ describe('rehydrate.ts', () => {
 
   beforeEach(async () => {
     mod = await import('../rehydrate');
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.resetModules();
   });
 
   describe('loadAll()', () => {
@@ -23,7 +29,7 @@ describe('rehydrate.ts', () => {
 
     beforeEach(() => {
       mockDriver = {
-        getItem: jest.fn((key) => `"${key}"`),
+        getItem: vi.fn((key) => `"${key}"`),
         setItem() {}
       };
 
@@ -110,7 +116,7 @@ describe('rehydrate.ts', () => {
 
     beforeEach(() => {
       mockDriver = {
-        getItem: jest.fn((key) => `valueFor:${key.replace(mockPrefix, '')}`),
+        getItem: vi.fn((key) => `valueFor:${key.replace(mockPrefix, '')}`),
         setItem() {}
       };
 
@@ -134,7 +140,7 @@ describe('rehydrate.ts', () => {
     });
 
     it('returns unserialized state', async () => {
-      const mockUnserialize = jest.fn()
+      const mockUnserialize = vi.fn()
         .mockImplementation((str) => str.toUpperCase());
 
       const res = await exec({
@@ -158,7 +164,7 @@ describe('rehydrate.ts', () => {
         rememberedKeys: ['so', 'iAmNull', 'great', 'iAmUndefined'],
         driver: {
           getItem: (
-            jest.fn()
+            vi.fn()
               .mockReturnValueOnce('val7')
               .mockReturnValueOnce(null)
               .mockReturnValueOnce('val8')
@@ -177,8 +183,8 @@ describe('rehydrate.ts', () => {
   describe('rehydrate()', () => {
     let mockState = {};
     const mockStore = {
-      dispatch: jest.fn(),
-      getState: jest.fn(() => mockState)
+      dispatch: vi.fn(),
+      getState: vi.fn(() => mockState)
     };
 
     let rememberedKeys: string[];
@@ -203,36 +209,38 @@ describe('rehydrate.ts', () => {
       rememberedKeys = ['3', '2', '1'];
 
       mockState = {};
-      mockStore.dispatch = jest.fn();
-      mockStore.getState = jest.fn(() => mockState);
+      mockStore.dispatch = vi.fn();
+      mockStore.getState = vi.fn(() => mockState);
 
       mockDriver = {
-        getItem: jest.fn((key) => `"${key}"`),
+        getItem: vi.fn((key) => `"${key}"`),
         setItem() {}
       };
 
       mockPrefix = 'pref1.';
     });
 
-    it('propery passes rehydrate errors to errorHandler()', async () => {
+    it('properly passes rehydrate errors to errorHandler()', async () => {
       const error1 = 'UH OH ONE!';
       const error2 = 'UH OH TWO!';
 
-      const rehydrateErrorMock = jest.fn((error) => ({
-        message: `REHYDRATE ERROR: ${error}`
-      }));
+      const rehydrateErrorMock = vi.fn(class {
+        message: string;
+        constructor(error: string) {
+           this.message = `REHYDRATE ERROR: ${error}`
+        }
+      });
 
-      const errorHandlerMock = jest.fn();
-      jest.mock('../errors', () => ({
-        __esModule: true,
+      const errorHandlerMock = vi.fn();
+      vi.doMock('../errors', () => ({
         RehydrateError: rehydrateErrorMock
       }));
 
-      mockDriver.getItem = jest.fn()
+      mockDriver.getItem = vi.fn()
         .mockRejectedValueOnce(error1)
         .mockRejectedValueOnce(error2);
 
-      jest.resetModules();
+      vi.resetModules();
       mod = await import('../rehydrate');
 
       await exec({
@@ -253,12 +261,12 @@ describe('rehydrate.ts', () => {
 
       expect(errorHandlerMock).toHaveBeenNthCalledWith(
         1,
-        { message: `REHYDRATE ERROR: ${error1}` }
+        expect.objectContaining({ message: `REHYDRATE ERROR: ${error1}` })
       );
 
       expect(errorHandlerMock).toHaveBeenNthCalledWith(
         2,
-        { message: `REHYDRATE ERROR: ${error2}` }
+        expect.objectContaining({ message: `REHYDRATE ERROR: ${error2}` })
       );
     });
 

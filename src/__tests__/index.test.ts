@@ -1,35 +1,38 @@
-import * as indexModule from '../index';
+import { describe, it, expect, beforeEach, afterEach, vi, Mock } from 'vitest';
+import type * as indexModule from '../index';
 import * as actionTypes from '../action-types';
 import { Reducer, ReducersMapObject, StoreCreator } from 'redux';
 import { Options } from '../types';
 
 describe('index.ts', () => {
   const mockRehydrate = {
-    rehydrateReducer: jest.fn(() => 'REHYDRATE_REDUCER')
+    rehydrateReducer: vi.fn(() => 'REHYDRATE_REDUCER')
   };
 
-  let mockInit: jest.Mock;
-  let mockCombineReducers: jest.Mock;
+  let mockInit: Mock;
+  let mockCombineReducers: Mock;
   let index: typeof indexModule;
 
   beforeEach(async () => {
-    mockRehydrate.rehydrateReducer = jest.fn(() => 'REHYDRATE_REDUCER');
-    mockInit = jest.fn(() => {});
-    mockCombineReducers = jest.fn(() => {});
+    mockRehydrate.rehydrateReducer = vi.fn(() => 'REHYDRATE_REDUCER');
+    mockInit = vi.fn(() => {});
+    mockCombineReducers = vi.fn(() => {});
 
-    jest.mock('../rehydrate', () => mockRehydrate);
-    jest.mock('../init', () => mockInit);
-    jest.mock('redux', () => ({
-      ...jest.requireActual('redux'),
-      combineReducers: mockCombineReducers
-    }));
+    vi.doMock('../rehydrate', () => mockRehydrate);
+    vi.doMock('../init', () => ({ default: mockInit }));
+    vi.doMock('redux', async () => {
+      return {
+        ...(await vi.importActual('redux')),
+        combineReducers: mockCombineReducers
+      };
+    });
 
     index = await import('../index');
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
+    vi.clearAllMocks();
+    vi.resetModules();
   });
 
   it('exports proper items', () => {
@@ -58,7 +61,7 @@ describe('index.ts', () => {
     );
 
     beforeEach(() => {
-      mockReducer = jest.fn((state: any) => state);
+      mockReducer = vi.fn((state: any) => state);
     });
 
     it('call combineReducers()', () => {
@@ -132,7 +135,7 @@ describe('index.ts', () => {
     const enhancer: any = 'dummy enhancer';
 
     beforeEach(() => {
-      mockCreateStore = jest.fn((wrapper) => {
+      mockCreateStore = vi.fn((wrapper) => {
         rootReducerWrapper = wrapper;
         return mockStore;
       }) as StoreCreator;
@@ -201,8 +204,8 @@ describe('index.ts', () => {
         { driver: mockDriver, ...optionDefaults }
       );
 
-      const stringifySpy = jest.spyOn(JSON, 'stringify');
-      const parseSpy = jest.spyOn(JSON, 'parse');
+      const stringifySpy = vi.spyOn(JSON, 'stringify');
+      const parseSpy = vi.spyOn(JSON, 'parse');
 
       expect(optionDefaults).toMatchObject({
         prefix: '@@remember-',
@@ -216,7 +219,7 @@ describe('index.ts', () => {
     });
 
     it('calls init() only once after the init action is dispatched', () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
 
       const initActionType = 'WAIT_FOR_ME_BEFORE_INIT';
       const opts: Options = {
@@ -238,7 +241,7 @@ describe('index.ts', () => {
 
       expect(mockInit).not.toHaveBeenCalled();
       rootReducerWrapper({}, { type: initActionType });
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
 
       expect(mockInit).toHaveBeenCalledWith(
         mockStore,
@@ -249,8 +252,8 @@ describe('index.ts', () => {
       rootReducerWrapper({}, { type: initActionType });
       expect(mockInit).toHaveBeenCalledTimes(1);
 
-      jest.clearAllTimers();
-      jest.useRealTimers();
+      vi.clearAllTimers();
+      vi.useRealTimers();
     });
   });
 });

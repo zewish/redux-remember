@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { PersistError, RehydrateError } from '../errors';
 
 describe('errors.ts', () => {

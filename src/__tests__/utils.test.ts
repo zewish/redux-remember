@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as utils from '../utils';
 
 describe('utils.ts', () => {
@@ -37,22 +38,22 @@ describe('utils.ts', () => {
 
   describe('throttle()', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.clearAllTimers();
-      jest.useRealTimers();
+      vi.clearAllTimers();
+      vi.useRealTimers();
     });
 
     it('calls immediately on first call', () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       utils.throttle(spy, 1000)();
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('throttles, and always calls with the latest call arguments', () => {
-      const spy = jest.fn((value: string) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
+      const spy = vi.fn((value: string) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
       const fn = utils.throttle(spy, 1000);
 
       fn('first');
@@ -63,7 +64,7 @@ describe('utils.ts', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenLastCalledWith('first');
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenLastCalledWith('fourth');
     });
@@ -71,30 +72,30 @@ describe('utils.ts', () => {
 
   describe('debounce()', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.clearAllTimers();
-      jest.useRealTimers();
+      vi.clearAllTimers();
+      vi.useRealTimers();
     });
 
     it('only calls after the debounce interval', () => {
-      const spy = jest.fn();
+      const spy = vi.fn();
       const debouncedSpy = utils.debounce(spy, 1000);
       debouncedSpy();
 
       expect(spy).not.toHaveBeenCalled();
 
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
       expect(spy).not.toHaveBeenCalled();
 
-      jest.advanceTimersByTime(500);
+      vi.advanceTimersByTime(500);
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('debounces, and only calls with the latest call arguments', () => {
-      const spy = jest.fn((value: number) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
+      const spy = vi.fn((value: number) => {}); // eslint-disable-line @typescript-eslint/no-unused-vars
       const debouncedSpy = utils.debounce(spy, 1000);
 
       for (let i = 0; i < 100; i++) {
@@ -103,7 +104,7 @@ describe('utils.ts', () => {
 
       expect(spy).not.toHaveBeenCalled();
 
-      jest.runAllTimers();
+      vi.runAllTimers();
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenLastCalledWith(99);
     });

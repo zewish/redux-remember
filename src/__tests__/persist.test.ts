@@ -1,4 +1,5 @@
-import * as persistModule from '../persist';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type * as persistModule from '../persist';
 import { Driver } from '../types';
 
 describe('persist.ts', () => {
@@ -8,14 +9,13 @@ describe('persist.ts', () => {
 
   beforeEach(async () => {
     mockDriver = {
-      getItem: jest.fn(),
-      setItem: jest.fn()
+      getItem: vi.fn(),
+      setItem: vi.fn()
     };
 
-    mockIsDeepEqual = jest.fn((a, b) => a === b);
+    mockIsDeepEqual = vi.fn((a, b) => a === b);
 
-    jest.mock('../is-deep-equal', () => ({
-      __esModule: true,
+    vi.doMock('../is-deep-equal', () => ({
       default: mockIsDeepEqual
     }));
 
@@ -23,8 +23,8 @@ describe('persist.ts', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
+    vi.clearAllMocks();
+    vi.resetModules();
   });
 
   describe('saveAllKeyed()', () => {
@@ -55,7 +55,7 @@ describe('persist.ts', () => {
     });
 
     it('calls serialize()', async () => {
-      const mockSerialize = jest.fn();
+      const mockSerialize = vi.fn();
 
       await mod.saveAllKeyed(
         {
@@ -113,11 +113,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../is-deep-equal', () => ({
-        __esModule: true,
+      vi.doMock('../is-deep-equal', () => ({
         default: () => true
       }));
-      jest.resetModules();
+      vi.resetModules();
 
       mod = await import('../persist');
 
@@ -169,7 +168,7 @@ describe('persist.ts', () => {
     });
 
     it('calls serialize()', async () => {
-      const mockSerialize = jest.fn();
+      const mockSerialize = vi.fn();
 
       const state = {
         key1: 'not_changed',
@@ -225,11 +224,10 @@ describe('persist.ts', () => {
     });
 
     it('does not call driver.setItem()', async () => {
-      jest.mock('../is-deep-equal', () => ({
-        __esModule: true,
+      vi.doMock('../is-deep-equal', () => ({
         default: () => true
       }));
-      jest.resetModules();
+      vi.resetModules();
 
       mod = await import('../persist');
 
@@ -304,29 +302,32 @@ describe('persist.ts', () => {
       const error1 = 'DUMMY ERROR 1!!!';
       const error2 = 'DUMMY ERROR 2!!!';
 
-      const persistErrorMock = jest.fn((error) => ({
-        message: `PERSIST ERROR: ${error}`
+      const persistErrorMock = vi.fn();
+      class MockPersistError {
+        message: string;
+        constructor(error: any) {
+          persistErrorMock(error);
+          this.message = `PERSIST ERROR: ${error}`;
+        }
+      }
+
+      const errorHandlerMock = vi.fn();
+
+      vi.doMock('../errors', () => ({
+        PersistError: MockPersistError
       }));
 
-      const errorHandlerMock = jest.fn();
-
-      jest.mock('../errors', () => ({
-        __esModule: true,
-        PersistError: persistErrorMock
-      }));
-
-      jest.mock('../is-deep-equal', () => ({
-        __esModule: true,
+      vi.doMock('../is-deep-equal', () => ({
         default: () => false
       }));
 
-      jest.resetModules();
+      vi.resetModules();
       mod = await import('../persist');
 
       mockDriver = {
         getItem() {},
         setItem: (
-          jest.fn()
+          vi.fn()
             .mockRejectedValueOnce(error1)
             .mockRejectedValueOnce(error2)
         )
@@ -368,12 +369,12 @@ describe('persist.ts', () => {
 
       expect(errorHandlerMock).toHaveBeenNthCalledWith(
         1,
-        { message: `PERSIST ERROR: ${error1}` }
+        expect.objectContaining({ message: `PERSIST ERROR: ${error1}` })
       );
 
       expect(errorHandlerMock).toHaveBeenNthCalledWith(
         2,
-        { message: `PERSIST ERROR: ${error2}` }
+        expect.objectContaining({ message: `PERSIST ERROR: ${error2}` })
       );
     });
   });
