@@ -1,6 +1,6 @@
 [![NPM Version](https://img.shields.io/npm/v/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
 [![Build Status](https://github.com/zewish/redux-remember/workflows/build/badge.svg)](https://github.com/zewish/redux-remember/actions?query=workflow%3Abuild)
-[![Coverage Status](https://coveralls.io/repos/github/zewish/redux-remember/badge.svg?branch=master)](https://coveralls.io/github/zewish/redux-remember?branch=master)
+[![Coverage Status](https://codecov.io/github/zewish/redux-remember/graph/badge.svg?token=69BRZBXR3R)](https://codecov.io/github/zewish/redux-remember)
 [![NPM Downloads](https://img.shields.io/npm/dm/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
 
 ![Logo](https://raw.githubusercontent.com/zewish/redux-remember/master/logo.png)
@@ -150,7 +150,7 @@ const store = configureStore({
 // Continue using the redux store as usual...
 ```
 
-Usage - react-native with multiple storage types 
+Usage - react-native with multiple storage types
 ------------------------------------------------
 
 **Custom Driver that uses both expo-secure-store and AsyncStorage**

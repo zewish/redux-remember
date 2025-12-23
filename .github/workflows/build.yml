@@ -26,9 +26,9 @@ jobs:
         npm ci
         npm run prepare
     - name: Check coverage
-      uses: coverallsapp/github-action@master
+      uses: codecov/codecov-action@v5
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.CODECOV_TOKEN }}
     - name: Setup pages
       uses: actions/configure-pages@v5
     - name: Build pages
