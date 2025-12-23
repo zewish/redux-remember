@@ -4,7 +4,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "lib": ["es2022", "dom", "dom.iterable"],
-    "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "noImplicitAny": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": "."
   },
-  "include": ["src", "rollup.config.ts"]
+  "include": ["src"]
 }

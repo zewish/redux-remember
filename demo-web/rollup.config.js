@@ -4,15 +4,15 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import process from 'node:process';
-import { RollupOptions } from 'rollup';
 
 process.env.NODE_ENV = 'development';
 
-const config: RollupOptions = {
+/** @type {import('rollup').RollupOptions} */
+const config = {
   input: './src/index.tsx',
   context: 'window',
   output: {
-    file: `./bundle.js`,
+    file: './bundle.js',
     sourcemap: true,
     format: 'iife'
   },

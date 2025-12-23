@@ -75,8 +75,6 @@
     "@vitest/coverage-v8": "^4.0.16",
     "babel-plugin-module-extension-resolver": "^1.0.0",
     "eslint": "^9.39.2",
-    "fs-extra": "^11.3.3",
-    "glob": "^13.0.0",
     "jiti": "^2.6.1",
     "redux": ">=5.0.1",
     "rimraf": "^6.1.2",
