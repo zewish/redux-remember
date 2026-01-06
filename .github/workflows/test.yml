@@ -1,7 +1,7 @@
 name: test
 on: [pull_request]
 concurrency:
-  group: "test"
+  group: 'test'
   cancel-in-progress: false
 jobs:
   build:
@@ -15,10 +15,18 @@ jobs:
         node-version: lts/*
         check-latest: true
     - name: Build and test
+      env:
+        ASTRO_TELEMETRY_DISABLED: 1
       run: |
         npm ci
-        npm run prepare
+        npm run lint
+        npm run typecheck
+        npm run test
+        npm run build
     - name: Check coverage
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
+        verbose: true
+        directory: ./packages/redux-remember/coverage

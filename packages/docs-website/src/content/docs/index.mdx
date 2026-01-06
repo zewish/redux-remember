@@ -1,0 +1,41 @@
+---
+title: Redux Remember
+template: splash
+hero:
+  tagline: Redux Remember saves and loads your redux state from a key-value store of your choice.
+  image:
+    file: ../../assets/logo.webp
+  actions:
+    - text: Quick Start
+      link: ./quick-start/
+      icon: right-arrow
+    - text: See the live demo!
+      link: ./demo/
+      icon: external
+      variant: minimal
+---
+
+## Key Features
+
+- Saves (persists) and loads (rehydrates) only allowed keys and does not touch anything else.
+- Completely unit and battle tested.
+- Works on both web (any redux compatible app) and native (react-native).
+
+## Storage Support
+
+Works with any of the following:
+- **AsyncStorage** (react-native)
+- **LocalStorage** (web)
+- **SessionStorage** (web)
+- **Your own custom storage driver** that implements `setItem(key, value)` and `getItem(key)`
+
+import { LinkCard, Card, CardGrid } from '@astrojs/starlight/components';
+
+## Where to Now?
+
+<CardGrid>
+  <LinkCard title="Quick Start" href="./quick-start/" />
+  <LinkCard title="Usage Guides" href="./usage/" />
+  <LinkCard title="API Reference" href="./api/" />
+  <LinkCard title="Demo" href="./demo/" />
+</CardGrid>

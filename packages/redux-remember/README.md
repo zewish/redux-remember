@@ -1,4 +1,4 @@
-<img src="./packages/docs-website/src/assets/logo.webp" alt="Redux Remember Logo" width="150"/>
+<img src="https://raw.githubusercontent.com/zewish/redux-remember/master/packages/docs-website/src/assets/logo.webp" alt="Redux Remember Logo" width="150" />
 
 **Redux Remember saves (persists) and loads (rehydrates) your Redux state from any key-value storage**
 
@@ -19,6 +19,8 @@
 - **Battle-tested** - Fully tested with Redux 5.0+ and Redux Toolkit 2.0+
 - **TypeScript ready** - Fully type safe with TypeScript definitions included
 
+> **Note:** For older versions of Redux or Redux Toolkit, use redux-remember@4.2.2
+
 ## Installation
 
 ```bash
@@ -30,11 +32,36 @@ pnpm/yarn/bun add redux-remember
 ## Quick Start
 
 ```ts
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
-import reducers from './reducers';
 
-const rememberedKeys: (keyof typeof reducers)[] = ['keyToPersist'];
+const myStateIsRemembered = createSlice({
+  name: 'persisted-slice',
+  initialState: { text: '' },
+  reducers: {
+    setPersistedText(state, action: PayloadAction<string>) {
+      state.text = action.payload;
+    }
+  }
+});
+
+const myStateIsForgotten = createSlice({
+  name: 'forgotten-slice',
+  initialState: { text: '' },
+  reducers: {
+    setForgottenText(state, action: PayloadAction<string>) {
+      state.text = action.payload;
+    }
+  }
+});
+
+const reducers = {
+  myStateIsRemembered: myStateIsRemembered.reducer,
+  myStateIsForgotten: myStateIsForgotten.reducer
+};
+
+// Only 'myStateIsRemembered' will be persisted
+const rememberedKeys: (keyof typeof reducers)[] = ['myStateIsRemembered'];
 
 const reducer = rememberReducer(reducers);
 const store = configureStore({
@@ -45,26 +72,7 @@ const store = configureStore({
 });
 ```
 
-See the [Quick Start guide](https://zewish.github.io/redux-remember/quick-start/) for complete setup instructions.
-
----
-
-## Development
-
-This is a monorepo managed with [Turborepo](https://turbo.build/repo):
-
-| Package | Description |
-|---------|-------------|
-| `packages/redux-remember` | The main library   |
-| `packages/docs-website`   | Documentation site |
-
-```bash
-npm install
-npm run build     # Build all packages
-npm run test      # Run tests
-npm run typecheck # Run type checking
-npm run lint      # Run linter
-```
+For more examples and detailed API documentation, visit the [full documentation](https://zewish.github.io/redux-remember/quick-start/).
 
 ## License
 

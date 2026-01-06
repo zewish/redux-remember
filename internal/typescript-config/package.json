@@ -1,0 +1,12 @@
+{
+  "name": "@internal/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3"
+  }
+}

@@ -1,88 +1,22 @@
 {
   "name": "redux-remember",
-  "version": "5.3.1",
-  "description": "Saves and loads your redux state from a key-value store of your choice",
-  "author": "Iskren Slavov <iskren.s@gmail.com>",
-  "license": "MIT",
-  "types": "dist/types/index.d.ts",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/mjs/index.mjs",
-  "react-native": "src/index.ts",
-  "source": "src/index.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "require": "./dist/cjs/index.cjs",
-      "import": "./dist/mjs/index.mjs",
-      "default": "./dist/cjs/index.cjs"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": false,
+  "private": true,
   "scripts": {
-    "clean": "rimraf -V dist",
-    "typecheck": "tsc -p ./tsconfig.build.json --noEmit",
-    "build:cjs": "BABEL_ENV=cjs babel --extensions '.ts' src --source-maps --out-file-extension '.cjs' --out-dir dist/cjs",
-    "build:mjs": "BABEL_ENV=mjs babel --extensions '.ts' src --source-maps --out-file-extension '.mjs' --out-dir dist/mjs",
-    "build:types": "tsc -p ./tsconfig.build.json --pretty --declaration --declarationMap --emitDeclarationOnly --outDir dist/types && rimraf -V dist/types/__tests__",
-    "build": "npm run build:cjs && npm run build:mjs && npm run build:types",
-    "prepare": "npm run clean && npm run typecheck && npm run test && npm run build",
-    "lint": "eslint ./src/*.ts",
-    "test": "npm run lint && vitest run"
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
   },
-  "files": [
-    "src",
-    "dist",
-    "LICENSE",
-    "README.md",
-    "!**/__tests__"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zewish/redux-remember.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zewish/redux-remember/issues"
-  },
-  "homepage": "https://github.com/zewish/redux-remember/",
-  "keywords": [
-    "redux",
-    "remember",
-    "storage",
-    "persist",
-    "persistance",
-    "rehydrate",
-    "rehydration",
-    "localstorage",
-    "sessionstorage",
-    "asyncstorage",
-    "react",
-    "react-native"
-  ],
   "devDependencies": {
-    "@babel/cli": "^7.28.3",
-    "@babel/core": "^7.28.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-transform-runtime": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
-    "@types/babel__core": "^7.20.5",
-    "@types/babel__preset-env": "^7.10.0",
-    "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
-    "@vitest/coverage-v8": "^4.0.16",
-    "babel-plugin-module-extension-resolver": "^1.0.0",
-    "eslint": "^9.39.2",
-    "jiti": "^2.6.1",
-    "redux": ">=5.0.1",
-    "rimraf": "^6.1.2",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.1",
-    "vitest": "^4.0.16"
+    "turbo": "^2.7.3",
+    "typescript": "5.9.3"
   },
-  "peerDependencies": {
-    "redux": ">=5.0.0"
-  }
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "npm@11.7.0",
+  "workspaces": [
+    "internal/*",
+    "packages/*"
+  ]
 }

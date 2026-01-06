@@ -1,14 +1,13 @@
 name: build
 on:
   push:
-    branches:
-      - master
+    branches: [master]
 permissions:
   contents: read
   pages: write
   id-token: write
 concurrency:
-  group: "build"
+  group: 'build'
   cancel-in-progress: true
 jobs:
   build:
@@ -22,27 +21,26 @@ jobs:
         node-version: lts/*
         check-latest: true
     - name: Build and test
+      env:
+        ASTRO_TELEMETRY_DISABLED: 1
       run: |
         npm ci
-        npm run prepare
+        npm run lint
+        npm run typecheck
+        npm run test
+        npm run build
     - name: Check coverage
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
+        verbose: true
+        directory: ./packages/redux-remember/coverage
     - name: Setup pages
       uses: actions/configure-pages@v5
-    - name: Build pages
-      run: |
-        cd ./demo-web/
-        npm ci
-        npm run build
-        cd ..
-        mkdir -p ./pages/demo-web/
-        cp -f ./demo-web/index.html ./demo-web/bundle.js ./pages/demo-web/
     - name: Upload page artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v4
       with:
-        path: './pages/'
-    - name: Deploy demo to pages
-      id: deployment
+        path: './packages/docs-website/dist/'
+    - name: Deploy docs to pages
       uses: actions/deploy-pages@v4

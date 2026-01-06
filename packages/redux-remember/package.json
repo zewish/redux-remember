@@ -1,0 +1,75 @@
+{
+  "name": "redux-remember",
+  "version": "5.3.1",
+  "description": "Saves and loads your redux state from a key-value store of your choice",
+  "author": "Iskren Slavov <iskren.s@gmail.com>",
+  "license": "MIT",
+  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/mjs/index.mjs",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.cjs",
+      "import": "./dist/mjs/index.mjs",
+      "default": "./dist/cjs/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf -V dist",
+    "build:cjs": "bundle-js cjs src dist/cjs",
+    "build:mjs": "bundle-js mjs src dist/mjs",
+    "build:types": "bundle-types ./tsconfig.build.json dist/types && rimraf -V dist/types/__tests__",
+    "build": "npm run build:cjs && npm run build:mjs && npm run build:types",
+    "prepublishOnly": "npm run clean && npm run lint && npm run typecheck && npm run test && npm run build",
+    "lint": "eslint ./src/*.ts",
+    "typecheck": "tsc -p ./tsconfig.build.json --noEmit",
+    "test": "vitest run"
+  },
+  "files": [
+    "src",
+    "dist",
+    "LICENSE",
+    "README.md",
+    "!**/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zewish/redux-remember.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zewish/redux-remember/issues"
+  },
+  "homepage": "https://github.com/zewish/redux-remember/",
+  "keywords": [
+    "redux",
+    "remember",
+    "storage",
+    "persist",
+    "persistance",
+    "rehydrate",
+    "rehydration",
+    "localstorage",
+    "sessionstorage",
+    "asyncstorage",
+    "react",
+    "react-native"
+  ],
+  "devDependencies": {
+    "@internal/typescript-config": "*",
+    "@internal/eslint-config": "*",
+    "@internal/bundle": "*",
+    "@types/react": "^19.2.7",
+    "@vitest/coverage-v8": "^4.0.16",
+    "redux": ">=5.0.1",
+    "rimraf": "^6.1.2",
+    "vitest": "^4.0.16"
+  },
+  "peerDependencies": {
+    "redux": ">=5.0.0"
+  }
+}
