@@ -57,7 +57,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [() => (tree) => visit(tree, 'link', (node) => {
+    remarkPlugins: [() => (tree, currentFile) => visit(tree, 'link', (node) => {
       const { url } = node;
 
       if (url.startsWith('https://') || !url.includes('.md')) {
@@ -69,6 +69,11 @@ export default defineConfig({
       const fullPath = path.endsWith('/index')
         ? `${path.slice(0, -6)}/${hash}`
         : `${path}/${hash}`;
+
+      if (currentFile.path.endsWith('index.md')) {
+        node.url = fullPath;
+        return;
+      }
 
       node.url = url.startsWith('./') || url.startsWith('../')
         ? `../${fullPath}`
