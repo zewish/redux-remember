@@ -7,7 +7,7 @@
 [![Coverage Status](https://codecov.io/github/zewish/redux-remember/graph/badge.svg?token=69BRZBXR3R)](https://codecov.io/github/zewish/redux-remember)
 [![NPM Downloads](https://img.shields.io/npm/dm/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
 
-[Documentation](https://zewish.github.io/redux-remember/) | [Live Demo](https://zewish.github.io/redux-remember/demo/) | [GitHub](https://github.com/zewish/redux-remember)
+[Documentation](https://redux-remember.js.org/) | [Live Demo](https://redux-remember.js.org/demo/) | [GitHub](https://github.com/zewish/redux-remember)
 
 ---
 
@@ -72,7 +72,7 @@ const store = configureStore({
 });
 ```
 
-For more examples and detailed API documentation, visit the [full documentation](https://zewish.github.io/redux-remember/quick-start/).
+For more examples and detailed API documentation, visit the [full documentation](https://redux-remember.js.org/quick-start/).
 
 ## License
 

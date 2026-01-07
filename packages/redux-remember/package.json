@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
@@ -44,7 +44,7 @@
   "bugs": {
     "url": "https://github.com/zewish/redux-remember/issues"
   },
-  "homepage": "https://zewish.github.io/redux-remember/",
+  "homepage": "https://redux-remember.js.org/",
   "keywords": [
     "redux",
     "remember",

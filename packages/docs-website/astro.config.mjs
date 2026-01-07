@@ -5,8 +5,8 @@ import { visit } from 'unist-util-visit';
 import gruvbox from 'starlight-theme-gruvbox';
 
 export default defineConfig({
-  site: 'https://zewish.github.io',
-  base: '/redux-remember',
+  site: 'https://redux-remember.js.org',
+  base: '/',
   trailingSlash: 'always',
   integrations: [
     react(),

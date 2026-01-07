@@ -2,7 +2,7 @@
 
 This package contains the documentation website for [Redux Remember](https://github.com/zewish/redux-remember).
 
-Visit the live documentation at [https://zewish.github.io/redux-remember/](https://zewish.github.io/redux-remember/)
+Visit the live documentation at [https://redux-remember.js.org/](https://redux-remember.js.org/)
 
 ## Development
 
