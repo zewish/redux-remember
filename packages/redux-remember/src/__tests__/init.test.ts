@@ -77,6 +77,7 @@ describe('init.ts', () => {
         setItem: () => {}
       },
       serialize() {},
+      migrate() {},
       unserialize() {},
       errorHandler() {},
       persistThrottle: 100,
@@ -139,7 +140,7 @@ describe('init.ts', () => {
     await init(...args);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { unserialize, persistThrottle, ...persistOpts } = args[2];
+    const { unserialize, persistThrottle, migrate, ...persistOpts } = args[2];
 
     expect(mockPersist.persist).toHaveBeenCalledWith(
       mockState,

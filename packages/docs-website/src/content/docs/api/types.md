@@ -26,6 +26,7 @@ interface Options {
   prefix?: string;
   serialize?: (state: any, key: string) => string;
   unserialize?: (state: string, key: string) => any;
+  migrate?: (state: any) => any;
   persistThrottle?: number;
   persistDebounce?: number;
   persistWholeStore?: boolean;

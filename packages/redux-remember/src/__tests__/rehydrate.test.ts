@@ -201,6 +201,7 @@ describe('rehydrate.ts', () => {
         errorHandler() {},
         unserialize: (data) => JSON.parse(data),
         persistWholeStore: false,
+        migrate: (state) => state,
         ...opts
       }
     );
@@ -345,6 +346,46 @@ describe('rehydrate.ts', () => {
           2: 'number-2',
           1: 'prev-state-1'
         }
+      });
+    });
+
+    it('calls migrate with merged state', async () => {
+      mockState = {
+        storeVersion: 1,
+        some: 'field123'
+      };
+
+      const rehydratedState = {
+        1: 'beep boop',
+      };
+
+      const migratedState = {
+        ...mockState,
+        ...rehydratedState,
+        extraField: 'yay!',
+        storeVersion: 3
+      };
+
+      const mockMigrate = vi.fn(() => migratedState);
+
+      await exec({
+        driver: {
+          setItem: () => { throw new Error('not implemented'); },
+          getItem: () => rehydratedState
+        },
+        unserialize: (o: any) => o,
+        persistWholeStore: true,
+        migrate: mockMigrate
+      });
+
+      expect(mockMigrate).toHaveBeenCalledWith({
+        ...mockState,
+        ...rehydratedState,
+      });
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith({
+        type: REMEMBER_REHYDRATED,
+        payload: migratedState
       });
     });
   });

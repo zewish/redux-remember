@@ -14,16 +14,18 @@ const init = async (
     driver,
     serialize,
     unserialize,
+    migrate,
     persistThrottle,
     persistDebounce,
     persistWholeStore,
-    errorHandler
+    errorHandler,
+
   }: ExtendedOptions
 ) => {
   await rehydrate(
     store,
     rememberedKeys,
-    { prefix, driver, unserialize, persistWholeStore, errorHandler }
+    { prefix, driver, unserialize, migrate, persistWholeStore, errorHandler }
   );
 
   let oldState = {};

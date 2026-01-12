@@ -166,6 +166,7 @@ describe('index.ts', () => {
         persistWholeStore: true,
         serialize: (o) => o,
         unserialize: (o) => o,
+        migrate: (s) => s,
         errorHandler() {}
       };
 
@@ -216,6 +217,7 @@ describe('index.ts', () => {
       expect(stringifySpy).toHaveBeenCalledWith('hello');
       expect(optionDefaults.unserialize('"bye"', 'auth')).toEqual('bye');
       expect(parseSpy).toHaveBeenCalledWith('"bye"');
+      expect(optionDefaults.migrate('unchanged')).toBe('unchanged');
     });
 
     it('calls init() only once after the init action is dispatched', () => {
@@ -228,6 +230,7 @@ describe('index.ts', () => {
         persistWholeStore: true,
         serialize: (o) => o,
         unserialize: (o) => o,
+        migrate: (s) => s,
         errorHandler() {}
       };
 

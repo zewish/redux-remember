@@ -6,7 +6,7 @@ import { RehydrateError } from './errors.ts';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,
-  'driver' | 'prefix' | 'unserialize' | 'persistWholeStore' | 'errorHandler'
+  'driver' | 'prefix' | 'unserialize' | 'persistWholeStore' | 'errorHandler' | 'migrate'
 >
 
 type LoadAllOptions = Pick<
@@ -64,7 +64,8 @@ export const rehydrate = async (
     driver,
     persistWholeStore,
     unserialize,
-    errorHandler
+    errorHandler,
+    migrate
   }: RehydrateOptions
 ) => {
   let state = store.getState();
@@ -83,6 +84,8 @@ export const rehydrate = async (
         unserialize
       })
     };
+
+    state = migrate(state);
   } catch (err) {
     errorHandler(new RehydrateError(err));
   }

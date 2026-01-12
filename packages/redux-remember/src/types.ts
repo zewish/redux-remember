@@ -2,6 +2,7 @@ import type { PersistError, RehydrateError } from './errors.ts';
 
 export type SerializeFunction = (data: any, key: string) => any;
 export type UnserializeFunction = (data: any, key: string) => any;
+export type MigrateFunction = (state: any) => any;
 
 export type Driver = {
   getItem: (key: string) => any;
@@ -12,6 +13,7 @@ export type Options = {
   prefix: string,
   serialize: SerializeFunction,
   unserialize: UnserializeFunction,
+  migrate: MigrateFunction,
   persistThrottle: number,
   persistDebounce?: number,
   persistWholeStore: boolean,

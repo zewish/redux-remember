@@ -54,6 +54,7 @@ interface Options {
   prefix?: string;
   serialize?: (state: any, key: string) => string;
   unserialize?: (state: string, key: string) => any;
+  migrate?: (state: any) => any;
   persistThrottle?: number;
   persistDebounce?: number;
   persistWholeStore?: boolean;
@@ -75,12 +76,52 @@ interface Options {
 - **Type:** `(state: any, key: string) => string`
 - **Default:** `JSON.stringify`
 - **Description:** Function to serialize state before persisting
+- **Error Handling:** If `serialize` throws an error, it's caught and passed to `errorHandler`
 
 ### unserialize
 
 - **Type:** `(state: string, key: string) => any`
 - **Default:** `JSON.parse`
 - **Description:** Function to deserialize persisted state
+- **Error Handling:** If `unserialize` throws an error, it's caught and passed to `errorHandler`
+
+### migrate
+
+- **Type:** `(state: any) => any`
+- **Default:** `(state) => state` (identity function - returns state unchanged)
+- **Description:** Function to transform persisted state during rehydration
+- **Use Cases:**
+  - Migrating state when your app's data schema changes between versions
+  - Adding new required fields with default values
+  - Removing deprecated fields from old persisted state
+  - Changing fields names or even the whole data format
+- **Timing:** Called after loading persisted state and merging with current state, but before dispatching `REMEMBER_REHYDRATED`
+- **Error Handling:** If `migrate` throws an error, it's caught and passed to `errorHandler`, and the original (pre-migration) state is used
+
+**Example:**
+```ts
+// Migrate state when schema changes between versions
+rememberEnhancer(window.localStorage, rememberedKeys, {
+  migrate: (state) => {
+    // Add version tracking if not present
+    if (!state._version) {
+      return { ...state, _version: 1 };
+    }
+
+    // Migrate from v1 to v2: rename 'userName' to 'displayName'
+    if (state._version === 1) {
+      const { userName, ...rest } = state.user || {};
+      return {
+        ...state,
+        _version: 2,
+        user: { ...rest, displayName: userName }
+      };
+    }
+
+    return state;
+  }
+})
+```
 
 ### persistThrottle
 
