@@ -12,7 +12,8 @@ const config = {
   input: './src/demo/index.tsx',
   context: 'window',
   output: {
-    file: './public/demo-bundle.js',
+    dir: './public',
+    entryFileNames: 'demo-bundle-[hash].js',
     sourcemap: true,
     format: 'iife'
   },

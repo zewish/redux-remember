@@ -1,7 +1,7 @@
 # build output
 dist/
-public/demo-bundle.js
-public/demo-bundle.js.map
+public/demo-bundle-*.js
+public/demo-bundle-*.js.map
 # generated types
 .astro/
 

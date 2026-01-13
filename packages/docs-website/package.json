@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "npm run build:demo && astro dev",
     "start": "npm run dev",
-    "build:demo": "rollup -c ./rollup.config.js",
+    "build:demo": "rimraf ./public/demo-bundle-* && rollup -c ./rollup.config.js && node ./scripts/update-demo-src.js",
     "build": "npm run build:demo && astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -20,6 +20,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.3.0",
     "redux-remember": "*",
+    "rimraf": "^6.1.2",
     "rollup": "^4.55.1",
     "tslib": "^2.8.1",
     "unist-util-visit": "^5.0.0"
