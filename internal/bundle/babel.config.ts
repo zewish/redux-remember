@@ -25,7 +25,7 @@ const getPresets = ({
 
 const config: TransformOptions = {
   plugins: [
-    [require.resolve('@babel/plugin-proposal-object-rest-spread'), {
+    [require.resolve('@babel/plugin-transform-object-rest-spread'), {
       useBuiltIns: true
     }]
   ],
