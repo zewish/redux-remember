@@ -7,7 +7,7 @@
 [![Coverage Status](https://codecov.io/github/zewish/redux-remember/graph/badge.svg?token=69BRZBXR3R)](https://codecov.io/github/zewish/redux-remember)
 [![NPM Downloads](https://img.shields.io/npm/dm/redux-remigrate.svg?style=flat-square)](https://www.npmjs.com/package/redux-remigrate)
 
-[Documentation](https://redux-remember.js.org/) | [GitHub](https://github.com/zewish/redux-remember/tree/master/packages/redux-remigrate)
+[Documentation](https://redux-remember.js.org/usage/migrations/) | [GitHub](https://github.com/zewish/redux-remember/tree/master/packages/redux-remigrate)
 
 ---
 

@@ -25,7 +25,7 @@ Install Redux Remigrate alongside Redux Remember:
 npm install redux-remigrate
 ```
 
-## Quick Setup
+## Initial Setup
 
 ### 1. Create a config file
 
@@ -43,15 +43,7 @@ export default defineRemigrateConfig({
 
 See [Configuration Options](#configuration-options) for all available settings.
 
-### 2. Initialize migrations directory
-
-```bash
-npx remigrate init
-```
-
-This creates the migrations directory structure and generates the initial version file based on your current store type.
-
-### 3. Add to Redux Remember
+### 2. Add to Redux Remember
 
 Import the generated `migrate` function and pass it to Redux Remember:
 
@@ -90,11 +82,17 @@ export type RootState = ReturnType<typeof store['getState']>;
 export type PersistedState = Pick<RootState, typeof rememberedKeys[number]>;
 ```
 
-## Creating Migrations
+### 3. Initialize migrations directory
 
-### When your persisted state changes
+```bash
+npx remigrate init
+```
 
-Whenever you modify the structure of your persisted state (add/remove/rename fields, change types), run:
+This creates the migrations directory structure and generates the initial version file based on your current store type.
+
+### 4. Create a new migration
+
+#### 4.1. Whenever you modify the structure of your persisted state, run:
 
 ```bash
 npx remigrate create
@@ -105,7 +103,7 @@ This will:
 2. Generate a new version file if your persisted state is changed
 3. Create a new migration file with type-safe function signatures
 
-### Implementing migration logic
+#### 4.2. Implementing migration logic
 
 Edit the generated migration file to transform data from the old version to the new:
 
@@ -125,7 +123,7 @@ export const from_20260101_120000 = (
 });
 ```
 
-### Validating migrations
+### 5. Validate migrations
 
 Check your migrations for TypeScript errors:
 
@@ -134,6 +132,10 @@ npx remigrate validate
 ```
 
 This ensures all migration functions have correct type signatures.
+
+### 6. Ship migrations with your app
+
+When the app loads and persisted data is rehydrated, Redux Remigrate automatically migrates it to the latest schema version.
 
 ## CLI Reference
 
