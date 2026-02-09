@@ -29,13 +29,20 @@ jobs:
         npm run typecheck
         npm run test
         npm run build
-    - name: Check coverage
+    - name: Check redux-remember coverage
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        flags: redux-remember
+        files: ./packages/redux-remember/coverage/lcov.info
         fail_ci_if_error: true
-        verbose: true
-        directory: ./packages/redux-remember/coverage
+    - name: Check redux-remigrate coverage
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: redux-remigrate
+        files: ./packages/redux-remigrate/coverage/lcov.info
+        fail_ci_if_error: true
     - name: Setup pages
       uses: actions/configure-pages@v5
     - name: Upload page artifact

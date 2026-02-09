@@ -23,12 +23,17 @@ jobs:
         npm run typecheck
         npm run test
         npm run build
-    - name: Check coverage
+    - name: Check redux-remember coverage
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        flags: redux-remember
+        files: ./packages/redux-remember/coverage/lcov.info
         fail_ci_if_error: true
-        verbose: true
-        files:
-          - ./packages/redux-remember/coverage/lcov.info
-          - ./packages/redux-remigrate/coverage/lcov.info
+    - name: Check redux-remigrate coverage
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: redux-remigrate
+        files: ./packages/redux-remigrate/coverage/lcov.info
+        fail_ci_if_error: true
