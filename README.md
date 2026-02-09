@@ -122,7 +122,7 @@ npx remigrate create   # Create a migration when state schema changes
 npx remigrate validate # Validate migration types
 ```
 
-See the [Redux Remigrate documentation](https://redux-remember.js.org/migrations/) for setup and usage.
+See the [Redux Remigrate documentation](https://redux-remember.js.org/usage/migrations/) for setup and usage.
 
 ---
 

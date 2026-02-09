@@ -164,7 +164,7 @@ Options:
 | `headers.migrationFile` | `string` | No  | Custom header for generated migration files |
 | `headers.indexFile`     | `string` | No  | Custom header for the generated index file |
 
-For more examples and detailed API documentation, visit the [full documentation](https://redux-remember.js.org/migrations/).
+For more examples and detailed API documentation, visit the [full documentation](https://redux-remember.js.org/usage/migrations/).
 
 ## License
 

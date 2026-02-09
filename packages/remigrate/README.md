@@ -32,7 +32,7 @@ npx remigrate validate    # Validate migrations for TypeScript errors
 
 ## Documentation
 
-For full documentation, configuration options, and usage examples, visit the [official documentation](https://redux-remember.js.org/migrations/).
+For full documentation, configuration options, and usage examples, visit the [official documentation](https://redux-remember.js.org/usage/migrations/).
 
 ## License
 

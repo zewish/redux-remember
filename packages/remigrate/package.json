@@ -1,6 +1,6 @@
 {
   "name": "remigrate",
-  "version": "1.0.0",
+  "version": "6.0.4",
   "description": "CLI wrapper for Redux Remigrate - A TypeScript-first Redux Remember migration layer",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
