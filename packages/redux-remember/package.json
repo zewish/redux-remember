@@ -1,6 +1,6 @@
 {
   "name": "redux-remember",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",

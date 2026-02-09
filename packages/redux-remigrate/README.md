@@ -65,11 +65,11 @@ const reducers = {
   myStateIsForgotten: myStateIsForgotten.reducer,
 };
 
-const rememberedKeys: (keyof typeof reducers)[] = [
+const rememberedKeys = [
   // 3.2. Make sure _remigrateVersion gets persisted with the state:
   '_remigrateVersion',
   'myStateIsRemembered',
-];
+] satisfies (keyof typeof reducers)[];
 
 const reducer = rememberReducer(reducers);
 const store = configureStore({

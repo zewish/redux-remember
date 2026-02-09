@@ -6,7 +6,7 @@ This guide shows how to use Redux Remember with plain Redux (without Redux Toolk
 
 ## Complete Example
 
-```js
+```ts
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 
@@ -35,7 +35,7 @@ const reducers = {
   myStateIsForgotten
 };
 
-const rememberedKeys: (keyof typeof reducers)[] = ['myStateIsRemembered']; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+const rememberedKeys = ['myStateIsRemembered'] satisfies (keyof typeof reducers)[]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const reducer = rememberReducer(
   combineReducers(reducers)

@@ -46,7 +46,7 @@ export const actions = {
   ...myStateIsForgotten.actions
 };
 
-const rememberedKeys: (keyof typeof reducers)[] = ['myStateIsRemembered']; // 'myStateIsForgotten' will be forgotten, as it's not in this list
+const rememberedKeys = ['myStateIsRemembered'] satisfies (keyof typeof reducers)[]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 const reducer = rememberReducer(reducers);
 const store = configureStore({

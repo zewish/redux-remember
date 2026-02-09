@@ -21,7 +21,7 @@ import reducers from './reducers';
 import { configureStore } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer, PersistError, RehydrateError, MigrateError } from 'redux-remember';
 
-const rememberedKeys: (keyof typeof reducers)[] = ['user', 'settings'];
+const rememberedKeys = ['user', 'settings'] satisfies (keyof typeof reducers)[];
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,

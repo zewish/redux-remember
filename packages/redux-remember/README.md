@@ -61,7 +61,7 @@ const reducers = {
 };
 
 // Only 'myStateIsRemembered' will be persisted
-const rememberedKeys: (keyof typeof reducers)[] = ['myStateIsRemembered'];
+const rememberedKeys = ['myStateIsRemembered'] satisfies (keyof typeof reducers)[];
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,
