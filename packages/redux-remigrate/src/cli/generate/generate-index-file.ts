@@ -48,7 +48,7 @@ export const generateIndexFile = async (
      * If you deleted any of your old migrations, run "redux-remigrate cleanup" to regenerate.
      **/
     ${headers?.indexFile ?? ''}
-    import { createRemigrate } from '../redux-remigrate/index.ts'; // @TODO: change this before release
+    import { createRemigrate } from 'redux-remigrate';
     ${migrators
       .map((name) => `import { ${name} } from './migrations/${name}${tsImportExtension}';`)
       .join('\n')
