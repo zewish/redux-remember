@@ -1,0 +1,86 @@
+{
+  "name": "redux-remigrate",
+  "version": "6.0.0",
+  "description": "The official TypeScript-first migration layer for Redux Remember",
+  "author": "Iskren Slavov <iskren.s@gmail.com>",
+  "license": "MIT",
+  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/mjs/index.mjs",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "bin": {
+    "remigrate": "./bin/remigrate.cjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.cjs",
+      "import": "./dist/mjs/index.mjs",
+      "default": "./dist/cjs/index.cjs"
+    },
+    "./bin/remigrate.cjs": {
+      "require": "./bin/remigrate.cjs",
+      "default": "./bin/remigrate.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:cjs": "bundle-js cjs src dist/cjs",
+    "build:mjs": "bundle-js mjs src dist/mjs",
+    "build:types": "bundle-types ./tsconfig.build.json dist/types && rimraf -V dist/types/__tests__",
+    "build": "npm run build:cjs && npm run build:mjs && npm run build:types",
+    "clean": "rimraf -V dist",
+    "prepublishOnly": "npm run clean && npm run lint && npm run typecheck && npm run test && npm run build",
+    "lint": "eslint ./src/*.ts ./bin/*.cjs",
+    "typecheck": "tsc -p ./tsconfig.build.json --noEmit",
+    "test": "vitest run"
+  },
+  "files": [
+    "src",
+    "dist",
+    "LICENSE",
+    "README.md",
+    "!**/__tests__"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zewish/redux-remember.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zewish/redux-remember/issues"
+  },
+  "homepage": "https://redux-remember.js.org/",
+  "keywords": [
+    "redux",
+    "remember",
+    "migration",
+    "migrate",
+    "storage",
+    "rehydrate",
+    "rehydration",
+    "react",
+    "react-native"
+  ],
+  "devDependencies": {
+    "@internal/bundle": "*",
+    "@internal/eslint-config": "*",
+    "@internal/typescript-config": "*",
+    "@vitest/coverage-v8": "^4.0.16",
+    "redux": ">=5.0.1",
+    "rimraf": "^6.1.2",
+    "vitest": "^4.0.16",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "jiti": "^2.6.1",
+    "picocolors": "^1.1.1",
+    "prettier": "^3.8.1"
+  },
+  "peerDependencies": {
+    "redux": ">=5.0.0",
+    "redux-remember": ">=6.0.0",
+    "typescript": ">=5.0.0"
+  }
+}

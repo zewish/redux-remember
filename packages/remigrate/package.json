@@ -1,0 +1,55 @@
+{
+  "name": "remigrate",
+  "version": "1.0.0",
+  "description": "CLI wrapper for Redux Remigrate - A TypeScript-first Redux Remember migration layer",
+  "author": "Iskren Slavov <iskren.s@gmail.com>",
+  "license": "MIT",
+  "main": "./bin/remigrate.cjs",
+  "bin": {
+    "remigrate": "./bin/remigrate.cjs"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test",
+    "lint": "eslint ./bin/*.cjs",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "files": [
+    "bin",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zewish/redux-remember.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zewish/redux-remember/issues"
+  },
+  "homepage": "https://redux-remember.js.org/",
+  "keywords": [
+    "redux",
+    "remember",
+    "migration",
+    "migrate",
+    "cli",
+    "commandline",
+    "command-line",
+    "storage",
+    "rehydrate",
+    "rehydration"
+  ],
+  "devDependencies": {
+    "@internal/eslint-config": "*",
+    "@internal/typescript-config": "*",
+    "@vitest/coverage-v8": "^4.0.16",
+    "rimraf": "^6.1.2",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1"
+  },
+  "peerDependencies": {
+    "redux-remigrate": "*"
+  }
+}

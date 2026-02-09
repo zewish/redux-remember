@@ -6,7 +6,7 @@
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "checkJs": true,
-    "lib": ["es2024", "dom"],
+    "lib": ["esnext", "dom"],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,

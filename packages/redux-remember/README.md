@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/zewish/redux-remember/master/packages/docs-website/src/assets/logo.webp" alt="Redux Remember Logo" width="150" />
+<img src="https://raw.githubusercontent.com/zewish/redux-remember/master/packages/docs-website/src/assets/logo-remember.webp" alt="Redux Remember Logo" width="150" />
 
 **Redux Remember saves (persists) and loads (rehydrates) your Redux state from any key-value storage**
 
@@ -7,7 +7,7 @@
 [![Coverage Status](https://codecov.io/github/zewish/redux-remember/graph/badge.svg?token=69BRZBXR3R)](https://codecov.io/github/zewish/redux-remember)
 [![NPM Downloads](https://img.shields.io/npm/dm/redux-remember.svg?style=flat-square)](https://www.npmjs.com/package/redux-remember)
 
-[Documentation](https://redux-remember.js.org/) | [Live Demo](https://redux-remember.js.org/demo/) | [GitHub](https://github.com/zewish/redux-remember)
+[Documentation](https://redux-remember.js.org/) | [Live Demo](https://redux-remember.js.org/demo/) | [GitHub](https://github.com/zewish/redux-remember/tree/master/packages/redux-remember)
 
 ---
 
@@ -62,7 +62,6 @@ const reducers = {
 
 // Only 'myStateIsRemembered' will be persisted
 const rememberedKeys: (keyof typeof reducers)[] = ['myStateIsRemembered'];
-
 const reducer = rememberReducer(reducers);
 const store = configureStore({
   reducer,

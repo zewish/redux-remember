@@ -4,7 +4,7 @@ template: splash
 hero:
   tagline: Redux Remember saves and loads your redux state from a key-value store of your choice.
   image:
-    file: ../../assets/logo.webp
+    file: ../../assets/logo-remember.webp
   actions:
     - text: Quick Start
       link: ./quick-start/
@@ -18,6 +18,7 @@ hero:
 ## Key Features
 
 - Saves (persists) and loads (rehydrates) only allowed keys and does not touch anything else.
+- Use [Redux Remigrate](./usage/migrations/) for migrations with auto-generated types and CLI tooling.
 - Completely unit and battle tested.
 - Works on both web (any redux compatible app) and native (react-native).
 
@@ -36,6 +37,7 @@ import { LinkCard, Card, CardGrid } from '@astrojs/starlight/components';
 <CardGrid>
   <LinkCard title="Quick Start" href="./quick-start/" />
   <LinkCard title="Usage Guides" href="./usage/" />
+  <LinkCard title="Migrations with Redux Remigrate" href="./usage/migrations/" />
   <LinkCard title="API Reference" href="./api/" />
   <LinkCard title="Demo" href="./demo/" />
 </CardGrid>

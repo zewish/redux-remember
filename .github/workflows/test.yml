@@ -29,4 +29,6 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
         verbose: true
-        directory: ./packages/redux-remember/coverage
+        files:
+          - ./packages/redux-remember/coverage/lcov.info
+          - ./packages/redux-remigrate/coverage/lcov.info

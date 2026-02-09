@@ -30,3 +30,4 @@ class CustomError extends Error {
 
 export class PersistError extends CustomError {}
 export class RehydrateError extends CustomError {}
+export class MigrateError extends CustomError {}

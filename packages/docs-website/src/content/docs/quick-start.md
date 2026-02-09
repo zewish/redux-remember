@@ -87,5 +87,6 @@ const store = configureStore({
 
 ## Next Steps
 
-- [Usage guides](./usage/index.md) - A list of guides for different platforms and advanced features
+- [Usage guides](./usage/index.md) - Platform-specific guides and advanced features
+- [Migrations](./usage/migrations.md) - Use Redux Remigrate for migrations with auto-generated types and CLI tooling
 - [API Reference](./api/index.md) - Complete API documentation
