@@ -388,5 +388,34 @@ describe('rehydrate.ts', () => {
         payload: migratedState
       });
     });
+
+    it('properly passes migrate errors to errorHandler()', async () => {
+      const error = new Error('MIGRATE FAILED!');
+      const errorHandlerMock = vi.fn();
+
+      const migrateErrorMock = vi.fn(class {
+        message: string;
+        constructor(err: Error) {
+          this.message = `MIGRATE ERROR: ${err.message}`;
+        }
+      });
+
+      vi.doMock('../errors.ts', () => ({
+        MigrateError: migrateErrorMock
+      }));
+
+      vi.resetModules();
+      mod = await import('../rehydrate.ts');
+
+      await exec({
+        errorHandler: errorHandlerMock,
+        migrate: () => Promise.reject(error)
+      });
+
+      expect(migrateErrorMock).toHaveBeenCalledWith(error);
+      expect(errorHandlerMock).toHaveBeenCalledWith(
+        expect.objectContaining({ message: `MIGRATE ERROR: ${error.message}` })
+      );
+    });
   });
 });

@@ -18,7 +18,7 @@ const App = () => {
         <img
           alt="Redux Remember logo"
           width={160}
-          src="https://raw.githubusercontent.com/zewish/redux-remember/master/packages/docs-website/src/assets/logo.webp"
+          src="https://raw.githubusercontent.com/zewish/redux-remember/master/packages/docs-website/src/assets/logo-remember.webp"
         />
       </div>
 

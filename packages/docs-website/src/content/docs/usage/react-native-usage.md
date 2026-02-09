@@ -66,8 +66,15 @@ const store = configureStore({
 
 For more advanced use cases where you need to use custom storage driver (e.g., AsyncStorage for regular data and SecureStore for sensitive data), see the [Custom Storage Driver](./custom-storage-driver.md) guide.
 
+## State Migrations
+
+When your persisted state schema changes (adding/removing fields, renaming, etc.), you'll need to migrate existing user data. Redux Remigrate provides type-safe, CLI-driven migrations.
+
+**[Set up migrations with Redux Remigrate &rarr;](./migrations.md)**
+
 ## See Also
 
+- [Migrations](./migrations.md)
 - [Web Usage](./web-usage.md)
 - [Custom Storage Driver](./custom-storage-driver.md)
 - [Using in Reducers](./using-in-reducers.md)

@@ -2,7 +2,7 @@ import type { Store } from 'redux';
 import { REMEMBER_REHYDRATED } from './action-types.ts';
 import type { ExtendedOptions } from './types.ts';
 import { pick } from './utils.ts';
-import { RehydrateError } from './errors.ts';
+import { MigrateError, RehydrateError } from './errors.ts';
 
 type RehydrateOptions = Pick<
   ExtendedOptions,
@@ -69,6 +69,7 @@ export const rehydrate = async (
   }: RehydrateOptions
 ) => {
   let state = store.getState();
+  let rehydrated = false;
 
   try {
     const load = persistWholeStore
@@ -85,9 +86,19 @@ export const rehydrate = async (
       })
     };
 
-    state = migrate(state);
+    rehydrated = true;
   } catch (err) {
     errorHandler(new RehydrateError(err));
+    rehydrated = false;
+  }
+
+  if (rehydrated) {
+    try {
+      state = await migrate(state);
+    } catch (err) {
+      errorHandler(new MigrateError(err));
+      state = store.getState();
+    }
   }
 
   store.dispatch({

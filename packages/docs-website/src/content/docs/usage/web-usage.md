@@ -91,8 +91,15 @@ rememberEnhancer(
 
 You can also provide your own storage driver. See the [Custom Storage Driver](./custom-storage-driver.md) guide for more details.
 
+## State Migrations
+
+When your persisted state schema changes (adding/removing fields, renaming, etc.), you'll need to migrate existing user data. Redux Remigrate provides type-safe, CLI-driven migrations.
+
+**[Set up migrations with Redux Remigrate &rarr;](./migrations.md)**
+
 ## See Also
 
+- [Migrations](./migrations.md)
 - [React Native Usage](./react-native-usage.md)
 - [Custom Storage Driver](./custom-storage-driver.md)
 - [Using in Reducers](./using-in-reducers.md)

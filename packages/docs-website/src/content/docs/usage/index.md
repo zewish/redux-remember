@@ -15,6 +15,7 @@ Learn how to set up Redux Remember for your target platform:
 
 Explore advanced features and patterns:
 
+- [Migrations with Redux Remigrate](./migrations.md) - Handle migrations with auto-generated version types and CLI tooling using Redux Remigrate
 - [Custom Storage Driver](./custom-storage-driver.md) - Create custom storage drivers for specialized use cases like secure storage or multiple storage types
 - [Using in Reducers](./using-in-reducers.md) - Listen to Redux Remember actions in your reducers to track rehydration and persistence events
 - [Rehydration Gate](./rehydration-gate.md) - Prevent rendering and show a loader until persisted state has been loaded

@@ -1,0 +1,22 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+      redux-remember:
+        paths:
+          - packages/redux-remember/
+      redux-remigrate:
+        paths:
+          - packages/redux-remigrate/
+
+flag_management:
+  default_rules:
+    carryforward: true
+  individual_flags:
+    - name: redux-remember
+      paths:
+        - packages/redux-remember/
+    - name: redux-remigrate
+      paths:
+        - packages/redux-remigrate/

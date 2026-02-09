@@ -58,7 +58,7 @@ interface Options {
   persistThrottle?: number;
   persistDebounce?: number;
   persistWholeStore?: boolean;
-  errorHandler?: (error: PersistError | RehydrateError) => void;
+  errorHandler?: (error: PersistError | RehydrateError | MigrateError) => void;
   initActionType?: string;
 }
 ```
@@ -95,10 +95,15 @@ interface Options {
   - Adding new required fields with default values
   - Removing deprecated fields from old persisted state
   - Changing fields names or even the whole data format
-- **Timing:** Called after loading persisted state and merging with current state, but before dispatching `REMEMBER_REHYDRATED`
-- **Error Handling:** If `migrate` throws an error, it's caught and passed to `errorHandler`, and the original (pre-migration) state is used
+- **Timing:** Called after successful rehydration, before dispatching `REMEMBER_REHYDRATED`. Migration is skipped if rehydration fails.
+- **Error Handling:** If `migrate` throws an error, it's caught and passed to `errorHandler` as a [`MigrateError`](./types.md#migrateerror), and the default store state (from reducer initial values) is used to prevent the app from crashing
+- **Tip:** It is highly recommended that you use use [Redux Remigrate](../usage/migrations.md) for type-safe migrations with auto-generated version types and CLI tooling.
 
-**Example:**
+**Example - using Redux Remigrate (recommended):**
+
+- See [Migrations with Redux Remigrate](../usage/migrations.md)
+
+**Example - using manual migration (alternative):**
 ```ts
 // Migrate state when schema changes between versions
 rememberEnhancer(window.localStorage, rememberedKeys, {
@@ -169,9 +174,9 @@ rememberEnhancer(window.localStorage, rememberedKeys, {
 
 ### errorHandler
 
-- **Type:** `(error: `[`PersistError`](./types.md#persisterror)` | `[`RehydrateError`](./types.md#rehydrateerror)`) => void`
+- **Type:** `(error: `[`PersistError`](./types.md#persisterror)` | `[`RehydrateError`](./types.md#rehydrateerror)` | `[`MigrateError`](./types.md#migrateerror)`) => void`
 - **Default:** `console.warn`
-- **Description:** Hook function to handle persistence and rehydration errors
+- **Description:** Hook function to handle persistence, rehydration, and migration errors
 - **Note:** Error objects include full stack traces
 - **See:** [Error Handling Guide](../usage/error-handling.md) for complete examples
 
@@ -192,6 +197,7 @@ rememberEnhancer(window.localStorage, rememberedKeys, {
 
 - [rememberReducer](./remember-reducer.md) - Wrap your reducers
 - [Types](./types.md) - TypeScript type definitions
-- [Quick Start](../quick-start.md)
+- [Migrations with Redux Remigrate](../usage/migrations.md) - Use Redux Remigrate for migrations with auto-generated types and CLI tooling
 - [Error Handling](../usage/error-handling.md)
 - [Custom Storage Driver](../usage/custom-storage-driver.md)
+- [Quick Start](../quick-start.md)

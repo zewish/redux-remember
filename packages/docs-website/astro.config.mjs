@@ -27,6 +27,7 @@ export default defineConfig({
             { label: 'Usage Overview', slug: 'usage' },
             { label: 'Web Usage', slug: 'usage/web-usage' },
             { label: 'React Native Usage', slug: 'usage/react-native-usage' },
+            { label: 'Migrations with Redux Remigrate', slug: 'usage/migrations' },
             { label: 'Custom Storage Driver', slug: 'usage/custom-storage-driver' },
             { label: 'Using in Reducers', slug: 'usage/using-in-reducers' },
             { label: 'Rehydration Gate', slug: 'usage/rehydration-gate' },
