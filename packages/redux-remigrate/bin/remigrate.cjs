@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON
 
 const process = require('node:process');
 const path = require('node:path');

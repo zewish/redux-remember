@@ -17,7 +17,7 @@ export const loadTsCompilerOpts = (tsconfigPath: string | undefined): ts.Compile
 
   const configFile = ts.readConfigFile(
     cfgPath,
-    ts.sys.readFile.bind
+    ts.sys.readFile
   );
 
   if (configFile.error) {
