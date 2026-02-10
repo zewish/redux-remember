@@ -1,9 +1,12 @@
 {
   "name": "redux-remember",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "Saves and loads your redux state from a key-value store of your choice",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
+  "funding": {
+    "url": "https://github.com/sponsors/zewish"
+  },
   "types": "dist/types/index.d.ts",
   "main": "dist/cjs/index.cjs",
   "module": "dist/mjs/index.mjs",

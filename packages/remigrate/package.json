@@ -1,9 +1,12 @@
 {
   "name": "remigrate",
-  "version": "6.0.4",
+  "version": "6.0.6",
   "description": "CLI wrapper for Redux Remigrate - A TypeScript-first Redux Remember migration layer",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
+  "funding": {
+    "url": "https://github.com/sponsors/zewish"
+  },
   "main": "./bin/remigrate.cjs",
   "bin": {
     "remigrate": "./bin/remigrate.cjs"

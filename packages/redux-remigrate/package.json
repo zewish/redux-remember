@@ -1,9 +1,12 @@
 {
   "name": "redux-remigrate",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "The official TypeScript-first migration layer for Redux Remember",
   "author": "Iskren Slavov <iskren.s@gmail.com>",
   "license": "MIT",
+  "funding": {
+    "url": "https://github.com/sponsors/zewish"
+  },
   "types": "dist/types/index.d.ts",
   "main": "dist/cjs/index.cjs",
   "module": "dist/mjs/index.mjs",
