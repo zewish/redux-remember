@@ -51,6 +51,7 @@ Import the generated `migrate` function and pass it to Redux Remember:
 import { configureStore } from '@reduxjs/toolkit';
 import { rememberReducer, rememberEnhancer } from 'redux-remember';
 import { _remigrateVersion } from 'redux-remigrate';
+import { myStateIsRemembered, myStateIsForgotten } from './reducers.ts';
 import { migrate } from './remigrate/index.ts';
 
 const reducers = {
