@@ -37,7 +37,7 @@ const rememberReducer = <S = any, A extends Action = UnknownAction, PreloadedSta
     switch (action.type) {
       case REMEMBER_REHYDRATED: {
         const rehydratedState = {
-          ...data.state,
+          ...state,
           ...(action?.payload || {})
         };
 
