@@ -68,7 +68,7 @@ export const rehydrate = async (
     migrate
   }: RehydrateOptions
 ) => {
-  let state = store.getState();
+  let loadedData: Record<string, any> = {};
   let rehydrated = false;
 
   try {
@@ -76,21 +76,23 @@ export const rehydrate = async (
       ? loadAll
       : loadAllKeyed;
 
-    state = {
-      ...state,
-      ...await load({
-        rememberedKeys,
-        driver,
-        prefix,
-        unserialize
-      })
-    };
+    loadedData = await load({
+      rememberedKeys,
+      driver,
+      prefix,
+      unserialize
+    });
 
     rehydrated = true;
   } catch (err) {
     errorHandler(new RehydrateError(err));
     rehydrated = false;
   }
+
+  let state = {
+    ...store.getState(),
+    ...loadedData
+  };
 
   if (rehydrated) {
     try {
